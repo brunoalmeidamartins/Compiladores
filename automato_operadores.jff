@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--Created with JFLAP 7.1.--><structure>
+	<type>fa</type>
+	<automaton>
+		<!--The list of states.-->
+		<state id="0" name="q0">
+			<x>591.0</x>
+			<y>330.0</y>
+			<initial/>
+		</state>
+		<state id="39" name="q39">
+			<x>553.0</x>
+			<y>262.0</y>
+		</state>
+		<state id="40" name="q40">
+			<x>496.0</x>
+			<y>160.0</y>
+			<final/>
+		</state>
+		<state id="41" name="q41">
+			<x>618.0</x>
+			<y>265.0</y>
+		</state>
+		<state id="42" name="q42">
+			<x>639.0</x>
+			<y>158.0</y>
+			<final/>
+		</state>
+		<state id="43" name="q43">
+			<x>686.0</x>
+			<y>296.0</y>
+		</state>
+		<state id="44" name="q44">
+			<x>756.0</x>
+			<y>189.0</y>
+			<final/>
+		</state>
+		<state id="45" name="q45">
+			<x>705.0</x>
+			<y>355.0</y>
+		</state>
+		<state id="46" name="q46">
+			<x>868.0</x>
+			<y>270.0</y>
+			<final/>
+		</state>
+		<state id="47" name="q47">
+			<x>690.0</x>
+			<y>406.0</y>
+		</state>
+		<state id="48" name="q48">
+			<x>930.0</x>
+			<y>362.0</y>
+			<final/>
+		</state>
+		<state id="49" name="q49">
+			<x>630.0</x>
+			<y>431.0</y>
+		</state>
+		<state id="50" name="q50">
+			<x>855.0</x>
+			<y>489.0</y>
+			<final/>
+		</state>
+		<state id="51" name="q51">
+			<x>558.0</x>
+			<y>423.0</y>
+		</state>
+		<state id="52" name="q52">
+			<x>741.0</x>
+			<y>529.0</y>
+			<final/>
+		</state>
+		<state id="53" name="q53">
+			<x>495.0</x>
+			<y>431.0</y>
+		</state>
+		<state id="54" name="q54">
+			<x>384.0</x>
+			<y>618.0</y>
+			<final/>
+		</state>
+		<state id="55" name="q55">
+			<x>462.0</x>
+			<y>401.0</y>
+		</state>
+		<state id="56" name="q56">
+			<x>329.0</x>
+			<y>575.0</y>
+			<final/>
+		</state>
+		<state id="57" name="q57">
+			<x>385.0</x>
+			<y>389.0</y>
+		</state>
+		<state id="58" name="q58">
+			<x>292.0</x>
+			<y>521.0</y>
+		</state>
+		<state id="59" name="q59">
+			<x>205.0</x>
+			<y>632.0</y>
+			<final/>
+		</state>
+		<state id="60" name="q60">
+			<x>281.0</x>
+			<y>408.0</y>
+			<final/>
+		</state>
+		<!--The list of transitions.-->
+		<transition>
+			<from>47</from>
+			<to>48</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>39</to>
+			<read>(</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>45</to>
+			<read>}</read>
+		</transition>
+		<transition>
+			<from>55</from>
+			<to>56</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>39</from>
+			<to>40</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>57</from>
+			<to>60</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>53</from>
+			<to>54</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>45</from>
+			<to>46</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>43</from>
+			<to>44</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>41</to>
+			<read>)</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>51</to>
+			<read>[</read>
+		</transition>
+		<transition>
+			<from>41</from>
+			<to>42</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>57</from>
+			<to>58</to>
+			<read>&amp;</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>49</to>
+			<read>;</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>57</to>
+			<read>&amp;</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>53</to>
+			<read>]</read>
+		</transition>
+		<transition>
+			<from>51</from>
+			<to>52</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>47</to>
+			<read>,</read>
+		</transition>
+		<transition>
+			<from>49</from>
+			<to>50</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>58</from>
+			<to>59</to>
+			<read/>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>55</to>
+			<read>.</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>43</to>
+			<read>{</read>
+		</transition>
+	</automaton>
+</structure>

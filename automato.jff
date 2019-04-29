@@ -96,6 +96,16 @@
 		</state>
 		<!--The list of transitions.-->
 		<transition>
+			<from>7</from>
+			<to>8</to>
+			<read>&amp;</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>21</to>
+			<read>*</read>
+		</transition>
+		<transition>
 			<from>1</from>
 			<to>1</to>
 			<read>numero</read>
@@ -107,33 +117,13 @@
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>13</to>
-			<read>{</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>15</to>
-			<read>;</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>5</to>
-			<read>!</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>3</to>
-			<read>=</read>
-		</transition>
-		<transition>
-			<from>0</from>
 			<to>14</to>
 			<read>}</read>
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>2</to>
-			<read>numero</read>
+			<to>12</to>
+			<read>]</read>
 		</transition>
 		<transition>
 			<from>0</from>
@@ -143,17 +133,7 @@
 		<transition>
 			<from>0</from>
 			<to>1</to>
-			<read>_</read>
-		</transition>
-		<transition>
-			<from>7</from>
-			<to>8</to>
-			<read>&amp;</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>16</to>
-			<read>.</read>
+			<read>letra</read>
 		</transition>
 		<transition>
 			<from>0</from>
@@ -161,39 +141,14 @@
 			<read>+</read>
 		</transition>
 		<transition>
-			<from>1</from>
-			<to>1</to>
-			<read>_</read>
-		</transition>
-		<transition>
 			<from>0</from>
-			<to>9</to>
-			<read>(</read>
+			<to>22</to>
+			<read>/</read>
 		</transition>
 		<transition>
 			<from>0</from>
 			<to>7</to>
 			<read>&amp;</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>20</to>
-			<read>-</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>12</to>
-			<read>]</read>
-		</transition>
-		<transition>
-			<from>1</from>
-			<to>1</to>
-			<read>letra</read>
-		</transition>
-		<transition>
-			<from>0</from>
-			<to>1</to>
-			<read>letra</read>
 		</transition>
 		<transition>
 			<from>5</from>
@@ -202,13 +157,23 @@
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>10</to>
-			<read>)</read>
+			<to>3</to>
+			<read>=</read>
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>22</to>
-			<read>/</read>
+			<to>15</to>
+			<read>;</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>1</to>
+			<read>_</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>11</to>
+			<read>[</read>
 		</transition>
 		<transition>
 			<from>3</from>
@@ -217,8 +182,28 @@
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>21</to>
-			<read>*</read>
+			<to>2</to>
+			<read>numero</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>5</to>
+			<read>!</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>1</to>
+			<read>letra</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>16</to>
+			<read>.</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>13</to>
+			<read>{</read>
 		</transition>
 		<transition>
 			<from>0</from>
@@ -227,8 +212,23 @@
 		</transition>
 		<transition>
 			<from>0</from>
-			<to>11</to>
-			<read>[</read>
+			<to>9</to>
+			<read>(</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>20</to>
+			<read>-</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>1</to>
+			<read>_</read>
+		</transition>
+		<transition>
+			<from>0</from>
+			<to>10</to>
+			<read>)</read>
 		</transition>
 	</automaton>
 </structure>
