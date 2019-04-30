@@ -59,17 +59,58 @@ class analisador_lexico():
 
 #Programa MAIN()
 
+import Tabelas as tb
+
+tabela_transicao = tb.retornaTabelaTransicao()
+
+estados_finais = tb.retornaConjuntoEstadosFinais()
+
+estado_inicial = tb.retornaEstadoInicial()
+
 lexico = analisador_lexico()
 
 arq = open('programa.txt', 'r')
 texto = arq.readlines()
 arq.close()
 
+vetor_caracter = []
+for linha in texto:
+    for caracter in linha:
+        vetor_caracter.append(caracter)
 
 
-print(texto[0])
 
+#print(texto[0])
+posicao = 0
+#text = linha
+text = vetor_caracter
+estado = estado_inicial
+elemento = -1
+lexema = ''
+while(posicao < len(text)):
+    if text[posicao] in lexico.alfha:
+        elemento = tb.retornaPosicaoAlfabeto('letra')
+    elif text[posicao] in lexico.numerico:
+        elemento = tb.retornaPosicaoAlfabeto('numero')
+    else:
+        elemento = tb.retornaPosicaoAlfabeto(text[posicao])
+
+    #elemento  = text[posicao]
+    #print(elemento)
+    #elementoInt = int(elemento)
+    print(estado,elemento,text[posicao])
+    estado = tabela_transicao[estado][elemento]
+    lexema = lexema + text[posicao]
+    if estado in estados_finais:
+        print('token', lexema)
+        estado = estado_inicial
+        lexema = ''
+    else:
+        posicao = posicao + 1
+
+'''
 #lexico.imprimeDefCaracteres(texto)
 for i in range(0, len(texto)):
     lexico.obtenToken(texto[i], i + 1)
+'''
 
