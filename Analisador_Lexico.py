@@ -78,6 +78,33 @@ class analisador_lexico():
                 break
             if erro != True:
                 contador_posicao_caracter = contador_posicao_caracter + 1
+        #Corrigindo o System.out.println
+        vet_aux = []
+        vet_posicoes_descartadas = []
+        for i in range(0,len(vetor_tokens)):
+            if vetor_tokens[i][2] == 'System': #Verificar as 4 posicoes posteriores para saber se eh o comando "System.out.println"
+                if len(vetor_tokens) - i > 4:
+                    if vetor_tokens[i+1][2] == '.' and vetor_tokens[i+2][2] == 'out' and vetor_tokens[i+3][2] == '.' and vetor_tokens[i+4][2] == 'println':
+                        posicao_lexema = self.verificaLexema('System.out.println')
+                        vet_aux.append([vetor_tokens[i][0],posicao_lexema[1],'System.out.println',vetor_tokens[i][3]])
+                        vet_posicoes_descartadas.append(i + 1)
+                        vet_posicoes_descartadas.append(i + 2)
+                        vet_posicoes_descartadas.append(i + 3)
+                        vet_posicoes_descartadas.append(i + 4)
+                    else:
+                        vet_aux.append(vetor_tokens[i])
+                else:
+                    vet_aux.append(vetor_tokens[i])
+            else:
+                vet_aux.append(vetor_tokens[i])
+        vet_aux_2 = []
+        #Retira as posicoes a serem descartadas do vetor de tokens
+        for i in range(0,len(vet_aux)):
+            if i not in vet_posicoes_descartadas:
+                vet_aux_2.append(vet_aux[i])
+        vetor_tokens = vet_aux_2
+
+
         return [erro, vetor_tokens]
 
     #Verifica se o lexema eh um comentario pequeno ou grande
@@ -179,14 +206,10 @@ class analisador_lexico():
                 print(i)
 
 
-
-
-
-
-
-#Programa MAIN()
-analisador_lexico = analisador_lexico()
-analisador_lexico.funcaoPrincipalAnalisadorLexico('programa.txt')
+#MAIN()
+if __name__ == "__main__":
+    analisador_lexico = analisador_lexico()
+    analisador_lexico.funcaoPrincipalAnalisadorLexico('programa.txt') #Path do arquivo
 
 
 
