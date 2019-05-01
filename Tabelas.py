@@ -32,7 +32,7 @@ def retornaPosicaoAlfabeto(palavra):
 def retornaTabelaTransicao():##Preenchimento da tabela_transicao
     tabela_transicao = []
 
-    arquivo = open('TabelaAutomato2.csv')
+    arquivo = open('TabelaAutomato.csv')
 
     linhas = csv.reader(arquivo)
     t = 0
