@@ -5,6 +5,15 @@ import sys
 tokens = ['INT','FLOAT' , 'NAME' , 'PLUS' , 'MINUS' , 'DIVIDE' , 'MULTIPLY' ,
 'EQUALS']
 
+palavras_reservadas = ['ABSTRACT', 'ASSERT', 'BOOLEAN', 'BREAK', 'BYTE', 'CASE', 'CATCH',
+          'CHAR', 'CLASS', 'CONST', 'CONTINUE', 'DEFAULT', 'DO', 'DOUBLE', 'ELSE',
+          'ENUM', 'EXTENDS', 'FINAL', 'FINALLY', 'FLOAT', 'FOR', 'IF', 'GOTO',
+          'IMPLEMENTS', 'IMPORT', 'INSTANCEOF', 'INT', 'INTERFACE', 'LONG', 'NATIVE',
+          'NEW', 'PACKAGE', 'PRIVATE', 'PROTECTED', 'PUBLIC', 'RETURN', 'SHORT', 'STATIC',
+          'STRICTFP', 'SUPER', 'SWITCH', 'SYNCHRONIZED', 'THIS', 'THROW', 'THROWS', 'TRANSIENT',
+          'TRY', 'VOID', 'VOLATILE', 'WHILE', 'MAIN', 'STRING', 'LENGTH', 'SYSTEM', 'OUT',
+          'PRINTLN', 'SYSTEM.OUT.PRINTLN']
+
 #list of tokens , for grammar checking
 
 t_PLUS = r'\+'
@@ -13,14 +22,13 @@ t_MULTIPLY = r'\*'
 t_DIVIDE = r'\/'
 t_EQUALS = r'\='
 
+
+
 t_ignore = r' ' # used for ignoring spaces between numbers and operators
 
-#has to match name of token,
 
-def t_FLOAT(t):
-    r'\d+\.\d+' # 1.2 is a float , 1.any number is a float
-    t.value = float(t.value)
-    return t
+
+#has to match name of token,
 
 def t_INT(t):
     r'\d+'
