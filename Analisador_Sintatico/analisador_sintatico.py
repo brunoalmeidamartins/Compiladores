@@ -1,8 +1,18 @@
 import ply.lex as lex
+import re
+import codecs
+import os
 import ply.yacc as yacc
 import sys
 
-tokens1 = ['INT', 'NAME' , 'PLUS' , 'MINUS' , 'DIVIDE' , 'MULTIPLY' , 'EQUALS']
+#(, ), [, ], {, }, ;, ., ,, =, ¡, ==, !=, +, -, *, /, && e !;
+
+tokens = ['ID', 'NUMBER' , 'MAIS', 'MENOS', 'DIVIDE', 'MULTIPLICA', 'IGUAL', 'COMPARACAO', 'PE', 'PD', 'CE', 'CD',
+          'COLCE', 'COLCD', 'MENOR', 'MAIOR', 'MENORQ', 'MAIORQ', 'NEGACAO', 'DIFERENTE', 'ECOMERCIAL', 'VIRGULA', 'PONTO',
+          'PONTOVIRGULA', 'PONTOPONTO']
+
+
+
 
 palavras_reservadas = ['ABSTRACT', 'ASSERT', 'BOOLEAN', 'BREAK', 'BYTE', 'CASE', 'CATCH',
           'CHAR', 'CLASS', 'CONST', 'CONTINUE', 'DEFAULT', 'DO', 'DOUBLE', 'ELSE',
@@ -11,110 +21,139 @@ palavras_reservadas = ['ABSTRACT', 'ASSERT', 'BOOLEAN', 'BREAK', 'BYTE', 'CASE',
           'NEW', 'PACKAGE', 'PRIVATE', 'PROTECTED', 'PUBLIC', 'RETURN', 'SHORT', 'STATIC',
           'STRICTFP', 'SUPER', 'SWITCH', 'SYNCHRONIZED', 'THIS', 'THROW', 'THROWS', 'TRANSIENT',
           'TRY', 'VOID', 'VOLATILE', 'WHILE', 'MAIN', 'STRING', 'LENGTH', 'SYSTEM', 'OUT',
-          'PRINTLN', 'SYSTEM.OUT.PRINTLN']
-tokens = tokens1 + palavras_reservadas
+          'PRINTLN']
+
+'''
+palavras_reservadas = {
+                        'abstract':'ABSTRACT',
+                        'assert':'ASSERT',
+                        'boolean':'BOOLEAN',
+                        'break':'BREAK',
+                        'byte':'BYTE',
+                        'case':'CASE',
+                        'catch':'CATCH',
+                        'char':'CHAR',
+                        'class':'CLASS',
+                        'const':'CONST',
+                        'continue':'CONTINUE',
+                        'default':'DEFAULT',
+                        'do':'DO',
+                        'double':'DOUBLE',
+                        'else':'ELSE',
+                        'enum':'ENUM',
+                        'extends':'EXTENDS',
+                        'final':'FINAL',
+                        'finally':'FINALLY',
+                        'float':'FLOAT',
+                        'for':'FOR',
+                        'if':'IF',
+                        'goto':'GOTO',
+                        'implements':'IMPLEMENTS',
+                        'import':'IMPORT',
+                        'instanceof':'INSTANCEOF',
+                        'int':'INT',
+                        'interface':'INTERFACE',
+                        'long':'LONG',
+                        'native':'NATIVE',
+                        'new':'NEW',
+                        'package':'PACKAGE',
+                        'private':'PRIVATE',
+                        'protected':'PROTECTED',
+                        'public':'PUBLIC',
+                        'return':'RETURN',
+                        'short':'SHORT',
+                        'static':'STATIC',
+                        'strictfp':'STRICTFP',
+                        'super':'SUPER',
+                        'switch':'SWITCH',
+                        'synchronized':'SYNCHRONIZED',
+                        'this':'THIS',
+                        'throw':'THROW',
+                        'throws':'THROWS',
+                        'transient':'TRANSIENT',
+                        'try':'TRY',
+                        'void':'VOID',
+                        'volatile':'VOLATILE',
+                        'while':'WHILE',
+                        'main':'MAIN',
+                        'string':'STRING',
+                        'length':'LENGTH',
+                        'system':'SYSTEM',
+                        'out':'OUT',
+                        'println':'PRINTLN',
+                        #'system_out_println':'SYSTEM.OUT.PRINTLN',
+}
+'''
+tokens = tokens + palavras_reservadas
 
 
 #list of tokens , for grammar checking
-
-t_PLUS = r'\+'
-t_MINUS = r'\-'
-t_MULTIPLY = r'\*'
-t_DIVIDE = r'\/'
-t_EQUALS = r'\='
-
 t_ignore = r' ' # used for ignoring spaces between numbers and operators
+t_MAIS = r'\+'
+t_MENOS = r'\-'
+t_MULTIPLICA = r'\*'
+t_DIVIDE = r'\/'
+t_IGUAL = r'='
+t_COMPARACAO = r'=='
+t_PE = r'\('
+t_PD = r'\)'
+t_CE = r'\{'
+t_CD = r'\}'
+t_COLCE = r'\['
+t_COLCD = r'\]'
+t_MENOR = r'<'
+t_MAIOR = r'>'
+t_MENORQ = r'<='
+t_MAIORQ = r'>='
+t_NEGACAO = r'!'
+t_DIFERENTE = r'\!='
+t_ECOMERCIAL = r'\&&'
+t_VIRGULA = r','
+t_PONTO = r'\.'
+t_PONTOVIRGULA = r';'
+t_PONTOPONTO = r':'
 
+def t_COMMENT_MULTIPLAS_LINHAS(t):
+    r'\/\*(?s).\*\/'
+    pass
 
-#Palavras Reservadas
-t_ABSTRACT = r'\abstract'
-t_ASSERT = r'\assert'
-t_BOOLEAN = r'\boolean'
-t_BREAK = r'\break'
-t_BYTE = r'\byte'
-t_CASE = r'\case'
-t_CATCH = r'\catch'
-t_CHAR = r'\char'
-t_CLASS = r'\class'
-t_CONST = r'\const'
-t_CONTINUE = r'\continue'
-t_DEFAULT = r'\default'
-t_DO = r'\do'
-t_DOUBLE = r'\double'
-t_ELSE = r'\else'
-t_ENUM = r'\enum'
-t_EXTENDS = r'\extends'
-t_FINAL = r'\final'
-t_FINALLY = r'\finally'
-t_FLOAT = r'\float'
-t_FOR = r'\for'
-t_IF = r'\if'
-t_GOTO = r'\goto'
-t_IMPLEMENTS = r'\implements'
-t_IMPORT = r'\import'
-t_INSTANCEOF = r'\instanceof'
-t_INT = r'\int'
-t_INTERFACE = r'\interface'
-t_LONG = r'\long'
-t_NATIVE = r'\native'
-t_NEW = r'\new'
-t_PACKAGE = r'\package'
-t_PRIVATE = r'\private'
-t_PROTECTED = r'\protected'
-t_PUBLIC = r'\public'
-t_RETURN = r'\return'
-t_SHORT = r'\short'
-t_STATIC = r'\static'
-t_STRICTFP = r'\strictfp'
-t_SUPER = r'\super'
-t_SWITCH = r'\switch'
-t_SYNCHRONIZED = r'\synchronized'
-t_THIS = r'\this'
-t_THROW = r'\throw'
-t_THROWS = r'\throws'
-t_TRANSIENT = r'\transient'
-t_TRY = r'\try'
-t_VOID = r'\void'
-t_VOLATILE = r'\volatile'
-t_WHILE = r'\while'
-t_MAIN = r'\main'
-t_STRING = r'\string'
-t_LENGTH = r'\length'
-t_SYSTEM = r'\system'
-t_OUT = r'\out'
-t_PRINTLN = r'\println'
-t_SYSTEM_OUT_PRINTLN = r'\system.out.println'
+def t_NEWLINE(t):
+    r'\n+'
+    pass
 
+def t_ID(t):
+    r'[a-zA-Z_][a-zA-Z_0-9]*' #star means 0 or more, first char is a-zA-z , second character is a-zA-z0-9
+    if t.value.upper() in palavras_reservadas:
+        t.value = t.value.upper()
+        t.type = t.value
+    return t
 
-def t_INT(t):
+def t_COMMENT(t):
+    r'\/\/.*'
+    pass
+
+def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)
     return t # t is our token object
 
-def t_NAME(t):
-    r'[a-zA-Z_][a-zA-Z_0-9]*' #star means 0 or more, first char is a-zA-z , second character is a-zA-z0-9
-    t.type = 'NAME'
-    return t
-
 def t_error(t):
-    print("Illegal characters!")
+    print('Illegal caracters %s' % t.value[0])
     t.lexer.skip(1) # skips 1 token onwards
 
-#lexer = lex.lex()
+fp = codecs.open('teste.txt','r','utf-8')
+cadeia = fp.read()
+fp.close()
 
+#print(tokens)
+lexer = lex.lex()
 
+lexer.input(cadeia)
 
-
-for i in tokens:
-    print("t_" + i +" = r'\\"+i.lower()+"'")
-
-
-
-
-
-
-
-
+while True:
+    tok = lexer.token()
+    if not tok : break
+    print(tok)
 
 
 
