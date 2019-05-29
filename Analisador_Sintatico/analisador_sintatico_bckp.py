@@ -15,7 +15,7 @@ precedence = (
 
 def p_prog(p):
     '''
-    prog : main CE class CD
+    prog : main class
     '''
     print('prog')
 
@@ -26,22 +26,29 @@ def p_main(p):
     print('main')
 def p_class(p):
     '''
-    class : CLASS ID COLCE EXTENDS ID COLCD CE CE var CD CE method CD CD
+    class : CLASS ID EXTENDS ID CE var method CD class
+          | CLASS ID CE var method CD class
+          | empty
     '''
     print('class')
 def p_var(p):
     '''
-    var : type ID PONTOVIRGULA
+    var : type ID PONTOVIRGULA var
+        | empty
     '''
+    #Se puder aceitar int a = 3, eh so adicionar {type cmd}
     print('var')
 def p_method(p):
     '''
-    method : PUBLIC type ID PE COLCE params COLCD PD CE CE var CD CE cmd CD RETURN exp PONTOVIRGULA CD
+    method : PUBLIC type ID PE params PD CE var cmd RETURN exp PONTOVIRGULA CD method
+           | empty
     '''
     print('method')
 def p_params(p):
     '''
-    params : type ID CE VIRGULA type ID CD
+    params : type ID
+           | type ID VIRGULA params
+           | empty
     '''
     print('params')
 def p_type(p):
@@ -54,13 +61,14 @@ def p_type(p):
     print('type')
 def p_cmd(p):
     '''
-    cmd : CE CE cmd CD CD
+    cmd : CE cmd CD
         | IF PE exp PD cmd
         | IF PE exp PD cmd ELSE cmd
         | WHILE PE exp PD cmd
         | SYSTEM PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA
         | ID IGUAL exp PONTOVIRGULA
         | ID COLCE exp COLCD IGUAL exp PONTOVIRGULA
+        | empty
     '''
     print('cmd')
 def p_exp(p):
@@ -114,18 +122,26 @@ def p_pexp(p):
          | NEW ID PE PD
          | PE exp PD
          | pexp PONTO ID
-         | pexp PONTO ID PE COLCE exps COLCD PD
+         | pexp PONTO ID PE exps PD
     '''
     print('pexp')
 
 def p_exps(p):
     '''
     exps : exp COLCE VIRGULA  exp COLCD
+         | exp
+         | empty
     '''
     print('exps')
+
 def p_error(p):
     print("Syntax error found!!", p)
     #print(p.type, p.value, p.lineno, p.lexpos)
+
+def p_empty(p):
+    ''' empty : '''
+    p[0] = None
+    print('Vazio')
 
 '''
 DEBUG

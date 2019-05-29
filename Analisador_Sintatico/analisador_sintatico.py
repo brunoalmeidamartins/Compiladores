@@ -7,43 +7,51 @@ from analisador_lexico import tokens
 from sys import stdin
 
 precedence = (
-    ('left', 'MAIS', 'MENOS'),
-    ('left', 'MULTIPLICA', 'DIVIDE')
+    ('right', 'ID'),
+    ('right', 'COLCE')
 )
 
 #lexer.input(cadeia)
 
 def p_prog(p):
     '''
-    prog : main {class}
+    prog : main class
     '''
-    print('prog')
+    #print('prog')
 
 def p_main(p):
     '''
     main : CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD
     '''
-    print('main')
+    #print('main')
 def p_class(p):
     '''
-    class : CLASS ID [EXTENDS ID] CE {var} {method} CD
+    class : CLASS ID EXTENDS ID CE var method CD class
+          | CLASS ID CE var method CD class
+          | empty
     '''
-    print('class')
+    #print('class')
 def p_var(p):
     '''
-    var : type ID PONTOVIRGULA
+    var : type ID PONTOVIRGULA var
+        | empty
     '''
-    print('var')
+    #Se puder aceitar int a = 3, eh so adicionar {type cmd}
+    #print('var')
+    p[0] = ('var', p[1])
 def p_method(p):
     '''
-    method : PUBLIC type ID PE [params] PD CE {var} {cmd} RETURN exp PONTOVIRGULA CD
+    method : PUBLIC type ID PE params PD CE var cmd RETURN exp PONTOVIRGULA CD method
+           | empty
     '''
-    print('method')
+    #print('method')
 def p_params(p):
     '''
-    params : type ID {VIRGULA type ID}
+    params : type ID
+           | type ID VIRGULA params
+           | empty
     '''
-    print('params')
+    #print('params')
 def p_type(p):
     '''
     type : INT COLCE COLCD
@@ -51,24 +59,34 @@ def p_type(p):
          | INT
          | ID
     '''
-    print('type')
+    print(p[0])
+
+
+#Para retirado do conflito, foi acrescentado as chaves nos comandos do IF e ELSE. Mudando a linguagem
 def p_cmd(p):
     '''
-    cmd : CE {cmd} CD
-        | IF PE exp PD cmd
-        | IF PE exp PD cmd ELSE cmd
+    cmd : CE cmd CD
+        | IF PE exp PD CE cmd CD
+        | IF PE exp PD CE cmd CD ELSE CE cmd CD
         | WHILE PE exp PD cmd
         | SYSTEM PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA
         | ID IGUAL exp PONTOVIRGULA
         | ID COLCE exp COLCD IGUAL exp PONTOVIRGULA
+        | empty
     '''
-    print('cmd')
+    #print('cmd')
+
+
+#Conflito de exp && exp => exp && rexp
 def p_exp(p):
     '''
-    exp : exp ECOMERCIAL exp
+    exp : exp ECOMERCIAL rexp
         | rexp
     '''
-    print('exp')
+    if len(p) > 2:
+        p[0] = ('expressao',p[2],p[1],p[3])
+        print('expressao', p[2], p[1],p[3])
+
 def p_rexp(p):
     '''
     rexp : rexp MENOR aexp
@@ -76,14 +94,18 @@ def p_rexp(p):
          | rexp DIFERENTE aexp
          | aexp
     '''
-    print('rexp')
+    if len(p) > 2:
+        p[0] = ('expressao', p[2], p[1], p[3])
+        print('expressao', p[2], p[1], p[3])
 def p_aexp(p):
     '''
     aexp : aexp MAIS mexp
          | aexp MENOS mexp
          | mexp
     '''
-    print('aexp')
+    if len(p) > 2:
+        p[0] = ('expressao', p[2], p[1], p[3])
+        print('expressao', p[2], p[1], p[3])
 
 def p_mexp(p):
     '''
@@ -91,7 +113,9 @@ def p_mexp(p):
          | mexp DIVIDE sexp
          | sexp
     '''
-    print('mexp')
+    if len(p) > 2:
+        p[0] = ('expressao', p[2], p[1], p[3])
+        print('expressao', p[2], p[1], p[3])
 def p_sexp(p):
     '''
     sexp : NEGACAO sexp
@@ -105,7 +129,7 @@ def p_sexp(p):
          | pexp COLCE exp COLCD
          | pexp
     '''
-    print('sexp')
+    print(p[1])
 
 def p_pexp(p):
     '''
@@ -114,18 +138,26 @@ def p_pexp(p):
          | NEW ID PE PD
          | PE exp PD
          | pexp PONTO ID
-         | pexp PONTO ID PE [exps] PD
+         | pexp PONTO ID PE exps PD
     '''
-    print('pexp')
+    #print('pexp')
 
 def p_exps(p):
     '''
     exps : exp COLCE VIRGULA  exp COLCD
+         | exp
+         | empty
     '''
-    print('exps')
+    #print('exps')
+
 def p_error(p):
     print("Syntax error found!!", p)
     #print(p.type, p.value, p.lineno, p.lexpos)
+
+def p_empty(p):
+    ''' empty : '''
+    p[0] = None
+    #print('Vazio')
 
 '''
 DEBUG
@@ -134,7 +166,7 @@ fp = codecs.open('teste.txt', 'r', 'utf-8')
 cadeia = fp.read()
 fp.close()
 
-parser = yacc.yacc()
+parser = yacc.yacc(debug=True)
 result = parser.parse(cadeia)
 
 print(result)

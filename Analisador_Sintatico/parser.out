@@ -1,1 +1,2836 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ABSTRACT
+    ASSERT
+    BREAK
+    BYTE
+    CASE
+    CATCH
+    CHAR
+    CONST
+    CONTINUE
+    DEFAULT
+    DO
+    DOUBLE
+    ENUM
+    FINAL
+    FINALLY
+    FLOAT
+    FOR
+    GOTO
+    IMPLEMENTS
+    IMPORT
+    INSTANCEOF
+    INTERFACE
+    LONG
+    MAIOR
+    MAIORIGUAL
+    MENORIGUAL
+    NATIVE
+    PACKAGE
+    PONTOPONTO
+    PRIVATE
+    PROTECTED
+    SHORT
+    STRICTFP
+    SUPER
+    SWITCH
+    SYNCHRONIZED
+    THROW
+    THROWS
+    TRANSIENT
+    TRY
+    VOLATILE
+
+Grammar
+
+Rule 0     S' -> prog
+Rule 1     prog -> main class
+Rule 2     main -> CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD
+Rule 3     class -> CLASS ID EXTENDS ID CE var method CD class
+Rule 4     class -> CLASS ID CE var method CD class
+Rule 5     class -> empty
+Rule 6     var -> type ID PONTOVIRGULA var
+Rule 7     var -> empty
+Rule 8     method -> PUBLIC type ID PE params PD CE var cmd RETURN exp PONTOVIRGULA CD method
+Rule 9     method -> empty
+Rule 10    params -> type ID
+Rule 11    params -> type ID VIRGULA params
+Rule 12    params -> empty
+Rule 13    type -> INT COLCE COLCD
+Rule 14    type -> BOOLEAN
+Rule 15    type -> INT
+Rule 16    type -> ID
+Rule 17    cmd -> CE cmd CD
+Rule 18    cmd -> IF PE exp PD CE cmd CD
+Rule 19    cmd -> IF PE exp PD CE cmd CD ELSE CE cmd CD
+Rule 20    cmd -> WHILE PE exp PD cmd
+Rule 21    cmd -> SYSTEM PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA
+Rule 22    cmd -> ID IGUAL exp PONTOVIRGULA
+Rule 23    cmd -> ID COLCE exp COLCD IGUAL exp PONTOVIRGULA
+Rule 24    cmd -> empty
+Rule 25    exp -> exp ECOMERCIAL rexp
+Rule 26    exp -> rexp
+Rule 27    rexp -> rexp MENOR aexp
+Rule 28    rexp -> rexp COMPARACAO aexp
+Rule 29    rexp -> rexp DIFERENTE aexp
+Rule 30    rexp -> aexp
+Rule 31    aexp -> aexp MAIS mexp
+Rule 32    aexp -> aexp MENOS mexp
+Rule 33    aexp -> mexp
+Rule 34    mexp -> mexp MULTIPLICA sexp
+Rule 35    mexp -> mexp DIVIDE sexp
+Rule 36    mexp -> sexp
+Rule 37    sexp -> NEGACAO sexp
+Rule 38    sexp -> MENOS sexp
+Rule 39    sexp -> TRUE
+Rule 40    sexp -> FALSE
+Rule 41    sexp -> NUMERO
+Rule 42    sexp -> NULL
+Rule 43    sexp -> NEW INT COLCE exp COLCD
+Rule 44    sexp -> pexp PONTO LENGTH
+Rule 45    sexp -> pexp COLCE exp COLCD
+Rule 46    sexp -> pexp
+Rule 47    pexp -> ID
+Rule 48    pexp -> THIS
+Rule 49    pexp -> NEW ID PE PD
+Rule 50    pexp -> PE exp PD
+Rule 51    pexp -> pexp PONTO ID
+Rule 52    pexp -> pexp PONTO ID PE exps PD
+Rule 53    exps -> exp COLCE VIRGULA exp COLCD
+Rule 54    exps -> exp
+Rule 55    exps -> empty
+Rule 56    empty -> <empty>
+
+Terminals, with rules where they appear
+
+ABSTRACT             : 
+ASSERT               : 
+BOOLEAN              : 14
+BREAK                : 
+BYTE                 : 
+CASE                 : 
+CATCH                : 
+CD                   : 2 2 3 4 8 17 18 19 19
+CE                   : 2 2 3 4 8 17 18 19 19
+CHAR                 : 
+CLASS                : 2 3 4
+COLCD                : 2 13 23 43 45 53
+COLCE                : 2 13 23 43 45 53
+COMPARACAO           : 28
+CONST                : 
+CONTINUE             : 
+DEFAULT              : 
+DIFERENTE            : 29
+DIVIDE               : 35
+DO                   : 
+DOUBLE               : 
+ECOMERCIAL           : 25
+ELSE                 : 19
+ENUM                 : 
+EXTENDS              : 3
+FALSE                : 40
+FINAL                : 
+FINALLY              : 
+FLOAT                : 
+FOR                  : 
+GOTO                 : 
+ID                   : 2 2 3 3 4 6 8 10 11 16 22 23 47 49 51 52
+IF                   : 18 19
+IGUAL                : 22 23
+IMPLEMENTS           : 
+IMPORT               : 
+INSTANCEOF           : 
+INT                  : 13 15 43
+INTERFACE            : 
+LENGTH               : 44
+LONG                 : 
+MAIN                 : 2
+MAIOR                : 
+MAIORIGUAL           : 
+MAIS                 : 31
+MENOR                : 27
+MENORIGUAL           : 
+MENOS                : 32 38
+MULTIPLICA           : 34
+NATIVE               : 
+NEGACAO              : 37
+NEW                  : 43 49
+NULL                 : 42
+NUMERO               : 41
+OUT                  : 21
+PACKAGE              : 
+PD                   : 2 8 18 19 20 21 49 50 52
+PE                   : 2 8 18 19 20 21 49 50 52
+PONTO                : 21 21 44 51 52
+PONTOPONTO           : 
+PONTOVIRGULA         : 6 8 21 22 23
+PRINTLN              : 21
+PRIVATE              : 
+PROTECTED            : 
+PUBLIC               : 2 8
+RETURN               : 8
+SHORT                : 
+STATIC               : 2
+STRICTFP             : 
+STRING               : 2
+SUPER                : 
+SWITCH               : 
+SYNCHRONIZED         : 
+SYSTEM               : 21
+THIS                 : 48
+THROW                : 
+THROWS               : 
+TRANSIENT            : 
+TRUE                 : 39
+TRY                  : 
+VIRGULA              : 11 53
+VOID                 : 2
+VOLATILE             : 
+WHILE                : 20
+error                : 
+
+Nonterminals, with rules where they appear
+
+aexp                 : 27 28 29 30 31 32
+class                : 1 3 4
+cmd                  : 2 8 17 18 19 19 20
+empty                : 5 7 9 12 24 55
+exp                  : 8 18 19 20 21 22 23 23 25 43 45 50 53 53 54
+exps                 : 52
+main                 : 1
+method               : 3 4 8
+mexp                 : 31 32 33 34 35
+params               : 8 11
+pexp                 : 44 45 46 51 52
+prog                 : 0
+rexp                 : 25 26 27 28 29
+sexp                 : 34 35 36 37 38
+type                 : 6 8 10 11
+var                  : 3 4 6 8
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . prog
+    (1) prog -> . main class
+    (2) main -> . CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD
+
+    CLASS           shift and go to state 3
+
+    prog                           shift and go to state 1
+    main                           shift and go to state 2
+
+state 1
+
+    (0) S' -> prog .
+
+
+
+state 2
+
+    (1) prog -> main . class
+    (3) class -> . CLASS ID EXTENDS ID CE var method CD class
+    (4) class -> . CLASS ID CE var method CD class
+    (5) class -> . empty
+    (56) empty -> .
+
+    CLASS           shift and go to state 5
+    $end            reduce using rule 56 (empty -> .)
+
+    class                          shift and go to state 4
+    empty                          shift and go to state 6
+
+state 3
+
+    (2) main -> CLASS . ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD
+
+    ID              shift and go to state 7
+
+
+state 4
+
+    (1) prog -> main class .
+
+    $end            reduce using rule 1 (prog -> main class .)
+
+
+state 5
+
+    (3) class -> CLASS . ID EXTENDS ID CE var method CD class
+    (4) class -> CLASS . ID CE var method CD class
+
+    ID              shift and go to state 8
+
+
+state 6
+
+    (5) class -> empty .
+
+    $end            reduce using rule 5 (class -> empty .)
+
+
+state 7
+
+    (2) main -> CLASS ID . CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD
+
+    CE              shift and go to state 9
+
+
+state 8
+
+    (3) class -> CLASS ID . EXTENDS ID CE var method CD class
+    (4) class -> CLASS ID . CE var method CD class
+
+    EXTENDS         shift and go to state 10
+    CE              shift and go to state 11
+
+
+state 9
+
+    (2) main -> CLASS ID CE . PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD
+
+    PUBLIC          shift and go to state 12
+
+
+state 10
+
+    (3) class -> CLASS ID EXTENDS . ID CE var method CD class
+
+    ID              shift and go to state 13
+
+
+state 11
+
+    (4) class -> CLASS ID CE . var method CD class
+    (6) var -> . type ID PONTOVIRGULA var
+    (7) var -> . empty
+    (13) type -> . INT COLCE COLCD
+    (14) type -> . BOOLEAN
+    (15) type -> . INT
+    (16) type -> . ID
+    (56) empty -> .
+
+    INT             shift and go to state 18
+    BOOLEAN         shift and go to state 19
+    ID              shift and go to state 14
+    PUBLIC          reduce using rule 56 (empty -> .)
+    CD              reduce using rule 56 (empty -> .)
+
+    var                            shift and go to state 15
+    type                           shift and go to state 16
+    empty                          shift and go to state 17
+
+state 12
+
+    (2) main -> CLASS ID CE PUBLIC . STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD
+
+    STATIC          shift and go to state 20
+
+
+state 13
+
+    (3) class -> CLASS ID EXTENDS ID . CE var method CD class
+
+    CE              shift and go to state 21
+
+
+state 14
+
+    (16) type -> ID .
+
+    ID              reduce using rule 16 (type -> ID .)
+
+
+state 15
+
+    (4) class -> CLASS ID CE var . method CD class
+    (8) method -> . PUBLIC type ID PE params PD CE var cmd RETURN exp PONTOVIRGULA CD method
+    (9) method -> . empty
+    (56) empty -> .
+
+    PUBLIC          shift and go to state 23
+    CD              reduce using rule 56 (empty -> .)
+
+    method                         shift and go to state 22
+    empty                          shift and go to state 24
+
+state 16
+
+    (6) var -> type . ID PONTOVIRGULA var
+
+    ID              shift and go to state 25
+
+
+state 17
+
+    (7) var -> empty .
+
+    PUBLIC          reduce using rule 7 (var -> empty .)
+    CD              reduce using rule 7 (var -> empty .)
+    CE              reduce using rule 7 (var -> empty .)
+    IF              reduce using rule 7 (var -> empty .)
+    WHILE           reduce using rule 7 (var -> empty .)
+    SYSTEM          reduce using rule 7 (var -> empty .)
+    ID              reduce using rule 7 (var -> empty .)
+    RETURN          reduce using rule 7 (var -> empty .)
+
+
+state 18
+
+    (13) type -> INT . COLCE COLCD
+    (15) type -> INT .
+
+    COLCE           shift and go to state 26
+    ID              reduce using rule 15 (type -> INT .)
+
+
+state 19
+
+    (14) type -> BOOLEAN .
+
+    ID              reduce using rule 14 (type -> BOOLEAN .)
+
+
+state 20
+
+    (2) main -> CLASS ID CE PUBLIC STATIC . VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD
+
+    VOID            shift and go to state 27
+
+
+state 21
+
+    (3) class -> CLASS ID EXTENDS ID CE . var method CD class
+    (6) var -> . type ID PONTOVIRGULA var
+    (7) var -> . empty
+    (13) type -> . INT COLCE COLCD
+    (14) type -> . BOOLEAN
+    (15) type -> . INT
+    (16) type -> . ID
+    (56) empty -> .
+
+    INT             shift and go to state 18
+    BOOLEAN         shift and go to state 19
+    ID              shift and go to state 14
+    PUBLIC          reduce using rule 56 (empty -> .)
+    CD              reduce using rule 56 (empty -> .)
+
+    var                            shift and go to state 28
+    type                           shift and go to state 16
+    empty                          shift and go to state 17
+
+state 22
+
+    (4) class -> CLASS ID CE var method . CD class
+
+    CD              shift and go to state 29
+
+
+state 23
+
+    (8) method -> PUBLIC . type ID PE params PD CE var cmd RETURN exp PONTOVIRGULA CD method
+    (13) type -> . INT COLCE COLCD
+    (14) type -> . BOOLEAN
+    (15) type -> . INT
+    (16) type -> . ID
+
+    INT             shift and go to state 18
+    BOOLEAN         shift and go to state 19
+    ID              shift and go to state 14
+
+    type                           shift and go to state 30
+
+state 24
+
+    (9) method -> empty .
+
+    CD              reduce using rule 9 (method -> empty .)
+
+
+state 25
+
+    (6) var -> type ID . PONTOVIRGULA var
+
+    PONTOVIRGULA    shift and go to state 31
+
+
+state 26
+
+    (13) type -> INT COLCE . COLCD
+
+    COLCD           shift and go to state 32
+
+
+state 27
+
+    (2) main -> CLASS ID CE PUBLIC STATIC VOID . MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD
+
+    MAIN            shift and go to state 33
+
+
+state 28
+
+    (3) class -> CLASS ID EXTENDS ID CE var . method CD class
+    (8) method -> . PUBLIC type ID PE params PD CE var cmd RETURN exp PONTOVIRGULA CD method
+    (9) method -> . empty
+    (56) empty -> .
+
+    PUBLIC          shift and go to state 23
+    CD              reduce using rule 56 (empty -> .)
+
+    method                         shift and go to state 34
+    empty                          shift and go to state 24
+
+state 29
+
+    (4) class -> CLASS ID CE var method CD . class
+    (3) class -> . CLASS ID EXTENDS ID CE var method CD class
+    (4) class -> . CLASS ID CE var method CD class
+    (5) class -> . empty
+    (56) empty -> .
+
+    CLASS           shift and go to state 5
+    $end            reduce using rule 56 (empty -> .)
+
+    class                          shift and go to state 35
+    empty                          shift and go to state 6
+
+state 30
+
+    (8) method -> PUBLIC type . ID PE params PD CE var cmd RETURN exp PONTOVIRGULA CD method
+
+    ID              shift and go to state 36
+
+
+state 31
+
+    (6) var -> type ID PONTOVIRGULA . var
+    (6) var -> . type ID PONTOVIRGULA var
+    (7) var -> . empty
+    (13) type -> . INT COLCE COLCD
+    (14) type -> . BOOLEAN
+    (15) type -> . INT
+    (16) type -> . ID
+    (56) empty -> .
+
+  ! shift/reduce conflict for ID resolved as shift
+    INT             shift and go to state 18
+    BOOLEAN         shift and go to state 19
+    ID              shift and go to state 14
+    PUBLIC          reduce using rule 56 (empty -> .)
+    CD              reduce using rule 56 (empty -> .)
+    CE              reduce using rule 56 (empty -> .)
+    IF              reduce using rule 56 (empty -> .)
+    WHILE           reduce using rule 56 (empty -> .)
+    SYSTEM          reduce using rule 56 (empty -> .)
+    RETURN          reduce using rule 56 (empty -> .)
+
+  ! ID              [ reduce using rule 56 (empty -> .) ]
+
+    type                           shift and go to state 16
+    var                            shift and go to state 37
+    empty                          shift and go to state 17
+
+state 32
+
+    (13) type -> INT COLCE COLCD .
+
+    ID              reduce using rule 13 (type -> INT COLCE COLCD .)
+
+
+state 33
+
+    (2) main -> CLASS ID CE PUBLIC STATIC VOID MAIN . PE STRING COLCE COLCD ID PD CE cmd CD CD
+
+    PE              shift and go to state 38
+
+
+state 34
+
+    (3) class -> CLASS ID EXTENDS ID CE var method . CD class
+
+    CD              shift and go to state 39
+
+
+state 35
+
+    (4) class -> CLASS ID CE var method CD class .
+
+    $end            reduce using rule 4 (class -> CLASS ID CE var method CD class .)
+
+
+state 36
+
+    (8) method -> PUBLIC type ID . PE params PD CE var cmd RETURN exp PONTOVIRGULA CD method
+
+    PE              shift and go to state 40
+
+
+state 37
+
+    (6) var -> type ID PONTOVIRGULA var .
+
+    PUBLIC          reduce using rule 6 (var -> type ID PONTOVIRGULA var .)
+    CD              reduce using rule 6 (var -> type ID PONTOVIRGULA var .)
+    CE              reduce using rule 6 (var -> type ID PONTOVIRGULA var .)
+    IF              reduce using rule 6 (var -> type ID PONTOVIRGULA var .)
+    WHILE           reduce using rule 6 (var -> type ID PONTOVIRGULA var .)
+    SYSTEM          reduce using rule 6 (var -> type ID PONTOVIRGULA var .)
+    ID              reduce using rule 6 (var -> type ID PONTOVIRGULA var .)
+    RETURN          reduce using rule 6 (var -> type ID PONTOVIRGULA var .)
+
+
+state 38
+
+    (2) main -> CLASS ID CE PUBLIC STATIC VOID MAIN PE . STRING COLCE COLCD ID PD CE cmd CD CD
+
+    STRING          shift and go to state 41
+
+
+state 39
+
+    (3) class -> CLASS ID EXTENDS ID CE var method CD . class
+    (3) class -> . CLASS ID EXTENDS ID CE var method CD class
+    (4) class -> . CLASS ID CE var method CD class
+    (5) class -> . empty
+    (56) empty -> .
+
+    CLASS           shift and go to state 5
+    $end            reduce using rule 56 (empty -> .)
+
+    class                          shift and go to state 42
+    empty                          shift and go to state 6
+
+state 40
+
+    (8) method -> PUBLIC type ID PE . params PD CE var cmd RETURN exp PONTOVIRGULA CD method
+    (10) params -> . type ID
+    (11) params -> . type ID VIRGULA params
+    (12) params -> . empty
+    (13) type -> . INT COLCE COLCD
+    (14) type -> . BOOLEAN
+    (15) type -> . INT
+    (16) type -> . ID
+    (56) empty -> .
+
+    INT             shift and go to state 18
+    BOOLEAN         shift and go to state 19
+    ID              shift and go to state 14
+    PD              reduce using rule 56 (empty -> .)
+
+    type                           shift and go to state 43
+    params                         shift and go to state 44
+    empty                          shift and go to state 45
+
+state 41
+
+    (2) main -> CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING . COLCE COLCD ID PD CE cmd CD CD
+
+    COLCE           shift and go to state 46
+
+
+state 42
+
+    (3) class -> CLASS ID EXTENDS ID CE var method CD class .
+
+    $end            reduce using rule 3 (class -> CLASS ID EXTENDS ID CE var method CD class .)
+
+
+state 43
+
+    (10) params -> type . ID
+    (11) params -> type . ID VIRGULA params
+
+    ID              shift and go to state 47
+
+
+state 44
+
+    (8) method -> PUBLIC type ID PE params . PD CE var cmd RETURN exp PONTOVIRGULA CD method
+
+    PD              shift and go to state 48
+
+
+state 45
+
+    (12) params -> empty .
+
+    PD              reduce using rule 12 (params -> empty .)
+
+
+state 46
+
+    (2) main -> CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE . COLCD ID PD CE cmd CD CD
+
+    COLCD           shift and go to state 49
+
+
+state 47
+
+    (10) params -> type ID .
+    (11) params -> type ID . VIRGULA params
+
+    PD              reduce using rule 10 (params -> type ID .)
+    VIRGULA         shift and go to state 50
+
+
+state 48
+
+    (8) method -> PUBLIC type ID PE params PD . CE var cmd RETURN exp PONTOVIRGULA CD method
+
+    CE              shift and go to state 51
+
+
+state 49
+
+    (2) main -> CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD . ID PD CE cmd CD CD
+
+    ID              shift and go to state 52
+
+
+state 50
+
+    (11) params -> type ID VIRGULA . params
+    (10) params -> . type ID
+    (11) params -> . type ID VIRGULA params
+    (12) params -> . empty
+    (13) type -> . INT COLCE COLCD
+    (14) type -> . BOOLEAN
+    (15) type -> . INT
+    (16) type -> . ID
+    (56) empty -> .
+
+    INT             shift and go to state 18
+    BOOLEAN         shift and go to state 19
+    ID              shift and go to state 14
+    PD              reduce using rule 56 (empty -> .)
+
+    type                           shift and go to state 43
+    params                         shift and go to state 53
+    empty                          shift and go to state 45
+
+state 51
+
+    (8) method -> PUBLIC type ID PE params PD CE . var cmd RETURN exp PONTOVIRGULA CD method
+    (6) var -> . type ID PONTOVIRGULA var
+    (7) var -> . empty
+    (13) type -> . INT COLCE COLCD
+    (14) type -> . BOOLEAN
+    (15) type -> . INT
+    (16) type -> . ID
+    (56) empty -> .
+
+  ! shift/reduce conflict for ID resolved as shift
+    INT             shift and go to state 18
+    BOOLEAN         shift and go to state 19
+    ID              shift and go to state 14
+    CE              reduce using rule 56 (empty -> .)
+    IF              reduce using rule 56 (empty -> .)
+    WHILE           reduce using rule 56 (empty -> .)
+    SYSTEM          reduce using rule 56 (empty -> .)
+    RETURN          reduce using rule 56 (empty -> .)
+
+  ! ID              [ reduce using rule 56 (empty -> .) ]
+
+    type                           shift and go to state 16
+    var                            shift and go to state 54
+    empty                          shift and go to state 17
+
+state 52
+
+    (2) main -> CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID . PD CE cmd CD CD
+
+    PD              shift and go to state 55
+
+
+state 53
+
+    (11) params -> type ID VIRGULA params .
+
+    PD              reduce using rule 11 (params -> type ID VIRGULA params .)
+
+
+state 54
+
+    (8) method -> PUBLIC type ID PE params PD CE var . cmd RETURN exp PONTOVIRGULA CD method
+    (17) cmd -> . CE cmd CD
+    (18) cmd -> . IF PE exp PD CE cmd CD
+    (19) cmd -> . IF PE exp PD CE cmd CD ELSE CE cmd CD
+    (20) cmd -> . WHILE PE exp PD cmd
+    (21) cmd -> . SYSTEM PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA
+    (22) cmd -> . ID IGUAL exp PONTOVIRGULA
+    (23) cmd -> . ID COLCE exp COLCD IGUAL exp PONTOVIRGULA
+    (24) cmd -> . empty
+    (56) empty -> .
+
+    CE              shift and go to state 57
+    IF              shift and go to state 59
+    WHILE           shift and go to state 60
+    SYSTEM          shift and go to state 61
+    ID              shift and go to state 56
+    RETURN          reduce using rule 56 (empty -> .)
+
+    cmd                            shift and go to state 58
+    empty                          shift and go to state 62
+
+state 55
+
+    (2) main -> CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD . CE cmd CD CD
+
+    CE              shift and go to state 63
+
+
+state 56
+
+    (22) cmd -> ID . IGUAL exp PONTOVIRGULA
+    (23) cmd -> ID . COLCE exp COLCD IGUAL exp PONTOVIRGULA
+
+    IGUAL           shift and go to state 64
+    COLCE           shift and go to state 65
+
+
+state 57
+
+    (17) cmd -> CE . cmd CD
+    (17) cmd -> . CE cmd CD
+    (18) cmd -> . IF PE exp PD CE cmd CD
+    (19) cmd -> . IF PE exp PD CE cmd CD ELSE CE cmd CD
+    (20) cmd -> . WHILE PE exp PD cmd
+    (21) cmd -> . SYSTEM PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA
+    (22) cmd -> . ID IGUAL exp PONTOVIRGULA
+    (23) cmd -> . ID COLCE exp COLCD IGUAL exp PONTOVIRGULA
+    (24) cmd -> . empty
+    (56) empty -> .
+
+    CE              shift and go to state 57
+    IF              shift and go to state 59
+    WHILE           shift and go to state 60
+    SYSTEM          shift and go to state 61
+    ID              shift and go to state 56
+    CD              reduce using rule 56 (empty -> .)
+
+    cmd                            shift and go to state 66
+    empty                          shift and go to state 62
+
+state 58
+
+    (8) method -> PUBLIC type ID PE params PD CE var cmd . RETURN exp PONTOVIRGULA CD method
+
+    RETURN          shift and go to state 67
+
+
+state 59
+
+    (18) cmd -> IF . PE exp PD CE cmd CD
+    (19) cmd -> IF . PE exp PD CE cmd CD ELSE CE cmd CD
+
+    PE              shift and go to state 68
+
+
+state 60
+
+    (20) cmd -> WHILE . PE exp PD cmd
+
+    PE              shift and go to state 69
+
+
+state 61
+
+    (21) cmd -> SYSTEM . PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA
+
+    PONTO           shift and go to state 70
+
+
+state 62
+
+    (24) cmd -> empty .
+
+    RETURN          reduce using rule 24 (cmd -> empty .)
+    CD              reduce using rule 24 (cmd -> empty .)
+
+
+state 63
+
+    (2) main -> CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE . cmd CD CD
+    (17) cmd -> . CE cmd CD
+    (18) cmd -> . IF PE exp PD CE cmd CD
+    (19) cmd -> . IF PE exp PD CE cmd CD ELSE CE cmd CD
+    (20) cmd -> . WHILE PE exp PD cmd
+    (21) cmd -> . SYSTEM PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA
+    (22) cmd -> . ID IGUAL exp PONTOVIRGULA
+    (23) cmd -> . ID COLCE exp COLCD IGUAL exp PONTOVIRGULA
+    (24) cmd -> . empty
+    (56) empty -> .
+
+    CE              shift and go to state 57
+    IF              shift and go to state 59
+    WHILE           shift and go to state 60
+    SYSTEM          shift and go to state 61
+    ID              shift and go to state 56
+    CD              reduce using rule 56 (empty -> .)
+
+    cmd                            shift and go to state 71
+    empty                          shift and go to state 62
+
+state 64
+
+    (22) cmd -> ID IGUAL . exp PONTOVIRGULA
+    (25) exp -> . exp ECOMERCIAL rexp
+    (26) exp -> . rexp
+    (27) rexp -> . rexp MENOR aexp
+    (28) rexp -> . rexp COMPARACAO aexp
+    (29) rexp -> . rexp DIFERENTE aexp
+    (30) rexp -> . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    exp                            shift and go to state 73
+    rexp                           shift and go to state 74
+    aexp                           shift and go to state 75
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 65
+
+    (23) cmd -> ID COLCE . exp COLCD IGUAL exp PONTOVIRGULA
+    (25) exp -> . exp ECOMERCIAL rexp
+    (26) exp -> . rexp
+    (27) rexp -> . rexp MENOR aexp
+    (28) rexp -> . rexp COMPARACAO aexp
+    (29) rexp -> . rexp DIFERENTE aexp
+    (30) rexp -> . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    exp                            shift and go to state 88
+    rexp                           shift and go to state 74
+    aexp                           shift and go to state 75
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 66
+
+    (17) cmd -> CE cmd . CD
+
+    CD              shift and go to state 89
+
+
+state 67
+
+    (8) method -> PUBLIC type ID PE params PD CE var cmd RETURN . exp PONTOVIRGULA CD method
+    (25) exp -> . exp ECOMERCIAL rexp
+    (26) exp -> . rexp
+    (27) rexp -> . rexp MENOR aexp
+    (28) rexp -> . rexp COMPARACAO aexp
+    (29) rexp -> . rexp DIFERENTE aexp
+    (30) rexp -> . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    exp                            shift and go to state 90
+    rexp                           shift and go to state 74
+    aexp                           shift and go to state 75
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 68
+
+    (18) cmd -> IF PE . exp PD CE cmd CD
+    (19) cmd -> IF PE . exp PD CE cmd CD ELSE CE cmd CD
+    (25) exp -> . exp ECOMERCIAL rexp
+    (26) exp -> . rexp
+    (27) rexp -> . rexp MENOR aexp
+    (28) rexp -> . rexp COMPARACAO aexp
+    (29) rexp -> . rexp DIFERENTE aexp
+    (30) rexp -> . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    exp                            shift and go to state 91
+    rexp                           shift and go to state 74
+    aexp                           shift and go to state 75
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 69
+
+    (20) cmd -> WHILE PE . exp PD cmd
+    (25) exp -> . exp ECOMERCIAL rexp
+    (26) exp -> . rexp
+    (27) rexp -> . rexp MENOR aexp
+    (28) rexp -> . rexp COMPARACAO aexp
+    (29) rexp -> . rexp DIFERENTE aexp
+    (30) rexp -> . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    exp                            shift and go to state 92
+    rexp                           shift and go to state 74
+    aexp                           shift and go to state 75
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 70
+
+    (21) cmd -> SYSTEM PONTO . OUT PONTO PRINTLN PE exp PD PONTOVIRGULA
+
+    OUT             shift and go to state 93
+
+
+state 71
+
+    (2) main -> CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd . CD CD
+
+    CD              shift and go to state 94
+
+
+state 72
+
+    (47) pexp -> ID .
+
+    PONTO           reduce using rule 47 (pexp -> ID .)
+    COLCE           reduce using rule 47 (pexp -> ID .)
+    MULTIPLICA      reduce using rule 47 (pexp -> ID .)
+    DIVIDE          reduce using rule 47 (pexp -> ID .)
+    MAIS            reduce using rule 47 (pexp -> ID .)
+    MENOS           reduce using rule 47 (pexp -> ID .)
+    MENOR           reduce using rule 47 (pexp -> ID .)
+    COMPARACAO      reduce using rule 47 (pexp -> ID .)
+    DIFERENTE       reduce using rule 47 (pexp -> ID .)
+    PONTOVIRGULA    reduce using rule 47 (pexp -> ID .)
+    ECOMERCIAL      reduce using rule 47 (pexp -> ID .)
+    COLCD           reduce using rule 47 (pexp -> ID .)
+    PD              reduce using rule 47 (pexp -> ID .)
+
+
+state 73
+
+    (22) cmd -> ID IGUAL exp . PONTOVIRGULA
+    (25) exp -> exp . ECOMERCIAL rexp
+
+    PONTOVIRGULA    shift and go to state 95
+    ECOMERCIAL      shift and go to state 96
+
+
+state 74
+
+    (26) exp -> rexp .
+    (27) rexp -> rexp . MENOR aexp
+    (28) rexp -> rexp . COMPARACAO aexp
+    (29) rexp -> rexp . DIFERENTE aexp
+
+    PONTOVIRGULA    reduce using rule 26 (exp -> rexp .)
+    ECOMERCIAL      reduce using rule 26 (exp -> rexp .)
+    COLCD           reduce using rule 26 (exp -> rexp .)
+    PD              reduce using rule 26 (exp -> rexp .)
+    COLCE           reduce using rule 26 (exp -> rexp .)
+    MENOR           shift and go to state 97
+    COMPARACAO      shift and go to state 98
+    DIFERENTE       shift and go to state 99
+
+
+state 75
+
+    (30) rexp -> aexp .
+    (31) aexp -> aexp . MAIS mexp
+    (32) aexp -> aexp . MENOS mexp
+
+    MENOR           reduce using rule 30 (rexp -> aexp .)
+    COMPARACAO      reduce using rule 30 (rexp -> aexp .)
+    DIFERENTE       reduce using rule 30 (rexp -> aexp .)
+    PONTOVIRGULA    reduce using rule 30 (rexp -> aexp .)
+    ECOMERCIAL      reduce using rule 30 (rexp -> aexp .)
+    COLCD           reduce using rule 30 (rexp -> aexp .)
+    PD              reduce using rule 30 (rexp -> aexp .)
+    COLCE           reduce using rule 30 (rexp -> aexp .)
+    MAIS            shift and go to state 100
+    MENOS           shift and go to state 101
+
+
+state 76
+
+    (33) aexp -> mexp .
+    (34) mexp -> mexp . MULTIPLICA sexp
+    (35) mexp -> mexp . DIVIDE sexp
+
+    MAIS            reduce using rule 33 (aexp -> mexp .)
+    MENOS           reduce using rule 33 (aexp -> mexp .)
+    MENOR           reduce using rule 33 (aexp -> mexp .)
+    COMPARACAO      reduce using rule 33 (aexp -> mexp .)
+    DIFERENTE       reduce using rule 33 (aexp -> mexp .)
+    PONTOVIRGULA    reduce using rule 33 (aexp -> mexp .)
+    ECOMERCIAL      reduce using rule 33 (aexp -> mexp .)
+    COLCD           reduce using rule 33 (aexp -> mexp .)
+    PD              reduce using rule 33 (aexp -> mexp .)
+    COLCE           reduce using rule 33 (aexp -> mexp .)
+    MULTIPLICA      shift and go to state 102
+    DIVIDE          shift and go to state 103
+
+
+state 77
+
+    (38) sexp -> MENOS . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    sexp                           shift and go to state 104
+    pexp                           shift and go to state 85
+
+state 78
+
+    (36) mexp -> sexp .
+
+    MULTIPLICA      reduce using rule 36 (mexp -> sexp .)
+    DIVIDE          reduce using rule 36 (mexp -> sexp .)
+    MAIS            reduce using rule 36 (mexp -> sexp .)
+    MENOS           reduce using rule 36 (mexp -> sexp .)
+    MENOR           reduce using rule 36 (mexp -> sexp .)
+    COMPARACAO      reduce using rule 36 (mexp -> sexp .)
+    DIFERENTE       reduce using rule 36 (mexp -> sexp .)
+    PONTOVIRGULA    reduce using rule 36 (mexp -> sexp .)
+    ECOMERCIAL      reduce using rule 36 (mexp -> sexp .)
+    COLCD           reduce using rule 36 (mexp -> sexp .)
+    PD              reduce using rule 36 (mexp -> sexp .)
+    COLCE           reduce using rule 36 (mexp -> sexp .)
+
+
+state 79
+
+    (37) sexp -> NEGACAO . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    sexp                           shift and go to state 105
+    pexp                           shift and go to state 85
+
+state 80
+
+    (39) sexp -> TRUE .
+
+    MULTIPLICA      reduce using rule 39 (sexp -> TRUE .)
+    DIVIDE          reduce using rule 39 (sexp -> TRUE .)
+    MAIS            reduce using rule 39 (sexp -> TRUE .)
+    MENOS           reduce using rule 39 (sexp -> TRUE .)
+    MENOR           reduce using rule 39 (sexp -> TRUE .)
+    COMPARACAO      reduce using rule 39 (sexp -> TRUE .)
+    DIFERENTE       reduce using rule 39 (sexp -> TRUE .)
+    PONTOVIRGULA    reduce using rule 39 (sexp -> TRUE .)
+    ECOMERCIAL      reduce using rule 39 (sexp -> TRUE .)
+    COLCD           reduce using rule 39 (sexp -> TRUE .)
+    PD              reduce using rule 39 (sexp -> TRUE .)
+    COLCE           reduce using rule 39 (sexp -> TRUE .)
+
+
+state 81
+
+    (40) sexp -> FALSE .
+
+    MULTIPLICA      reduce using rule 40 (sexp -> FALSE .)
+    DIVIDE          reduce using rule 40 (sexp -> FALSE .)
+    MAIS            reduce using rule 40 (sexp -> FALSE .)
+    MENOS           reduce using rule 40 (sexp -> FALSE .)
+    MENOR           reduce using rule 40 (sexp -> FALSE .)
+    COMPARACAO      reduce using rule 40 (sexp -> FALSE .)
+    DIFERENTE       reduce using rule 40 (sexp -> FALSE .)
+    PONTOVIRGULA    reduce using rule 40 (sexp -> FALSE .)
+    ECOMERCIAL      reduce using rule 40 (sexp -> FALSE .)
+    COLCD           reduce using rule 40 (sexp -> FALSE .)
+    PD              reduce using rule 40 (sexp -> FALSE .)
+    COLCE           reduce using rule 40 (sexp -> FALSE .)
+
+
+state 82
+
+    (41) sexp -> NUMERO .
+
+    MULTIPLICA      reduce using rule 41 (sexp -> NUMERO .)
+    DIVIDE          reduce using rule 41 (sexp -> NUMERO .)
+    MAIS            reduce using rule 41 (sexp -> NUMERO .)
+    MENOS           reduce using rule 41 (sexp -> NUMERO .)
+    MENOR           reduce using rule 41 (sexp -> NUMERO .)
+    COMPARACAO      reduce using rule 41 (sexp -> NUMERO .)
+    DIFERENTE       reduce using rule 41 (sexp -> NUMERO .)
+    PONTOVIRGULA    reduce using rule 41 (sexp -> NUMERO .)
+    ECOMERCIAL      reduce using rule 41 (sexp -> NUMERO .)
+    COLCD           reduce using rule 41 (sexp -> NUMERO .)
+    PD              reduce using rule 41 (sexp -> NUMERO .)
+    COLCE           reduce using rule 41 (sexp -> NUMERO .)
+
+
+state 83
+
+    (42) sexp -> NULL .
+
+    MULTIPLICA      reduce using rule 42 (sexp -> NULL .)
+    DIVIDE          reduce using rule 42 (sexp -> NULL .)
+    MAIS            reduce using rule 42 (sexp -> NULL .)
+    MENOS           reduce using rule 42 (sexp -> NULL .)
+    MENOR           reduce using rule 42 (sexp -> NULL .)
+    COMPARACAO      reduce using rule 42 (sexp -> NULL .)
+    DIFERENTE       reduce using rule 42 (sexp -> NULL .)
+    PONTOVIRGULA    reduce using rule 42 (sexp -> NULL .)
+    ECOMERCIAL      reduce using rule 42 (sexp -> NULL .)
+    COLCD           reduce using rule 42 (sexp -> NULL .)
+    PD              reduce using rule 42 (sexp -> NULL .)
+    COLCE           reduce using rule 42 (sexp -> NULL .)
+
+
+state 84
+
+    (43) sexp -> NEW . INT COLCE exp COLCD
+    (49) pexp -> NEW . ID PE PD
+
+    INT             shift and go to state 106
+    ID              shift and go to state 107
+
+
+state 85
+
+    (44) sexp -> pexp . PONTO LENGTH
+    (45) sexp -> pexp . COLCE exp COLCD
+    (46) sexp -> pexp .
+    (51) pexp -> pexp . PONTO ID
+    (52) pexp -> pexp . PONTO ID PE exps PD
+
+  ! shift/reduce conflict for COLCE resolved as shift
+    PONTO           shift and go to state 108
+    COLCE           shift and go to state 109
+    MULTIPLICA      reduce using rule 46 (sexp -> pexp .)
+    DIVIDE          reduce using rule 46 (sexp -> pexp .)
+    MAIS            reduce using rule 46 (sexp -> pexp .)
+    MENOS           reduce using rule 46 (sexp -> pexp .)
+    MENOR           reduce using rule 46 (sexp -> pexp .)
+    COMPARACAO      reduce using rule 46 (sexp -> pexp .)
+    DIFERENTE       reduce using rule 46 (sexp -> pexp .)
+    PONTOVIRGULA    reduce using rule 46 (sexp -> pexp .)
+    ECOMERCIAL      reduce using rule 46 (sexp -> pexp .)
+    COLCD           reduce using rule 46 (sexp -> pexp .)
+    PD              reduce using rule 46 (sexp -> pexp .)
+
+  ! COLCE           [ reduce using rule 46 (sexp -> pexp .) ]
+
+
+state 86
+
+    (48) pexp -> THIS .
+
+    PONTO           reduce using rule 48 (pexp -> THIS .)
+    COLCE           reduce using rule 48 (pexp -> THIS .)
+    MULTIPLICA      reduce using rule 48 (pexp -> THIS .)
+    DIVIDE          reduce using rule 48 (pexp -> THIS .)
+    MAIS            reduce using rule 48 (pexp -> THIS .)
+    MENOS           reduce using rule 48 (pexp -> THIS .)
+    MENOR           reduce using rule 48 (pexp -> THIS .)
+    COMPARACAO      reduce using rule 48 (pexp -> THIS .)
+    DIFERENTE       reduce using rule 48 (pexp -> THIS .)
+    PONTOVIRGULA    reduce using rule 48 (pexp -> THIS .)
+    ECOMERCIAL      reduce using rule 48 (pexp -> THIS .)
+    COLCD           reduce using rule 48 (pexp -> THIS .)
+    PD              reduce using rule 48 (pexp -> THIS .)
+
+
+state 87
+
+    (50) pexp -> PE . exp PD
+    (25) exp -> . exp ECOMERCIAL rexp
+    (26) exp -> . rexp
+    (27) rexp -> . rexp MENOR aexp
+    (28) rexp -> . rexp COMPARACAO aexp
+    (29) rexp -> . rexp DIFERENTE aexp
+    (30) rexp -> . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    exp                            shift and go to state 110
+    rexp                           shift and go to state 74
+    aexp                           shift and go to state 75
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 88
+
+    (23) cmd -> ID COLCE exp . COLCD IGUAL exp PONTOVIRGULA
+    (25) exp -> exp . ECOMERCIAL rexp
+
+    COLCD           shift and go to state 111
+    ECOMERCIAL      shift and go to state 96
+
+
+state 89
+
+    (17) cmd -> CE cmd CD .
+
+    RETURN          reduce using rule 17 (cmd -> CE cmd CD .)
+    CD              reduce using rule 17 (cmd -> CE cmd CD .)
+
+
+state 90
+
+    (8) method -> PUBLIC type ID PE params PD CE var cmd RETURN exp . PONTOVIRGULA CD method
+    (25) exp -> exp . ECOMERCIAL rexp
+
+    PONTOVIRGULA    shift and go to state 112
+    ECOMERCIAL      shift and go to state 96
+
+
+state 91
+
+    (18) cmd -> IF PE exp . PD CE cmd CD
+    (19) cmd -> IF PE exp . PD CE cmd CD ELSE CE cmd CD
+    (25) exp -> exp . ECOMERCIAL rexp
+
+    PD              shift and go to state 113
+    ECOMERCIAL      shift and go to state 96
+
+
+state 92
+
+    (20) cmd -> WHILE PE exp . PD cmd
+    (25) exp -> exp . ECOMERCIAL rexp
+
+    PD              shift and go to state 114
+    ECOMERCIAL      shift and go to state 96
+
+
+state 93
+
+    (21) cmd -> SYSTEM PONTO OUT . PONTO PRINTLN PE exp PD PONTOVIRGULA
+
+    PONTO           shift and go to state 115
+
+
+state 94
+
+    (2) main -> CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD . CD
+
+    CD              shift and go to state 116
+
+
+state 95
+
+    (22) cmd -> ID IGUAL exp PONTOVIRGULA .
+
+    RETURN          reduce using rule 22 (cmd -> ID IGUAL exp PONTOVIRGULA .)
+    CD              reduce using rule 22 (cmd -> ID IGUAL exp PONTOVIRGULA .)
+
+
+state 96
+
+    (25) exp -> exp ECOMERCIAL . rexp
+    (27) rexp -> . rexp MENOR aexp
+    (28) rexp -> . rexp COMPARACAO aexp
+    (29) rexp -> . rexp DIFERENTE aexp
+    (30) rexp -> . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    rexp                           shift and go to state 117
+    aexp                           shift and go to state 75
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 97
+
+    (27) rexp -> rexp MENOR . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    aexp                           shift and go to state 118
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 98
+
+    (28) rexp -> rexp COMPARACAO . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    aexp                           shift and go to state 119
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 99
+
+    (29) rexp -> rexp DIFERENTE . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    aexp                           shift and go to state 120
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 100
+
+    (31) aexp -> aexp MAIS . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    mexp                           shift and go to state 121
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 101
+
+    (32) aexp -> aexp MENOS . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    mexp                           shift and go to state 122
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 102
+
+    (34) mexp -> mexp MULTIPLICA . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    sexp                           shift and go to state 123
+    pexp                           shift and go to state 85
+
+state 103
+
+    (35) mexp -> mexp DIVIDE . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    sexp                           shift and go to state 124
+    pexp                           shift and go to state 85
+
+state 104
+
+    (38) sexp -> MENOS sexp .
+
+    MULTIPLICA      reduce using rule 38 (sexp -> MENOS sexp .)
+    DIVIDE          reduce using rule 38 (sexp -> MENOS sexp .)
+    MAIS            reduce using rule 38 (sexp -> MENOS sexp .)
+    MENOS           reduce using rule 38 (sexp -> MENOS sexp .)
+    MENOR           reduce using rule 38 (sexp -> MENOS sexp .)
+    COMPARACAO      reduce using rule 38 (sexp -> MENOS sexp .)
+    DIFERENTE       reduce using rule 38 (sexp -> MENOS sexp .)
+    PONTOVIRGULA    reduce using rule 38 (sexp -> MENOS sexp .)
+    ECOMERCIAL      reduce using rule 38 (sexp -> MENOS sexp .)
+    COLCD           reduce using rule 38 (sexp -> MENOS sexp .)
+    PD              reduce using rule 38 (sexp -> MENOS sexp .)
+    COLCE           reduce using rule 38 (sexp -> MENOS sexp .)
+
+
+state 105
+
+    (37) sexp -> NEGACAO sexp .
+
+    MULTIPLICA      reduce using rule 37 (sexp -> NEGACAO sexp .)
+    DIVIDE          reduce using rule 37 (sexp -> NEGACAO sexp .)
+    MAIS            reduce using rule 37 (sexp -> NEGACAO sexp .)
+    MENOS           reduce using rule 37 (sexp -> NEGACAO sexp .)
+    MENOR           reduce using rule 37 (sexp -> NEGACAO sexp .)
+    COMPARACAO      reduce using rule 37 (sexp -> NEGACAO sexp .)
+    DIFERENTE       reduce using rule 37 (sexp -> NEGACAO sexp .)
+    PONTOVIRGULA    reduce using rule 37 (sexp -> NEGACAO sexp .)
+    ECOMERCIAL      reduce using rule 37 (sexp -> NEGACAO sexp .)
+    COLCD           reduce using rule 37 (sexp -> NEGACAO sexp .)
+    PD              reduce using rule 37 (sexp -> NEGACAO sexp .)
+    COLCE           reduce using rule 37 (sexp -> NEGACAO sexp .)
+
+
+state 106
+
+    (43) sexp -> NEW INT . COLCE exp COLCD
+
+    COLCE           shift and go to state 125
+
+
+state 107
+
+    (49) pexp -> NEW ID . PE PD
+
+    PE              shift and go to state 126
+
+
+state 108
+
+    (44) sexp -> pexp PONTO . LENGTH
+    (51) pexp -> pexp PONTO . ID
+    (52) pexp -> pexp PONTO . ID PE exps PD
+
+    LENGTH          shift and go to state 127
+    ID              shift and go to state 128
+
+
+state 109
+
+    (45) sexp -> pexp COLCE . exp COLCD
+    (25) exp -> . exp ECOMERCIAL rexp
+    (26) exp -> . rexp
+    (27) rexp -> . rexp MENOR aexp
+    (28) rexp -> . rexp COMPARACAO aexp
+    (29) rexp -> . rexp DIFERENTE aexp
+    (30) rexp -> . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    pexp                           shift and go to state 85
+    exp                            shift and go to state 129
+    rexp                           shift and go to state 74
+    aexp                           shift and go to state 75
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+
+state 110
+
+    (50) pexp -> PE exp . PD
+    (25) exp -> exp . ECOMERCIAL rexp
+
+    PD              shift and go to state 130
+    ECOMERCIAL      shift and go to state 96
+
+
+state 111
+
+    (23) cmd -> ID COLCE exp COLCD . IGUAL exp PONTOVIRGULA
+
+    IGUAL           shift and go to state 131
+
+
+state 112
+
+    (8) method -> PUBLIC type ID PE params PD CE var cmd RETURN exp PONTOVIRGULA . CD method
+
+    CD              shift and go to state 132
+
+
+state 113
+
+    (18) cmd -> IF PE exp PD . CE cmd CD
+    (19) cmd -> IF PE exp PD . CE cmd CD ELSE CE cmd CD
+
+    CE              shift and go to state 133
+
+
+state 114
+
+    (20) cmd -> WHILE PE exp PD . cmd
+    (17) cmd -> . CE cmd CD
+    (18) cmd -> . IF PE exp PD CE cmd CD
+    (19) cmd -> . IF PE exp PD CE cmd CD ELSE CE cmd CD
+    (20) cmd -> . WHILE PE exp PD cmd
+    (21) cmd -> . SYSTEM PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA
+    (22) cmd -> . ID IGUAL exp PONTOVIRGULA
+    (23) cmd -> . ID COLCE exp COLCD IGUAL exp PONTOVIRGULA
+    (24) cmd -> . empty
+    (56) empty -> .
+
+    CE              shift and go to state 57
+    IF              shift and go to state 59
+    WHILE           shift and go to state 60
+    SYSTEM          shift and go to state 61
+    ID              shift and go to state 56
+    RETURN          reduce using rule 56 (empty -> .)
+    CD              reduce using rule 56 (empty -> .)
+
+    cmd                            shift and go to state 134
+    empty                          shift and go to state 62
+
+state 115
+
+    (21) cmd -> SYSTEM PONTO OUT PONTO . PRINTLN PE exp PD PONTOVIRGULA
+
+    PRINTLN         shift and go to state 135
+
+
+state 116
+
+    (2) main -> CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD .
+
+    CLASS           reduce using rule 2 (main -> CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD .)
+    $end            reduce using rule 2 (main -> CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD .)
+
+
+state 117
+
+    (25) exp -> exp ECOMERCIAL rexp .
+    (27) rexp -> rexp . MENOR aexp
+    (28) rexp -> rexp . COMPARACAO aexp
+    (29) rexp -> rexp . DIFERENTE aexp
+
+    PONTOVIRGULA    reduce using rule 25 (exp -> exp ECOMERCIAL rexp .)
+    ECOMERCIAL      reduce using rule 25 (exp -> exp ECOMERCIAL rexp .)
+    COLCD           reduce using rule 25 (exp -> exp ECOMERCIAL rexp .)
+    PD              reduce using rule 25 (exp -> exp ECOMERCIAL rexp .)
+    COLCE           reduce using rule 25 (exp -> exp ECOMERCIAL rexp .)
+    MENOR           shift and go to state 97
+    COMPARACAO      shift and go to state 98
+    DIFERENTE       shift and go to state 99
+
+
+state 118
+
+    (27) rexp -> rexp MENOR aexp .
+    (31) aexp -> aexp . MAIS mexp
+    (32) aexp -> aexp . MENOS mexp
+
+    MENOR           reduce using rule 27 (rexp -> rexp MENOR aexp .)
+    COMPARACAO      reduce using rule 27 (rexp -> rexp MENOR aexp .)
+    DIFERENTE       reduce using rule 27 (rexp -> rexp MENOR aexp .)
+    PONTOVIRGULA    reduce using rule 27 (rexp -> rexp MENOR aexp .)
+    ECOMERCIAL      reduce using rule 27 (rexp -> rexp MENOR aexp .)
+    COLCD           reduce using rule 27 (rexp -> rexp MENOR aexp .)
+    PD              reduce using rule 27 (rexp -> rexp MENOR aexp .)
+    COLCE           reduce using rule 27 (rexp -> rexp MENOR aexp .)
+    MAIS            shift and go to state 100
+    MENOS           shift and go to state 101
+
+
+state 119
+
+    (28) rexp -> rexp COMPARACAO aexp .
+    (31) aexp -> aexp . MAIS mexp
+    (32) aexp -> aexp . MENOS mexp
+
+    MENOR           reduce using rule 28 (rexp -> rexp COMPARACAO aexp .)
+    COMPARACAO      reduce using rule 28 (rexp -> rexp COMPARACAO aexp .)
+    DIFERENTE       reduce using rule 28 (rexp -> rexp COMPARACAO aexp .)
+    PONTOVIRGULA    reduce using rule 28 (rexp -> rexp COMPARACAO aexp .)
+    ECOMERCIAL      reduce using rule 28 (rexp -> rexp COMPARACAO aexp .)
+    COLCD           reduce using rule 28 (rexp -> rexp COMPARACAO aexp .)
+    PD              reduce using rule 28 (rexp -> rexp COMPARACAO aexp .)
+    COLCE           reduce using rule 28 (rexp -> rexp COMPARACAO aexp .)
+    MAIS            shift and go to state 100
+    MENOS           shift and go to state 101
+
+
+state 120
+
+    (29) rexp -> rexp DIFERENTE aexp .
+    (31) aexp -> aexp . MAIS mexp
+    (32) aexp -> aexp . MENOS mexp
+
+    MENOR           reduce using rule 29 (rexp -> rexp DIFERENTE aexp .)
+    COMPARACAO      reduce using rule 29 (rexp -> rexp DIFERENTE aexp .)
+    DIFERENTE       reduce using rule 29 (rexp -> rexp DIFERENTE aexp .)
+    PONTOVIRGULA    reduce using rule 29 (rexp -> rexp DIFERENTE aexp .)
+    ECOMERCIAL      reduce using rule 29 (rexp -> rexp DIFERENTE aexp .)
+    COLCD           reduce using rule 29 (rexp -> rexp DIFERENTE aexp .)
+    PD              reduce using rule 29 (rexp -> rexp DIFERENTE aexp .)
+    COLCE           reduce using rule 29 (rexp -> rexp DIFERENTE aexp .)
+    MAIS            shift and go to state 100
+    MENOS           shift and go to state 101
+
+
+state 121
+
+    (31) aexp -> aexp MAIS mexp .
+    (34) mexp -> mexp . MULTIPLICA sexp
+    (35) mexp -> mexp . DIVIDE sexp
+
+    MAIS            reduce using rule 31 (aexp -> aexp MAIS mexp .)
+    MENOS           reduce using rule 31 (aexp -> aexp MAIS mexp .)
+    MENOR           reduce using rule 31 (aexp -> aexp MAIS mexp .)
+    COMPARACAO      reduce using rule 31 (aexp -> aexp MAIS mexp .)
+    DIFERENTE       reduce using rule 31 (aexp -> aexp MAIS mexp .)
+    PONTOVIRGULA    reduce using rule 31 (aexp -> aexp MAIS mexp .)
+    ECOMERCIAL      reduce using rule 31 (aexp -> aexp MAIS mexp .)
+    COLCD           reduce using rule 31 (aexp -> aexp MAIS mexp .)
+    PD              reduce using rule 31 (aexp -> aexp MAIS mexp .)
+    COLCE           reduce using rule 31 (aexp -> aexp MAIS mexp .)
+    MULTIPLICA      shift and go to state 102
+    DIVIDE          shift and go to state 103
+
+
+state 122
+
+    (32) aexp -> aexp MENOS mexp .
+    (34) mexp -> mexp . MULTIPLICA sexp
+    (35) mexp -> mexp . DIVIDE sexp
+
+    MAIS            reduce using rule 32 (aexp -> aexp MENOS mexp .)
+    MENOS           reduce using rule 32 (aexp -> aexp MENOS mexp .)
+    MENOR           reduce using rule 32 (aexp -> aexp MENOS mexp .)
+    COMPARACAO      reduce using rule 32 (aexp -> aexp MENOS mexp .)
+    DIFERENTE       reduce using rule 32 (aexp -> aexp MENOS mexp .)
+    PONTOVIRGULA    reduce using rule 32 (aexp -> aexp MENOS mexp .)
+    ECOMERCIAL      reduce using rule 32 (aexp -> aexp MENOS mexp .)
+    COLCD           reduce using rule 32 (aexp -> aexp MENOS mexp .)
+    PD              reduce using rule 32 (aexp -> aexp MENOS mexp .)
+    COLCE           reduce using rule 32 (aexp -> aexp MENOS mexp .)
+    MULTIPLICA      shift and go to state 102
+    DIVIDE          shift and go to state 103
+
+
+state 123
+
+    (34) mexp -> mexp MULTIPLICA sexp .
+
+    MULTIPLICA      reduce using rule 34 (mexp -> mexp MULTIPLICA sexp .)
+    DIVIDE          reduce using rule 34 (mexp -> mexp MULTIPLICA sexp .)
+    MAIS            reduce using rule 34 (mexp -> mexp MULTIPLICA sexp .)
+    MENOS           reduce using rule 34 (mexp -> mexp MULTIPLICA sexp .)
+    MENOR           reduce using rule 34 (mexp -> mexp MULTIPLICA sexp .)
+    COMPARACAO      reduce using rule 34 (mexp -> mexp MULTIPLICA sexp .)
+    DIFERENTE       reduce using rule 34 (mexp -> mexp MULTIPLICA sexp .)
+    PONTOVIRGULA    reduce using rule 34 (mexp -> mexp MULTIPLICA sexp .)
+    ECOMERCIAL      reduce using rule 34 (mexp -> mexp MULTIPLICA sexp .)
+    COLCD           reduce using rule 34 (mexp -> mexp MULTIPLICA sexp .)
+    PD              reduce using rule 34 (mexp -> mexp MULTIPLICA sexp .)
+    COLCE           reduce using rule 34 (mexp -> mexp MULTIPLICA sexp .)
+
+
+state 124
+
+    (35) mexp -> mexp DIVIDE sexp .
+
+    MULTIPLICA      reduce using rule 35 (mexp -> mexp DIVIDE sexp .)
+    DIVIDE          reduce using rule 35 (mexp -> mexp DIVIDE sexp .)
+    MAIS            reduce using rule 35 (mexp -> mexp DIVIDE sexp .)
+    MENOS           reduce using rule 35 (mexp -> mexp DIVIDE sexp .)
+    MENOR           reduce using rule 35 (mexp -> mexp DIVIDE sexp .)
+    COMPARACAO      reduce using rule 35 (mexp -> mexp DIVIDE sexp .)
+    DIFERENTE       reduce using rule 35 (mexp -> mexp DIVIDE sexp .)
+    PONTOVIRGULA    reduce using rule 35 (mexp -> mexp DIVIDE sexp .)
+    ECOMERCIAL      reduce using rule 35 (mexp -> mexp DIVIDE sexp .)
+    COLCD           reduce using rule 35 (mexp -> mexp DIVIDE sexp .)
+    PD              reduce using rule 35 (mexp -> mexp DIVIDE sexp .)
+    COLCE           reduce using rule 35 (mexp -> mexp DIVIDE sexp .)
+
+
+state 125
+
+    (43) sexp -> NEW INT COLCE . exp COLCD
+    (25) exp -> . exp ECOMERCIAL rexp
+    (26) exp -> . rexp
+    (27) rexp -> . rexp MENOR aexp
+    (28) rexp -> . rexp COMPARACAO aexp
+    (29) rexp -> . rexp DIFERENTE aexp
+    (30) rexp -> . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    exp                            shift and go to state 136
+    rexp                           shift and go to state 74
+    aexp                           shift and go to state 75
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 126
+
+    (49) pexp -> NEW ID PE . PD
+
+    PD              shift and go to state 137
+
+
+state 127
+
+    (44) sexp -> pexp PONTO LENGTH .
+
+    MULTIPLICA      reduce using rule 44 (sexp -> pexp PONTO LENGTH .)
+    DIVIDE          reduce using rule 44 (sexp -> pexp PONTO LENGTH .)
+    MAIS            reduce using rule 44 (sexp -> pexp PONTO LENGTH .)
+    MENOS           reduce using rule 44 (sexp -> pexp PONTO LENGTH .)
+    MENOR           reduce using rule 44 (sexp -> pexp PONTO LENGTH .)
+    COMPARACAO      reduce using rule 44 (sexp -> pexp PONTO LENGTH .)
+    DIFERENTE       reduce using rule 44 (sexp -> pexp PONTO LENGTH .)
+    PONTOVIRGULA    reduce using rule 44 (sexp -> pexp PONTO LENGTH .)
+    ECOMERCIAL      reduce using rule 44 (sexp -> pexp PONTO LENGTH .)
+    COLCD           reduce using rule 44 (sexp -> pexp PONTO LENGTH .)
+    PD              reduce using rule 44 (sexp -> pexp PONTO LENGTH .)
+    COLCE           reduce using rule 44 (sexp -> pexp PONTO LENGTH .)
+
+
+state 128
+
+    (51) pexp -> pexp PONTO ID .
+    (52) pexp -> pexp PONTO ID . PE exps PD
+
+    PONTO           reduce using rule 51 (pexp -> pexp PONTO ID .)
+    COLCE           reduce using rule 51 (pexp -> pexp PONTO ID .)
+    MULTIPLICA      reduce using rule 51 (pexp -> pexp PONTO ID .)
+    DIVIDE          reduce using rule 51 (pexp -> pexp PONTO ID .)
+    MAIS            reduce using rule 51 (pexp -> pexp PONTO ID .)
+    MENOS           reduce using rule 51 (pexp -> pexp PONTO ID .)
+    MENOR           reduce using rule 51 (pexp -> pexp PONTO ID .)
+    COMPARACAO      reduce using rule 51 (pexp -> pexp PONTO ID .)
+    DIFERENTE       reduce using rule 51 (pexp -> pexp PONTO ID .)
+    PONTOVIRGULA    reduce using rule 51 (pexp -> pexp PONTO ID .)
+    ECOMERCIAL      reduce using rule 51 (pexp -> pexp PONTO ID .)
+    COLCD           reduce using rule 51 (pexp -> pexp PONTO ID .)
+    PD              reduce using rule 51 (pexp -> pexp PONTO ID .)
+    PE              shift and go to state 138
+
+
+state 129
+
+    (45) sexp -> pexp COLCE exp . COLCD
+    (25) exp -> exp . ECOMERCIAL rexp
+
+    COLCD           shift and go to state 139
+    ECOMERCIAL      shift and go to state 96
+
+
+state 130
+
+    (50) pexp -> PE exp PD .
+
+    PONTO           reduce using rule 50 (pexp -> PE exp PD .)
+    COLCE           reduce using rule 50 (pexp -> PE exp PD .)
+    MULTIPLICA      reduce using rule 50 (pexp -> PE exp PD .)
+    DIVIDE          reduce using rule 50 (pexp -> PE exp PD .)
+    MAIS            reduce using rule 50 (pexp -> PE exp PD .)
+    MENOS           reduce using rule 50 (pexp -> PE exp PD .)
+    MENOR           reduce using rule 50 (pexp -> PE exp PD .)
+    COMPARACAO      reduce using rule 50 (pexp -> PE exp PD .)
+    DIFERENTE       reduce using rule 50 (pexp -> PE exp PD .)
+    PONTOVIRGULA    reduce using rule 50 (pexp -> PE exp PD .)
+    ECOMERCIAL      reduce using rule 50 (pexp -> PE exp PD .)
+    COLCD           reduce using rule 50 (pexp -> PE exp PD .)
+    PD              reduce using rule 50 (pexp -> PE exp PD .)
+
+
+state 131
+
+    (23) cmd -> ID COLCE exp COLCD IGUAL . exp PONTOVIRGULA
+    (25) exp -> . exp ECOMERCIAL rexp
+    (26) exp -> . rexp
+    (27) rexp -> . rexp MENOR aexp
+    (28) rexp -> . rexp COMPARACAO aexp
+    (29) rexp -> . rexp DIFERENTE aexp
+    (30) rexp -> . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    exp                            shift and go to state 140
+    rexp                           shift and go to state 74
+    aexp                           shift and go to state 75
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 132
+
+    (8) method -> PUBLIC type ID PE params PD CE var cmd RETURN exp PONTOVIRGULA CD . method
+    (8) method -> . PUBLIC type ID PE params PD CE var cmd RETURN exp PONTOVIRGULA CD method
+    (9) method -> . empty
+    (56) empty -> .
+
+    PUBLIC          shift and go to state 23
+    CD              reduce using rule 56 (empty -> .)
+
+    method                         shift and go to state 141
+    empty                          shift and go to state 24
+
+state 133
+
+    (18) cmd -> IF PE exp PD CE . cmd CD
+    (19) cmd -> IF PE exp PD CE . cmd CD ELSE CE cmd CD
+    (17) cmd -> . CE cmd CD
+    (18) cmd -> . IF PE exp PD CE cmd CD
+    (19) cmd -> . IF PE exp PD CE cmd CD ELSE CE cmd CD
+    (20) cmd -> . WHILE PE exp PD cmd
+    (21) cmd -> . SYSTEM PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA
+    (22) cmd -> . ID IGUAL exp PONTOVIRGULA
+    (23) cmd -> . ID COLCE exp COLCD IGUAL exp PONTOVIRGULA
+    (24) cmd -> . empty
+    (56) empty -> .
+
+    CE              shift and go to state 57
+    IF              shift and go to state 59
+    WHILE           shift and go to state 60
+    SYSTEM          shift and go to state 61
+    ID              shift and go to state 56
+    CD              reduce using rule 56 (empty -> .)
+
+    cmd                            shift and go to state 142
+    empty                          shift and go to state 62
+
+state 134
+
+    (20) cmd -> WHILE PE exp PD cmd .
+
+    RETURN          reduce using rule 20 (cmd -> WHILE PE exp PD cmd .)
+    CD              reduce using rule 20 (cmd -> WHILE PE exp PD cmd .)
+
+
+state 135
+
+    (21) cmd -> SYSTEM PONTO OUT PONTO PRINTLN . PE exp PD PONTOVIRGULA
+
+    PE              shift and go to state 143
+
+
+state 136
+
+    (43) sexp -> NEW INT COLCE exp . COLCD
+    (25) exp -> exp . ECOMERCIAL rexp
+
+    COLCD           shift and go to state 144
+    ECOMERCIAL      shift and go to state 96
+
+
+state 137
+
+    (49) pexp -> NEW ID PE PD .
+
+    PONTO           reduce using rule 49 (pexp -> NEW ID PE PD .)
+    COLCE           reduce using rule 49 (pexp -> NEW ID PE PD .)
+    MULTIPLICA      reduce using rule 49 (pexp -> NEW ID PE PD .)
+    DIVIDE          reduce using rule 49 (pexp -> NEW ID PE PD .)
+    MAIS            reduce using rule 49 (pexp -> NEW ID PE PD .)
+    MENOS           reduce using rule 49 (pexp -> NEW ID PE PD .)
+    MENOR           reduce using rule 49 (pexp -> NEW ID PE PD .)
+    COMPARACAO      reduce using rule 49 (pexp -> NEW ID PE PD .)
+    DIFERENTE       reduce using rule 49 (pexp -> NEW ID PE PD .)
+    PONTOVIRGULA    reduce using rule 49 (pexp -> NEW ID PE PD .)
+    ECOMERCIAL      reduce using rule 49 (pexp -> NEW ID PE PD .)
+    COLCD           reduce using rule 49 (pexp -> NEW ID PE PD .)
+    PD              reduce using rule 49 (pexp -> NEW ID PE PD .)
+
+
+state 138
+
+    (52) pexp -> pexp PONTO ID PE . exps PD
+    (53) exps -> . exp COLCE VIRGULA exp COLCD
+    (54) exps -> . exp
+    (55) exps -> . empty
+    (25) exp -> . exp ECOMERCIAL rexp
+    (26) exp -> . rexp
+    (56) empty -> .
+    (27) rexp -> . rexp MENOR aexp
+    (28) rexp -> . rexp COMPARACAO aexp
+    (29) rexp -> . rexp DIFERENTE aexp
+    (30) rexp -> . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    PD              reduce using rule 56 (empty -> .)
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    pexp                           shift and go to state 85
+    exps                           shift and go to state 145
+    exp                            shift and go to state 146
+    empty                          shift and go to state 147
+    rexp                           shift and go to state 74
+    aexp                           shift and go to state 75
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+
+state 139
+
+    (45) sexp -> pexp COLCE exp COLCD .
+
+    MULTIPLICA      reduce using rule 45 (sexp -> pexp COLCE exp COLCD .)
+    DIVIDE          reduce using rule 45 (sexp -> pexp COLCE exp COLCD .)
+    MAIS            reduce using rule 45 (sexp -> pexp COLCE exp COLCD .)
+    MENOS           reduce using rule 45 (sexp -> pexp COLCE exp COLCD .)
+    MENOR           reduce using rule 45 (sexp -> pexp COLCE exp COLCD .)
+    COMPARACAO      reduce using rule 45 (sexp -> pexp COLCE exp COLCD .)
+    DIFERENTE       reduce using rule 45 (sexp -> pexp COLCE exp COLCD .)
+    PONTOVIRGULA    reduce using rule 45 (sexp -> pexp COLCE exp COLCD .)
+    ECOMERCIAL      reduce using rule 45 (sexp -> pexp COLCE exp COLCD .)
+    COLCD           reduce using rule 45 (sexp -> pexp COLCE exp COLCD .)
+    PD              reduce using rule 45 (sexp -> pexp COLCE exp COLCD .)
+    COLCE           reduce using rule 45 (sexp -> pexp COLCE exp COLCD .)
+
+
+state 140
+
+    (23) cmd -> ID COLCE exp COLCD IGUAL exp . PONTOVIRGULA
+    (25) exp -> exp . ECOMERCIAL rexp
+
+    PONTOVIRGULA    shift and go to state 148
+    ECOMERCIAL      shift and go to state 96
+
+
+state 141
+
+    (8) method -> PUBLIC type ID PE params PD CE var cmd RETURN exp PONTOVIRGULA CD method .
+
+    CD              reduce using rule 8 (method -> PUBLIC type ID PE params PD CE var cmd RETURN exp PONTOVIRGULA CD method .)
+
+
+state 142
+
+    (18) cmd -> IF PE exp PD CE cmd . CD
+    (19) cmd -> IF PE exp PD CE cmd . CD ELSE CE cmd CD
+
+    CD              shift and go to state 149
+
+
+state 143
+
+    (21) cmd -> SYSTEM PONTO OUT PONTO PRINTLN PE . exp PD PONTOVIRGULA
+    (25) exp -> . exp ECOMERCIAL rexp
+    (26) exp -> . rexp
+    (27) rexp -> . rexp MENOR aexp
+    (28) rexp -> . rexp COMPARACAO aexp
+    (29) rexp -> . rexp DIFERENTE aexp
+    (30) rexp -> . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    exp                            shift and go to state 150
+    rexp                           shift and go to state 74
+    aexp                           shift and go to state 75
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 144
+
+    (43) sexp -> NEW INT COLCE exp COLCD .
+
+    MULTIPLICA      reduce using rule 43 (sexp -> NEW INT COLCE exp COLCD .)
+    DIVIDE          reduce using rule 43 (sexp -> NEW INT COLCE exp COLCD .)
+    MAIS            reduce using rule 43 (sexp -> NEW INT COLCE exp COLCD .)
+    MENOS           reduce using rule 43 (sexp -> NEW INT COLCE exp COLCD .)
+    MENOR           reduce using rule 43 (sexp -> NEW INT COLCE exp COLCD .)
+    COMPARACAO      reduce using rule 43 (sexp -> NEW INT COLCE exp COLCD .)
+    DIFERENTE       reduce using rule 43 (sexp -> NEW INT COLCE exp COLCD .)
+    PONTOVIRGULA    reduce using rule 43 (sexp -> NEW INT COLCE exp COLCD .)
+    ECOMERCIAL      reduce using rule 43 (sexp -> NEW INT COLCE exp COLCD .)
+    COLCD           reduce using rule 43 (sexp -> NEW INT COLCE exp COLCD .)
+    PD              reduce using rule 43 (sexp -> NEW INT COLCE exp COLCD .)
+    COLCE           reduce using rule 43 (sexp -> NEW INT COLCE exp COLCD .)
+
+
+state 145
+
+    (52) pexp -> pexp PONTO ID PE exps . PD
+
+    PD              shift and go to state 151
+
+
+state 146
+
+    (53) exps -> exp . COLCE VIRGULA exp COLCD
+    (54) exps -> exp .
+    (25) exp -> exp . ECOMERCIAL rexp
+
+    COLCE           shift and go to state 152
+    PD              reduce using rule 54 (exps -> exp .)
+    ECOMERCIAL      shift and go to state 96
+
+
+state 147
+
+    (55) exps -> empty .
+
+    PD              reduce using rule 55 (exps -> empty .)
+
+
+state 148
+
+    (23) cmd -> ID COLCE exp COLCD IGUAL exp PONTOVIRGULA .
+
+    RETURN          reduce using rule 23 (cmd -> ID COLCE exp COLCD IGUAL exp PONTOVIRGULA .)
+    CD              reduce using rule 23 (cmd -> ID COLCE exp COLCD IGUAL exp PONTOVIRGULA .)
+
+
+state 149
+
+    (18) cmd -> IF PE exp PD CE cmd CD .
+    (19) cmd -> IF PE exp PD CE cmd CD . ELSE CE cmd CD
+
+    RETURN          reduce using rule 18 (cmd -> IF PE exp PD CE cmd CD .)
+    CD              reduce using rule 18 (cmd -> IF PE exp PD CE cmd CD .)
+    ELSE            shift and go to state 153
+
+
+state 150
+
+    (21) cmd -> SYSTEM PONTO OUT PONTO PRINTLN PE exp . PD PONTOVIRGULA
+    (25) exp -> exp . ECOMERCIAL rexp
+
+    PD              shift and go to state 154
+    ECOMERCIAL      shift and go to state 96
+
+
+state 151
+
+    (52) pexp -> pexp PONTO ID PE exps PD .
+
+    PONTO           reduce using rule 52 (pexp -> pexp PONTO ID PE exps PD .)
+    COLCE           reduce using rule 52 (pexp -> pexp PONTO ID PE exps PD .)
+    MULTIPLICA      reduce using rule 52 (pexp -> pexp PONTO ID PE exps PD .)
+    DIVIDE          reduce using rule 52 (pexp -> pexp PONTO ID PE exps PD .)
+    MAIS            reduce using rule 52 (pexp -> pexp PONTO ID PE exps PD .)
+    MENOS           reduce using rule 52 (pexp -> pexp PONTO ID PE exps PD .)
+    MENOR           reduce using rule 52 (pexp -> pexp PONTO ID PE exps PD .)
+    COMPARACAO      reduce using rule 52 (pexp -> pexp PONTO ID PE exps PD .)
+    DIFERENTE       reduce using rule 52 (pexp -> pexp PONTO ID PE exps PD .)
+    PONTOVIRGULA    reduce using rule 52 (pexp -> pexp PONTO ID PE exps PD .)
+    ECOMERCIAL      reduce using rule 52 (pexp -> pexp PONTO ID PE exps PD .)
+    COLCD           reduce using rule 52 (pexp -> pexp PONTO ID PE exps PD .)
+    PD              reduce using rule 52 (pexp -> pexp PONTO ID PE exps PD .)
+
+
+state 152
+
+    (53) exps -> exp COLCE . VIRGULA exp COLCD
+
+    VIRGULA         shift and go to state 155
+
+
+state 153
+
+    (19) cmd -> IF PE exp PD CE cmd CD ELSE . CE cmd CD
+
+    CE              shift and go to state 156
+
+
+state 154
+
+    (21) cmd -> SYSTEM PONTO OUT PONTO PRINTLN PE exp PD . PONTOVIRGULA
+
+    PONTOVIRGULA    shift and go to state 157
+
+
+state 155
+
+    (53) exps -> exp COLCE VIRGULA . exp COLCD
+    (25) exp -> . exp ECOMERCIAL rexp
+    (26) exp -> . rexp
+    (27) rexp -> . rexp MENOR aexp
+    (28) rexp -> . rexp COMPARACAO aexp
+    (29) rexp -> . rexp DIFERENTE aexp
+    (30) rexp -> . aexp
+    (31) aexp -> . aexp MAIS mexp
+    (32) aexp -> . aexp MENOS mexp
+    (33) aexp -> . mexp
+    (34) mexp -> . mexp MULTIPLICA sexp
+    (35) mexp -> . mexp DIVIDE sexp
+    (36) mexp -> . sexp
+    (37) sexp -> . NEGACAO sexp
+    (38) sexp -> . MENOS sexp
+    (39) sexp -> . TRUE
+    (40) sexp -> . FALSE
+    (41) sexp -> . NUMERO
+    (42) sexp -> . NULL
+    (43) sexp -> . NEW INT COLCE exp COLCD
+    (44) sexp -> . pexp PONTO LENGTH
+    (45) sexp -> . pexp COLCE exp COLCD
+    (46) sexp -> . pexp
+    (47) pexp -> . ID
+    (48) pexp -> . THIS
+    (49) pexp -> . NEW ID PE PD
+    (50) pexp -> . PE exp PD
+    (51) pexp -> . pexp PONTO ID
+    (52) pexp -> . pexp PONTO ID PE exps PD
+
+    NEGACAO         shift and go to state 79
+    MENOS           shift and go to state 77
+    TRUE            shift and go to state 80
+    FALSE           shift and go to state 81
+    NUMERO          shift and go to state 82
+    NULL            shift and go to state 83
+    NEW             shift and go to state 84
+    ID              shift and go to state 72
+    THIS            shift and go to state 86
+    PE              shift and go to state 87
+
+    exp                            shift and go to state 158
+    rexp                           shift and go to state 74
+    aexp                           shift and go to state 75
+    mexp                           shift and go to state 76
+    sexp                           shift and go to state 78
+    pexp                           shift and go to state 85
+
+state 156
+
+    (19) cmd -> IF PE exp PD CE cmd CD ELSE CE . cmd CD
+    (17) cmd -> . CE cmd CD
+    (18) cmd -> . IF PE exp PD CE cmd CD
+    (19) cmd -> . IF PE exp PD CE cmd CD ELSE CE cmd CD
+    (20) cmd -> . WHILE PE exp PD cmd
+    (21) cmd -> . SYSTEM PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA
+    (22) cmd -> . ID IGUAL exp PONTOVIRGULA
+    (23) cmd -> . ID COLCE exp COLCD IGUAL exp PONTOVIRGULA
+    (24) cmd -> . empty
+    (56) empty -> .
+
+    CE              shift and go to state 57
+    IF              shift and go to state 59
+    WHILE           shift and go to state 60
+    SYSTEM          shift and go to state 61
+    ID              shift and go to state 56
+    CD              reduce using rule 56 (empty -> .)
+
+    cmd                            shift and go to state 159
+    empty                          shift and go to state 62
+
+state 157
+
+    (21) cmd -> SYSTEM PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA .
+
+    RETURN          reduce using rule 21 (cmd -> SYSTEM PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA .)
+    CD              reduce using rule 21 (cmd -> SYSTEM PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA .)
+
+
+state 158
+
+    (53) exps -> exp COLCE VIRGULA exp . COLCD
+    (25) exp -> exp . ECOMERCIAL rexp
+
+    COLCD           shift and go to state 160
+    ECOMERCIAL      shift and go to state 96
+
+
+state 159
+
+    (19) cmd -> IF PE exp PD CE cmd CD ELSE CE cmd . CD
+
+    CD              shift and go to state 161
+
+
+state 160
+
+    (53) exps -> exp COLCE VIRGULA exp COLCD .
+
+    PD              reduce using rule 53 (exps -> exp COLCE VIRGULA exp COLCD .)
+
+
+state 161
+
+    (19) cmd -> IF PE exp PD CE cmd CD ELSE CE cmd CD .
+
+    RETURN          reduce using rule 19 (cmd -> IF PE exp PD CE cmd CD ELSE CE cmd CD .)
+    CD              reduce using rule 19 (cmd -> IF PE exp PD CE cmd CD ELSE CE cmd CD .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for ID in state 31 resolved as shift
+WARNING: shift/reduce conflict for ID in state 51 resolved as shift
+WARNING: shift/reduce conflict for COLCE in state 85 resolved as shift

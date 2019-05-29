@@ -112,17 +112,18 @@ t_PONTO = r'\.'
 t_PONTOVIRGULA = r';'
 t_PONTOPONTO = r':'
 
-#def t_TABULACOES(t):
-#    r'\s'
-#    pass
+
+#Comentarios multiplas linhas /*...*/
 def t_COMMENT_MULTIPLAS_LINHAS(t):
-    r'\/\*(?s).\*\/'
+    r'/\*((.|\n)*?)\*/'
     pass
 
+#Nova linha
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
+#Captura ID e verifica se eh uma palavra reservada
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*' #star means 0 or more, first char is a-zA-z , second character is a-zA-z0-9
     if t.value.upper() in palavras_reservadas:
@@ -130,19 +131,23 @@ def t_ID(t):
         t.type = t.value
     return t
 
+#Captura os comentarios de uma linha
 def t_COMMENT(t):
     r'\/\/.*'
     pass
 
+#Captura o numeros inteiros
 def t_NUMERO(t):
     r'\d+'
     t.value = int(t.value)
     return t # t is our token object
 
+#Captura erro de caracter ilegal
 def t_error(t):
     print('Illegal caracters %s' % t.value[0])
     t.lexer.skip(1) # skips 1 token onwards
 
+#Usado para retornar a coluna do erro
 def find_column(input, token):
     line_start = input.rfind('\n', 0, token.lexpos) + 1
     return (token.lexpos - line_start) + 1
