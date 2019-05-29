@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftMULTIPLYDIVIDEDIVIDE EQUALS FLOAT INT MINUS MULTIPLY NAME PLUS\n    calc : expression\n         | var_assign\n         | empty\n    \n    var_assign : NAME EQUALS NAME\n    \n    expression : expression MULTIPLY expression\n               | expression DIVIDE expression\n               | expression PLUS expression\n               | expression MINUS expression\n    \n    expression : INT\n               | FLOAT\n    \n    expression : NAME\n     empty : '
+_lr_signature = 'leftMAISMENOSleftMULTIPLICADIVIDEABSTRACT ASSERT BOOLEAN BREAK BYTE CASE CATCH CD CE CHAR CLASS COLCD COLCE COMPARACAO CONST CONTINUE DEFAULT DIFERENTE DIVIDE DO DOUBLE ECOMERCIAL ELSE ENUM EXTENDS FALSE FINAL FINALLY FLOAT FOR GOTO ID IF IGUAL IMPLEMENTS IMPORT INSTANCEOF INT INTERFACE LENGTH LONG MAIN MAIOR MAIORIGUAL MAIS MENOR MENORIGUAL MENOS MULTIPLICA NATIVE NEGACAO NEW NULL NUMERO OUT PACKAGE PD PE PONTO PONTOPONTO PONTOVIRGULA PRINTLN PRIVATE PROTECTED PUBLIC RETURN SHORT STATIC STRICTFP STRING SUPER SWITCH SYNCHRONIZED SYSTEM THIS THROW THROWS TRANSIENT TRUE TRY VIRGULA VOID VOLATILE WHILE\n    prog : main  class\n    \n    main : CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD\n    \n    class : CLASS ID CE  var method CD\n    \n    var : type ID PONTOVIRGULA\n    \n    method : PUBLIC type ID PE  params  PD CE var cmd RETURN exp PONTOVIRGULA CD\n    \n    params : type ID VIRGULA type ID\n           | type ID\n    \n    type : INT COLCE COLCD\n         | BOOLEAN\n         | INT\n         | ID\n    \n    cmd : CE  cmd  CD\n        | IF PE exp PD cmd\n        | IF PE exp PD cmd ELSE cmd\n        | WHILE PE exp PD cmd\n        | SYSTEM PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA\n        | ID IGUAL exp PONTOVIRGULA\n        | ID COLCE exp COLCD IGUAL exp PONTOVIRGULA\n    \n    exp : exp ECOMERCIAL exp\n        | rexp\n    \n    rexp : rexp MENOR aexp\n         | rexp COMPARACAO aexp\n         | rexp DIFERENTE aexp\n         | aexp\n    \n    aexp : aexp MAIS mexp\n         | aexp MENOS mexp\n         | mexp\n    \n    mexp : mexp MULTIPLICA sexp\n         | mexp DIVIDE sexp\n         | sexp\n    \n    sexp : NEGACAO sexp\n         | MENOS sexp\n         | TRUE\n         | FALSE\n         | NUMERO\n         | NULL\n         | NEW INT COLCE exp COLCD\n         | pexp PONTO LENGTH\n         | pexp COLCE exp COLCD\n         | pexp\n    \n    pexp : ID\n         | THIS\n         | NEW ID PE PD\n         | PE exp PD\n         | pexp PONTO ID\n         | pexp PONTO ID PE exps PD\n    \n    exps : exp COLCE VIRGULA  exp COLCD\n    '
     
-_lr_action_items = {'INT':([0,8,9,10,11,],[5,5,5,5,5,]),'FLOAT':([0,8,9,10,11,],[6,6,6,6,6,]),'NAME':([0,8,9,10,11,12,],[7,14,14,14,14,18,]),'$end':([0,1,2,3,4,5,6,7,13,14,15,16,17,18,],[-12,0,-1,-2,-3,-9,-10,-11,-5,-11,-6,-7,-8,-4,]),'MULTIPLY':([2,5,6,7,13,14,15,16,17,],[8,-9,-10,-11,-5,-11,-6,8,8,]),'DIVIDE':([2,5,6,7,13,14,15,16,17,],[9,-9,-10,-11,-5,-11,-6,9,9,]),'PLUS':([2,5,6,7,13,14,15,16,17,],[10,-9,-10,-11,-5,-11,-6,-7,-8,]),'MINUS':([2,5,6,7,13,14,15,16,17,],[11,-9,-10,-11,-5,-11,-6,-7,-8,]),'EQUALS':([7,],[12,]),}
+_lr_action_items = {'CLASS':([0,2,103,],[3,5,-2,]),'$end':([1,4,22,],[0,-1,-3,]),'ID':([3,5,9,11,13,14,15,18,23,24,25,29,31,36,37,38,40,41,45,50,51,52,54,55,56,64,66,71,74,83,84,85,86,87,88,89,90,95,96,100,101,112,118,125,128,129,139,],[6,7,11,-11,19,-10,-9,11,27,-4,-8,11,34,39,11,11,43,44,44,44,59,59,59,59,59,59,59,94,59,59,59,59,59,59,59,59,59,115,59,44,44,59,59,59,44,59,59,]),'CE':([6,7,24,35,41,42,45,50,100,101,128,],[8,9,-4,38,45,50,45,45,45,45,45,]),'PUBLIC':([8,12,24,],[10,18,-4,]),'INT':([9,18,29,37,38,71,],[14,14,14,14,14,93,]),'BOOLEAN':([9,18,29,37,38,],[15,15,15,15,15,]),'STATIC':([10,],[16,]),'COLCE':([14,30,44,59,61,62,63,65,67,68,69,70,72,73,91,92,93,104,105,106,107,108,109,110,111,114,115,117,124,126,130,132,136,],[20,33,52,-41,-20,-24,-27,-30,-33,-34,-35,-36,96,-42,-32,-31,112,-19,-21,-22,-23,-25,-26,-28,-29,-38,-45,-44,-43,-39,-37,137,-46,]),'VOID':([16,],[21,]),'CD':([17,53,58,76,81,82,99,119,120,121,133,134,140,],[22,76,81,-12,103,-17,119,-5,-13,-15,-18,-14,-16,]),'PONTOVIRGULA':([19,59,60,61,62,63,65,67,68,69,70,72,73,77,91,92,104,105,106,107,108,109,110,111,114,115,117,124,126,127,130,136,138,],[24,-41,82,-20,-24,-27,-30,-33,-34,-35,-36,-40,-42,99,-32,-31,-19,-21,-22,-23,-25,-26,-28,-29,-38,-45,-44,-43,-39,133,-37,-46,140,]),'COLCD':([20,33,59,61,62,63,65,67,68,69,70,72,73,75,91,92,104,105,106,107,108,109,110,111,114,115,116,117,123,124,126,130,136,141,],[25,36,-41,-20,-24,-27,-30,-33,-34,-35,-36,-40,-42,98,-32,-31,-19,-21,-22,-23,-25,-26,-28,-29,-38,-45,126,-44,130,-43,-39,-37,-46,142,]),'MAIN':([21,],[26,]),'IF':([24,41,45,50,100,101,128,],[-4,47,47,47,47,47,47,]),'WHILE':([24,41,45,50,100,101,128,],[-4,48,48,48,48,48,48,]),'SYSTEM':([24,41,45,50,100,101,128,],[-4,49,49,49,49,49,49,]),'PE':([26,27,47,48,51,52,54,55,56,64,66,74,83,84,85,86,87,88,89,90,94,96,112,115,118,122,125,129,139,],[28,29,55,56,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,113,74,74,125,74,129,74,74,74,]),'STRING':([28,],[30,]),'PD':([32,34,39,43,59,61,62,63,65,67,68,69,70,72,73,78,79,91,92,97,104,105,106,107,108,109,110,111,113,114,115,117,124,126,130,131,135,136,142,],[35,-7,42,-6,-41,-20,-24,-27,-30,-33,-34,-35,-36,-40,-42,100,101,-32,-31,117,-19,-21,-22,-23,-25,-26,-28,-29,124,-38,-45,-44,-43,-39,-37,136,138,-46,-47,]),'VIRGULA':([34,137,],[37,139,]),'IGUAL':([44,98,],[51,118,]),'RETURN':([46,76,82,120,121,133,134,140,],[54,-12,-17,-13,-15,-18,-14,-16,]),'PONTO':([49,59,72,73,80,115,117,124,136,],[57,-41,95,-42,102,-45,-44,-43,-46,]),'NEGACAO':([51,52,54,55,56,64,66,74,83,84,85,86,87,88,89,90,96,112,118,125,129,139,],[66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,66,]),'MENOS':([51,52,54,55,56,59,62,63,64,65,66,67,68,69,70,72,73,74,83,84,85,86,87,88,89,90,91,92,96,105,106,107,108,109,110,111,112,114,115,117,118,124,125,126,129,130,136,139,],[64,64,64,64,64,-41,88,-27,64,-30,64,-33,-34,-35,-36,-40,-42,64,64,64,64,64,64,64,64,64,-32,-31,64,88,88,88,-25,-26,-28,-29,64,-38,-45,-44,64,-43,64,-39,64,-37,-46,64,]),'TRUE':([51,52,54,55,56,64,66,74,83,84,85,86,87,88,89,90,96,112,118,125,129,139,],[67,67,67,67,67,67,67,67,67,67,67,67,67,67,67,67,67,67,67,67,67,67,]),'FALSE':([51,52,54,55,56,64,66,74,83,84,85,86,87,88,89,90,96,112,118,125,129,139,],[68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,68,]),'NUMERO':([51,52,54,55,56,64,66,74,83,84,85,86,87,88,89,90,96,112,118,125,129,139,],[69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,]),'NULL':([51,52,54,55,56,64,66,74,83,84,85,86,87,88,89,90,96,112,118,125,129,139,],[70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,]),'NEW':([51,52,54,55,56,64,66,74,83,84,85,86,87,88,89,90,96,112,118,125,129,139,],[71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,]),'THIS':([51,52,54,55,56,64,66,74,83,84,85,86,87,88,89,90,96,112,118,125,129,139,],[73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,73,]),'OUT':([57,],[80,]),'MULTIPLICA':([59,63,65,67,68,69,70,72,73,91,92,108,109,110,111,114,115,117,124,126,130,136,],[-41,89,-30,-33,-34,-35,-36,-40,-42,-32,-31,89,89,-28,-29,-38,-45,-44,-43,-39,-37,-46,]),'DIVIDE':([59,63,65,67,68,69,70,72,73,91,92,108,109,110,111,114,115,117,124,126,130,136,],[-41,90,-30,-33,-34,-35,-36,-40,-42,-32,-31,90,90,-28,-29,-38,-45,-44,-43,-39,-37,-46,]),'MAIS':([59,62,63,65,67,68,69,70,72,73,91,92,105,106,107,108,109,110,111,114,115,117,124,126,130,136,],[-41,87,-27,-30,-33,-34,-35,-36,-40,-42,-32,-31,87,87,87,-25,-26,-28,-29,-38,-45,-44,-43,-39,-37,-46,]),'MENOR':([59,61,62,63,65,67,68,69,70,72,73,91,92,105,106,107,108,109,110,111,114,115,117,124,126,130,136,],[-41,84,-24,-27,-30,-33,-34,-35,-36,-40,-42,-32,-31,-21,-22,-23,-25,-26,-28,-29,-38,-45,-44,-43,-39,-37,-46,]),'COMPARACAO':([59,61,62,63,65,67,68,69,70,72,73,91,92,105,106,107,108,109,110,111,114,115,117,124,126,130,136,],[-41,85,-24,-27,-30,-33,-34,-35,-36,-40,-42,-32,-31,-21,-22,-23,-25,-26,-28,-29,-38,-45,-44,-43,-39,-37,-46,]),'DIFERENTE':([59,61,62,63,65,67,68,69,70,72,73,91,92,105,106,107,108,109,110,111,114,115,117,124,126,130,136,],[-41,86,-24,-27,-30,-33,-34,-35,-36,-40,-42,-32,-31,-21,-22,-23,-25,-26,-28,-29,-38,-45,-44,-43,-39,-37,-46,]),'ECOMERCIAL':([59,60,61,62,63,65,67,68,69,70,72,73,75,77,78,79,91,92,97,104,105,106,107,108,109,110,111,114,115,116,117,123,124,126,127,130,132,135,136,141,],[-41,83,-20,-24,-27,-30,-33,-34,-35,-36,-40,-42,83,83,83,83,-32,-31,83,83,-21,-22,-23,-25,-26,-28,-29,-38,-45,83,-44,83,-43,-39,83,-37,83,83,-46,83,]),'ELSE':([76,82,120,121,133,134,140,],[-12,-17,128,-15,-18,-14,-16,]),'LENGTH':([95,],[114,]),'PRINTLN':([102,],[122,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'calc':([0,],[1,]),'expression':([0,8,9,10,11,],[2,13,15,16,17,]),'var_assign':([0,],[3,]),'empty':([0,],[4,]),}
+_lr_goto_items = {'prog':([0,],[1,]),'main':([0,],[2,]),'class':([2,],[4,]),'var':([9,38,],[12,41,]),'type':([9,18,29,37,38,],[13,23,31,40,13,]),'method':([12,],[17,]),'params':([29,],[32,]),'cmd':([41,45,50,100,101,128,],[46,53,58,120,121,134,]),'exp':([51,52,54,55,56,74,83,96,112,118,125,129,139,],[60,75,77,78,79,97,104,116,123,127,132,135,141,]),'rexp':([51,52,54,55,56,74,83,96,112,118,125,129,139,],[61,61,61,61,61,61,61,61,61,61,61,61,61,]),'aexp':([51,52,54,55,56,74,83,84,85,86,96,112,118,125,129,139,],[62,62,62,62,62,62,62,105,106,107,62,62,62,62,62,62,]),'mexp':([51,52,54,55,56,74,83,84,85,86,87,88,96,112,118,125,129,139,],[63,63,63,63,63,63,63,63,63,63,108,109,63,63,63,63,63,63,]),'sexp':([51,52,54,55,56,64,66,74,83,84,85,86,87,88,89,90,96,112,118,125,129,139,],[65,65,65,65,65,91,92,65,65,65,65,65,65,65,110,111,65,65,65,65,65,65,]),'pexp':([51,52,54,55,56,64,66,74,83,84,85,86,87,88,89,90,96,112,118,125,129,139,],[72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,]),'exps':([125,],[131,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,17 +26,52 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> calc","S'",1,None,None,None),
-  ('calc -> expression','calc',1,'p_calc','analisador_ex_calculadora.py',48),
-  ('calc -> var_assign','calc',1,'p_calc','analisador_ex_calculadora.py',49),
-  ('calc -> empty','calc',1,'p_calc','analisador_ex_calculadora.py',50),
-  ('var_assign -> NAME EQUALS NAME','var_assign',3,'p_var_assign','analisador_ex_calculadora.py',56),
-  ('expression -> expression MULTIPLY expression','expression',3,'p_expression','analisador_ex_calculadora.py',61),
-  ('expression -> expression DIVIDE expression','expression',3,'p_expression','analisador_ex_calculadora.py',62),
-  ('expression -> expression PLUS expression','expression',3,'p_expression','analisador_ex_calculadora.py',63),
-  ('expression -> expression MINUS expression','expression',3,'p_expression','analisador_ex_calculadora.py',64),
-  ('expression -> INT','expression',1,'p_expression_int_float','analisador_ex_calculadora.py',71),
-  ('expression -> FLOAT','expression',1,'p_expression_int_float','analisador_ex_calculadora.py',72),
-  ('expression -> NAME','expression',1,'p_expression_var','analisador_ex_calculadora.py',78),
-  ('empty -> <empty>','empty',0,'p_empty','analisador_ex_calculadora.py',83),
+  ("S' -> prog","S'",1,None,None,None),
+  ('prog -> main class','prog',2,'p_prog','analisador_sintatico.py',18),
+  ('main -> CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD','main',17,'p_main','analisador_sintatico.py',24),
+  ('class -> CLASS ID CE var method CD','class',6,'p_class','analisador_sintatico.py',29),
+  ('var -> type ID PONTOVIRGULA','var',3,'p_var','analisador_sintatico.py',34),
+  ('method -> PUBLIC type ID PE params PD CE var cmd RETURN exp PONTOVIRGULA CD','method',13,'p_method','analisador_sintatico.py',39),
+  ('params -> type ID VIRGULA type ID','params',5,'p_params','analisador_sintatico.py',44),
+  ('params -> type ID','params',2,'p_params','analisador_sintatico.py',45),
+  ('type -> INT COLCE COLCD','type',3,'p_type','analisador_sintatico.py',50),
+  ('type -> BOOLEAN','type',1,'p_type','analisador_sintatico.py',51),
+  ('type -> INT','type',1,'p_type','analisador_sintatico.py',52),
+  ('type -> ID','type',1,'p_type','analisador_sintatico.py',53),
+  ('cmd -> CE cmd CD','cmd',3,'p_cmd','analisador_sintatico.py',58),
+  ('cmd -> IF PE exp PD cmd','cmd',5,'p_cmd','analisador_sintatico.py',59),
+  ('cmd -> IF PE exp PD cmd ELSE cmd','cmd',7,'p_cmd','analisador_sintatico.py',60),
+  ('cmd -> WHILE PE exp PD cmd','cmd',5,'p_cmd','analisador_sintatico.py',61),
+  ('cmd -> SYSTEM PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA','cmd',9,'p_cmd','analisador_sintatico.py',62),
+  ('cmd -> ID IGUAL exp PONTOVIRGULA','cmd',4,'p_cmd','analisador_sintatico.py',63),
+  ('cmd -> ID COLCE exp COLCD IGUAL exp PONTOVIRGULA','cmd',7,'p_cmd','analisador_sintatico.py',64),
+  ('exp -> exp ECOMERCIAL exp','exp',3,'p_exp','analisador_sintatico.py',69),
+  ('exp -> rexp','exp',1,'p_exp','analisador_sintatico.py',70),
+  ('rexp -> rexp MENOR aexp','rexp',3,'p_rexp','analisador_sintatico.py',75),
+  ('rexp -> rexp COMPARACAO aexp','rexp',3,'p_rexp','analisador_sintatico.py',76),
+  ('rexp -> rexp DIFERENTE aexp','rexp',3,'p_rexp','analisador_sintatico.py',77),
+  ('rexp -> aexp','rexp',1,'p_rexp','analisador_sintatico.py',78),
+  ('aexp -> aexp MAIS mexp','aexp',3,'p_aexp','analisador_sintatico.py',83),
+  ('aexp -> aexp MENOS mexp','aexp',3,'p_aexp','analisador_sintatico.py',84),
+  ('aexp -> mexp','aexp',1,'p_aexp','analisador_sintatico.py',85),
+  ('mexp -> mexp MULTIPLICA sexp','mexp',3,'p_mexp','analisador_sintatico.py',91),
+  ('mexp -> mexp DIVIDE sexp','mexp',3,'p_mexp','analisador_sintatico.py',92),
+  ('mexp -> sexp','mexp',1,'p_mexp','analisador_sintatico.py',93),
+  ('sexp -> NEGACAO sexp','sexp',2,'p_sexp','analisador_sintatico.py',98),
+  ('sexp -> MENOS sexp','sexp',2,'p_sexp','analisador_sintatico.py',99),
+  ('sexp -> TRUE','sexp',1,'p_sexp','analisador_sintatico.py',100),
+  ('sexp -> FALSE','sexp',1,'p_sexp','analisador_sintatico.py',101),
+  ('sexp -> NUMERO','sexp',1,'p_sexp','analisador_sintatico.py',102),
+  ('sexp -> NULL','sexp',1,'p_sexp','analisador_sintatico.py',103),
+  ('sexp -> NEW INT COLCE exp COLCD','sexp',5,'p_sexp','analisador_sintatico.py',104),
+  ('sexp -> pexp PONTO LENGTH','sexp',3,'p_sexp','analisador_sintatico.py',105),
+  ('sexp -> pexp COLCE exp COLCD','sexp',4,'p_sexp','analisador_sintatico.py',106),
+  ('sexp -> pexp','sexp',1,'p_sexp','analisador_sintatico.py',107),
+  ('pexp -> ID','pexp',1,'p_pexp','analisador_sintatico.py',113),
+  ('pexp -> THIS','pexp',1,'p_pexp','analisador_sintatico.py',114),
+  ('pexp -> NEW ID PE PD','pexp',4,'p_pexp','analisador_sintatico.py',115),
+  ('pexp -> PE exp PD','pexp',3,'p_pexp','analisador_sintatico.py',116),
+  ('pexp -> pexp PONTO ID','pexp',3,'p_pexp','analisador_sintatico.py',117),
+  ('pexp -> pexp PONTO ID PE exps PD','pexp',6,'p_pexp','analisador_sintatico.py',118),
+  ('exps -> exp COLCE VIRGULA exp COLCD','exps',5,'p_exps','analisador_sintatico.py',124),
 ]

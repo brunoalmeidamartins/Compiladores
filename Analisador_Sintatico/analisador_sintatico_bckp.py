@@ -15,7 +15,7 @@ precedence = (
 
 def p_prog(p):
     '''
-    prog : main {class}
+    prog : main CE class CD
     '''
     print('prog')
 
@@ -26,7 +26,7 @@ def p_main(p):
     print('main')
 def p_class(p):
     '''
-    class : CLASS ID [EXTENDS ID] CE {var} {method} CD
+    class : CLASS ID COLCE EXTENDS ID COLCD CE CE var CD CE method CD CD
     '''
     print('class')
 def p_var(p):
@@ -36,12 +36,12 @@ def p_var(p):
     print('var')
 def p_method(p):
     '''
-    method : PUBLIC type ID PE [params] PD CE {var} {cmd} RETURN exp PONTOVIRGULA CD
+    method : PUBLIC type ID PE COLCE params COLCD PD CE CE var CD CE cmd CD RETURN exp PONTOVIRGULA CD
     '''
     print('method')
 def p_params(p):
     '''
-    params : type ID {VIRGULA type ID}
+    params : type ID CE VIRGULA type ID CD
     '''
     print('params')
 def p_type(p):
@@ -54,7 +54,7 @@ def p_type(p):
     print('type')
 def p_cmd(p):
     '''
-    cmd : CE {cmd} CD
+    cmd : CE CE cmd CD CD
         | IF PE exp PD cmd
         | IF PE exp PD cmd ELSE cmd
         | WHILE PE exp PD cmd
@@ -114,7 +114,7 @@ def p_pexp(p):
          | NEW ID PE PD
          | PE exp PD
          | pexp PONTO ID
-         | pexp PONTO ID PE [exps] PD
+         | pexp PONTO ID PE COLCE exps COLCD PD
     '''
     print('pexp')
 
