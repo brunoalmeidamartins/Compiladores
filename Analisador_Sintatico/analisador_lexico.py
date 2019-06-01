@@ -19,75 +19,19 @@ palavras_reservadas = ['ABSTRACT', 'ASSERT', 'BOOLEAN', 'BREAK', 'BYTE', 'CASE',
           'IMPLEMENTS', 'IMPORT', 'INSTANCEOF', 'INT', 'INTERFACE', 'LONG', 'NATIVE',
           'NEW', 'PACKAGE', 'PRIVATE', 'PROTECTED', 'PUBLIC', 'RETURN', 'SHORT', 'STATIC',
           'STRICTFP', 'SUPER', 'SWITCH', 'SYNCHRONIZED', 'THIS', 'THROW', 'THROWS', 'TRANSIENT',
-          'TRY', 'VOID', 'VOLATILE', 'WHILE', 'MAIN', 'STRING', 'LENGTH', 'SYSTEM', 'OUT',
+          'TRY', 'VOID', 'VOLATILE', 'WHILE', 'MAIN', 'STRING', 'LENGTH','SYSTEMOUTPRINTLN', 'SYSTEM', 'OUT',
           'PRINTLN', 'TRUE', 'FALSE', 'NULL']
 
-'''
-palavras_reservadas = {
-                        'abstract':'ABSTRACT',
-                        'assert':'ASSERT',
-                        'boolean':'BOOLEAN',
-                        'break':'BREAK',
-                        'byte':'BYTE',
-                        'case':'CASE',
-                        'catch':'CATCH',
-                        'char':'CHAR',
-                        'class':'CLASS',
-                        'const':'CONST',
-                        'continue':'CONTINUE',
-                        'default':'DEFAULT',
-                        'do':'DO',
-                        'double':'DOUBLE',
-                        'else':'ELSE',
-                        'enum':'ENUM',
-                        'extends':'EXTENDS',
-                        'final':'FINAL',
-                        'finally':'FINALLY',
-                        'float':'FLOAT',
-                        'for':'FOR',
-                        'if':'IF',
-                        'goto':'GOTO',
-                        'implements':'IMPLEMENTS',
-                        'import':'IMPORT',
-                        'instanceof':'INSTANCEOF',
-                        'int':'INT',
-                        'interface':'INTERFACE',
-                        'long':'LONG',
-                        'native':'NATIVE',
-                        'new':'NEW',
-                        'package':'PACKAGE',
-                        'private':'PRIVATE',
-                        'protected':'PROTECTED',
-                        'public':'PUBLIC',
-                        'return':'RETURN',
-                        'short':'SHORT',
-                        'static':'STATIC',
-                        'strictfp':'STRICTFP',
-                        'super':'SUPER',
-                        'switch':'SWITCH',
-                        'synchronized':'SYNCHRONIZED',
-                        'this':'THIS',
-                        'throw':'THROW',
-                        'throws':'THROWS',
-                        'transient':'TRANSIENT',
-                        'try':'TRY',
-                        'void':'VOID',
-                        'volatile':'VOLATILE',
-                        'while':'WHILE',
-                        'main':'MAIN',
-                        'string':'STRING',
-                        'length':'LENGTH',
-                        'system':'SYSTEM',
-                        'out':'OUT',
-                        'println':'PRINTLN',
-                        #'system_out_println':'SYSTEM.OUT.PRINTLN',
-}
-'''
 tokens = tokens + palavras_reservadas
 
+#Lista de tokens para checagem da gramatica
+def t_SYSTEM_OUT_PRINTLN(t):
+    r'System.out.println'
+    t.value = 'SYSTEMOUTPRINTLN'
+    t.type = t.value
+    return t
 
-#list of tokens , for grammar checking
-t_ignore = ' \t' # used for ignoring spaces between numbers and operators
+t_ignore = ' \t' # Ignora espaco e tabulacoes
 t_MAIS = r'\+'
 t_MENOS = r'-'
 t_MULTIPLICA = r'\*'
@@ -111,7 +55,6 @@ t_VIRGULA = r','
 t_PONTO = r'\.'
 t_PONTOVIRGULA = r';'
 t_PONTOPONTO = r':'
-
 
 #Comentarios multiplas linhas /*...*/
 def t_COMMENT_MULTIPLAS_LINHAS(t):
@@ -157,17 +100,4 @@ def find_column(input, token):
 DEBUG
 '''
 
-#fp = codecs.open('teste.txt','r','utf-8')
-#cadeia = fp.read()
-#fp.close()
-
-#print(tokens)
 lexer = lex.lex()
-
-#lexer.input(cadeia)
-
-
-#while True:
-#    tok = lexer.token()
-#    if not tok : break
-#    print(tok)

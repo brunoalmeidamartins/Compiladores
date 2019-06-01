@@ -15,9 +15,14 @@ precedence = (
 
 def p_Program(p):
     '''
-    Program : MainClass ClassDeclaration
+    Program : MainClass Program2
     '''
     print('Program')
+def p_Program2(p):
+    '''
+    Program2 : ClassDeclaration Program2
+             | empty
+    '''
 def p_MainClass(p):
     '''
     MainClass : CLASS Identifier CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD Identifier PD CE Statement CD CD
@@ -25,31 +30,62 @@ def p_MainClass(p):
     print('Main Class')
 def p_ClassDeclaration(p):
     '''
-    ClassDeclaration : empty
-                     | CLASS Identifier EXTENDS Identifier CE VarDeclaration MethodDeclaration CD
-                     | CLASS Identifier CE VarDeclaration MethodDeclaration CD
+    ClassDeclaration : CLASS Identifier ClassDeclaration2 CE ClassDeclaration3 ClassDeclaration4 CD
     '''
     print('Class Declaration')
+
+def p_ClassDeclaration2(p):
+    '''
+    ClassDeclaration2 : EXTENDS Identifier
+                      | empty
+    '''
+def p_ClassDeclaration3(p):
+    '''
+    ClassDeclaration3 : VarDeclaration ClassDeclaration3
+                      | empty
+    '''
+def p_ClassDeclaration4(p):
+    '''
+    ClassDeclaration4 : MethodDeclaration ClassDeclaration4
+                      | empty
+    '''
 def p_VarDeclaration(p):
     '''
-    VarDeclaration : empty
-                   | Type Identifier PONTOVIRGULA
-                   | Type Identifier PONTOVIRGULA VarDeclaration
+    VarDeclaration : Type Identifier PONTOVIRGULA
     '''
     print('Var Declaration')
 def p_MethodDeclaration(p):
     '''
-    MethodDeclaration : empty
-                      | PUBLIC Type Identifier PE MethodDeclaration_2 PD CE VarDeclaration Statement RETURN Expression PONTOVIRGULA CD MethodDeclaration
+    MethodDeclaration : PUBLIC Type Identifier PE MethodDeclaration2 PD CE MethodDeclaration4 MethodDeclaration5 RETURN Expression PONTOVIRGULA CD
     '''
     print('Method Declaration')
-def p_MethodDeclaration_2(p):
+def p_MethodDeclaration2(p):
     '''
-    MethodDeclaration_2 : empty
-                        | Type Identifier
-                        | Type Identifier VIRGULA MethodDeclaration_2
+    MethodDeclaration2 : MethodDeclaration3
+                       | empty
     '''
-    print('Method Declaration 2')
+def p_MethodDeclaration3(p):
+    '''
+    MethodDeclaration3 : Type Identifier MethodDeclaration6
+                       | empty
+    '''
+def p_MethodDeclaration6(p):
+    '''
+    MethodDeclaration6 : VIRGULA Type Identifier MethodDeclaration6
+                       | empty
+    '''
+def p_MethodDeclaration4(p):
+    '''
+    MethodDeclaration4 : VarDeclaration MethodDeclaration4
+                       | empty
+    '''
+
+def p_MethodDeclaration5(p):
+    '''
+    MethodDeclaration5 : Statement MethodDeclaration5
+                       | empty
+    '''
+
 def p_Type(p):
     '''
     Type : INT COLCE COLCD
@@ -60,31 +96,29 @@ def p_Type(p):
     print('Type')
 def p_Statement(p):
     '''
-    Statement : empty
-              | CE Statement CD
+    Statement : CE Statement2 CD
               | IF PE Expression PD Statement ELSE Statement
               | WHILE PE Expression PD Statement
-              | SYSTEM PONTO OUT PONTO PRINTLN PE Expression PD PONTOVIRGULA
+              | SYSTEMOUTPRINTLN PE Expression PD PONTOVIRGULA
               | Identifier IGUAL Expression PONTOVIRGULA
               | Identifier COLCE Expression COLCD IGUAL Expression PONTOVIRGULA
     '''
     print('Statement')
+def p_Statement2(p):
+    '''
+    Statement2 : Statement Statement2
+               | empty
+    '''
 def p_Expression(p):
     '''
     Expression : Expression ECOMERCIAL Expression
                | Expression MENOR Expression
-               | Expression MENORIGUAL Expression
-               | Expression MAIOR Expression
-               | Expression MAIORIGUAL Expression
-               | Expression DIFERENTE Expression
-               | Expression COMPARACAO Expression
                | Expression MAIS Expression
                | Expression MENOS Expression
                | Expression MULTIPLICA Expression
-               | Expression DIVIDE Expression
                | Expression COLCE Expression COLCD
                | Expression PONTO LENGTH
-               | Expression PONTO Identifier PE  Expression_2 PD
+               | Expression PONTO Identifier PE Expression2 PD
                | NUMERO
                | TRUE
                | FALSE
@@ -96,13 +130,17 @@ def p_Expression(p):
                | PE Expression PD
     '''
     print('Expression')
-def p_Expression_2(p):
+def p_Expression2(p):
     '''
-    Expression_2 : empty
-                 | Expression
-                 | Expression VIRGULA Expression_2
+    Expression2 : Expression Expression3
+                | empty
     '''
-    print('Expression 2')
+def p_Expression3(p):
+    '''
+    Expression3 : VIRGULA Expression Expression3
+                | empty
+    '''
+
 def p_Identifier(p):
     '''
     Identifier : ID
@@ -114,18 +152,17 @@ def p_empty(p):
     print('Vazio')
 
 def p_error(p):
-    print("Syntax error found!!")
-    print(p.type, p.value, p.lineno, p.lexpos)
+    print("Syntax error found!!", p)
 
 
 '''
 DEBUG
 '''
-fp = codecs.open('teste.txt', 'r', 'utf-8')
+fp = codecs.open('programa1.txt', 'r', 'utf-8')
 cadeia = fp.read()
 fp.close()
 
-parser = yacc.yacc('LR(1)')
+parser = yacc.yacc()
 result = parser.parse(cadeia)
 
 print(result)

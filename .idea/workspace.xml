@@ -2,14 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a182984-1eed-43b6-993f-0df7a71ea756" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico_outra_esp.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Analisador_Sintatico/programa2.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Analisador_Sintatico/programa3.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Analisador_Sintatico/programa4.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Analisador_Sintatico/analisador_lexico.py" beforeDir="false" afterPath="$PROJECT_DIR$/Analisador_Sintatico/analisador_lexico.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico.py" beforeDir="false" afterPath="$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico_bckp.py" beforeDir="false" afterPath="$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico_bckp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analisador_Sintatico/parser.out" beforeDir="false" afterPath="$PROJECT_DIR$/Analisador_Sintatico/parser.out" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analisador_Sintatico/parsetab.py" beforeDir="false" afterPath="$PROJECT_DIR$/Analisador_Sintatico/parsetab.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Analisador_Sintatico/teste.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Analisador_Sintatico/teste.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico_outra_esp.py" beforeDir="false" afterPath="$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico_outra_esp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Analisador_Sintatico/parser.out" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Analisador_Sintatico/parsetab.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Analisador_Sintatico/teste.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Analisador_Sintatico/programa1.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -22,7 +24,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/analisador_ex_calculadora.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
+            <state>
               <caret line="87" column="24" selection-start-line="87" selection-start-column="4" selection-end-line="87" selection-end-column="24" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
@@ -34,8 +36,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/analisador_lexico.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="99">
-              <caret line="149" column="37" selection-start-line="149" selection-start-column="37" selection-end-line="149" selection-end-column="37" />
+            <state relative-caret-position="239">
+              <caret line="101" selection-start-line="101" selection-end-line="101" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -46,8 +48,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="19" column="5" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
+            <state relative-caret-position="493">
+              <caret line="221" column="30" selection-start-line="221" selection-start-column="30" selection-end-line="221" selection-end-column="30" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -56,19 +58,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/parser.out">
+        <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/programa1.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-38984">
-              <caret line="213" selection-start-line="213" selection-end-line="213" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/teste.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="42" column="24" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
+            <state relative-caret-position="90">
+              <caret line="6" column="11" lean-forward="true" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -97,19 +90,24 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Analisador_Sintatico/testes.py" />
-        <option value="$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico_outra_esp.py" />
-        <option value="$PROJECT_DIR$/Analisador_Sintatico/analisador_lexico.py" />
         <option value="$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico_bckp.py" />
         <option value="$PROJECT_DIR$/Analisador_Sintatico/teste.txt" />
+        <option value="$PROJECT_DIR$/Analisador_Sintatico/programa2.txt" />
+        <option value="$PROJECT_DIR$/Analisador_Sintatico/programa.txt" />
+        <option value="$PROJECT_DIR$/Analisador_Sintatico/programa3.txt" />
+        <option value="$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico_outra_esp.py" />
+        <option value="$PROJECT_DIR$/Analisador_Sintatico/programa4.txt" />
+        <option value="$PROJECT_DIR$/Analisador_Sintatico/analisador_lexico.py" />
+        <option value="$PROJECT_DIR$/Analisador_Sintatico/programa1.txt" />
         <option value="$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="399" />
-    <option name="y" value="389" />
+    <option name="x" value="122" />
+    <option name="y" value="94" />
     <option name="width" value="983" />
-    <option name="height" value="576" />
+    <option name="height" value="606" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -130,11 +128,6 @@
             <path>
               <item name="Compiladores" type="b2602c69:ProjectViewProjectNode" />
               <item name="Compiladores" type="462c0819:PsiDirectoryNode" />
-              <item name="Analisador_Lexico" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Compiladores" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Compiladores" type="462c0819:PsiDirectoryNode" />
               <item name="Analisador_Sintatico" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -145,7 +138,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Analisador_Sintatico" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -251,9 +244,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="49" y="25" width="1871" height="1055" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17424242" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15367965" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -264,7 +256,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.44924405" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.2300216" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -272,18 +264,18 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2204969" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32937366" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32937366" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.32829374" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.33541343" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -309,16 +301,6 @@
     <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/parsetab.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico_outra_esp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="127" column="27" lean-forward="true" selection-start-line="127" selection-start-column="27" selection-end-line="127" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico_bckp.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="519">
@@ -329,23 +311,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/teste.txt">
+    <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico_outra_esp.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="42" column="24" selection-start-line="42" selection-start-column="24" selection-end-line="42" selection-end-column="24" />
+        <state relative-caret-position="285">
+          <caret line="73" column="66" lean-forward="true" selection-start-line="73" selection-start-column="66" selection-end-line="73" selection-end-column="66" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/programa3.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-637">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/parser.out">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-38984">
-          <caret line="213" selection-start-line="213" selection-end-line="213" />
+        <state relative-caret-position="1493">
+          <caret line="3004" column="27" selection-start-line="3004" selection-start-column="27" selection-end-line="3004" selection-end-column="27" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/analisador_ex_calculadora.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
+        <state>
           <caret line="87" column="24" selection-start-line="87" selection-start-column="4" selection-end-line="87" selection-end-column="24" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
@@ -353,20 +345,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/programa2.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/analisador_lexico.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
-          <caret line="149" column="37" selection-start-line="149" selection-start-column="37" selection-end-line="149" selection-end-column="37" />
+        <state relative-caret-position="239">
+          <caret line="101" selection-start-line="101" selection-end-line="101" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/programa4.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="26" column="1" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/programa1.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="11" lean-forward="true" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="19" column="5" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
+        <state relative-caret-position="493">
+          <caret line="221" column="30" selection-start-line="221" selection-start-column="30" selection-end-line="221" selection-end-column="30" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
