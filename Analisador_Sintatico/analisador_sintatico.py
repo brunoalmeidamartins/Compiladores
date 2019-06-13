@@ -96,12 +96,12 @@ def p_params2(p):
     '''
 
 #Funcao da Gramatica
+#Aqui retirei o ID da geracao
 def p_type(p):
     '''
     type : INT COLCE COLCD
          | BOOLEAN
          | INT
-         | ID
     '''
 
 #Funcao da Gramatica
@@ -219,7 +219,7 @@ fp = open(path_programa, 'r')
 cadeia = fp.read()
 fp.close()
 
-parser = yacc.yacc(debug=False)
+parser = yacc.yacc('LALR')
 result = parser.parse(cadeia)
 if codigo_valido:
     print('Codigo valido para a linguagem Mini Java!')

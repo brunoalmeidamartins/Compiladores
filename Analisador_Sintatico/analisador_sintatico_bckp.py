@@ -1,56 +1,101 @@
 import ply.yacc as yacc
 import re
-import codecs
-import os
-import sys
 from analisador_lexico import tokens
-from sys import stdin
 
-precedence = (
-    ('left', 'MAIS', 'MENOS'),
-    ('left', 'MULTIPLICA', 'DIVIDE')
-)
+codigo_valido = True
 
-#lexer.input(cadeia)
-
+#Funcao da Gramatica
 def p_prog(p):
     '''
-    prog : main class
+    prog : main prog2
     '''
-    print('prog')
 
+#Funcao extendida de prog
+def p_prog2(p):
+    '''
+    prog2 : class prog2
+          | empty
+    '''
+
+#Funcao da Gramatica
 def p_main(p):
     '''
     main : CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD
     '''
-    print('main')
+
+#Funcao da Gramatica
 def p_class(p):
     '''
-    class : CLASS ID EXTENDS ID CE var method CD class
-          | CLASS ID CE var method CD class
-          | empty
+    class : CLASS ID class2 CE class3 class4 CD
     '''
-    print('class')
+
+#Funcao extendida de class
+def p_class2(p):
+    '''
+    class2 : EXTENDS ID
+           | empty
+    '''
+
+#Funcao extendida de class
+def p_class3(p):
+    '''
+    class3 : var class3
+            | empty
+    '''
+#Funcao extendida de class
+def p_class4(p):
+    '''
+    class4 : method class4
+            | empty
+    '''
+
+#Funcao da Gramatica
 def p_var(p):
     '''
-    var : type ID PONTOVIRGULA var
-        | empty
+    var : type ID PONTOVIRGULA
     '''
-    #Se puder aceitar int a = 3, eh so adicionar {type cmd}
-    print('var')
+
+#Funcao da Gramatica
 def p_method(p):
     '''
-    method : PUBLIC type ID PE params PD CE var cmd RETURN exp PONTOVIRGULA CD method
-           | empty
+    method : PUBLIC type ID PE method2 PD CE method3 method4 RETURN exp PONTOVIRGULA CD
     '''
-    print('method')
+
+#Funcao extendida de method
+def p_method2(p):
+    '''
+    method2 : params
+            | empty
+    '''
+
+#Funcao extendida de method
+def p_method3(p):
+    '''
+    method3 : var method3
+            | empty
+    '''
+
+#Funcao extendida de method
+def p_method4(p):
+    '''
+    method4 : cmd method4
+            | empty
+    '''
+
+#Funcao da Gramatica
 def p_params(p):
     '''
-    params : type ID
-           | type ID VIRGULA params
-           | empty
+    params : type ID params2
     '''
-    print('params')
+
+#Funcao extendida de params
+def p_params2(p):
+    '''
+    params2 : VIRGULA type ID params2
+            | empty
+    '''
+
+#Funcao da Gramatica
 def p_type(p):
     '''
     type : INT COLCE COLCD
@@ -58,25 +103,35 @@ def p_type(p):
          | INT
          | ID
     '''
-    print('type')
+
+#Funcao da Gramatica
 def p_cmd(p):
     '''
-    cmd : CE cmd CD
+    cmd : CE cmd2 CD
         | IF PE exp PD cmd
         | IF PE exp PD cmd ELSE cmd
         | WHILE PE exp PD cmd
-        | SYSTEM PONTO OUT PONTO PRINTLN PE exp PD PONTOVIRGULA
+        | SYSTEMOUTPRINTLN PE exp PD PONTOVIRGULA
         | ID IGUAL exp PONTOVIRGULA
         | ID COLCE exp COLCD IGUAL exp PONTOVIRGULA
-        | empty
     '''
-    print('cmd')
+
+#Funcao extendida de cmd
+def p_cmd2(p):
+    '''
+    cmd2 : cmd cmd2
+         | empty
+    '''
+
+#Funcao da Gramatica
+#Conflito de exp && exp => exp && rexp
 def p_exp(p):
     '''
-    exp : exp ECOMERCIAL exp
+    exp : exp ECOMERCIAL rexp
         | rexp
     '''
-    print('exp')
+
+#Funcao da Gramatica
 def p_rexp(p):
     '''
     rexp : rexp MENOR aexp
@@ -84,22 +139,24 @@ def p_rexp(p):
          | rexp DIFERENTE aexp
          | aexp
     '''
-    print('rexp')
+
+#Funcao da Gramatica
 def p_aexp(p):
     '''
     aexp : aexp MAIS mexp
          | aexp MENOS mexp
          | mexp
     '''
-    print('aexp')
 
+#Funcao da Gramatica
 def p_mexp(p):
     '''
     mexp : mexp MULTIPLICA sexp
          | mexp DIVIDE sexp
          | sexp
     '''
-    print('mexp')
+
+#Funcao da Gramatica
 def p_sexp(p):
     '''
     sexp : NEGACAO sexp
@@ -113,8 +170,8 @@ def p_sexp(p):
          | pexp COLCE exp COLCD
          | pexp
     '''
-    print('sexp')
 
+#Funcao da Gramatica
 def p_pexp(p):
     '''
     pexp : ID
@@ -122,35 +179,49 @@ def p_pexp(p):
          | NEW ID PE PD
          | PE exp PD
          | pexp PONTO ID
-         | pexp PONTO ID PE exps PD
+         | pexp PONTO ID PE pexp2 PD
     '''
-    print('pexp')
+#Funcao extendida de pexp
+def p_pexp2(p):
+    '''
+    pexp2 : exps
+          | empty
+    '''
 
+#Funcao da Gramatica
 def p_exps(p):
     '''
-    exps : exp COLCE VIRGULA  exp COLCD
-         | exp
-         | empty
+    exps : exp exps2
     '''
-    print('exps')
+#Funcao extendida de exps
+def p_exps2(p):
+    '''
+    exps2 : VIRGULA exp exps2
+          | empty
+    '''
 
+#Funcao para gerar o log de erro!
 def p_error(p):
-    print("Syntax error found!!", p)
-    #print(p.type, p.value, p.lineno, p.lexpos)
+    global codigo_valido
+    codigo_valido = False
+    print("Erro Sintatico encontrado: ", p)
 
+
+#Funcao para gerar vazio
 def p_empty(p):
     ''' empty : '''
-    p[0] = None
-    print('Vazio')
 
 '''
 DEBUG
 '''
-fp = codecs.open('teste.txt', 'r', 'utf-8')
+path_programa = input("Digite o caminho do arquivo:")
+fp = open(path_programa, 'r')
 cadeia = fp.read()
 fp.close()
 
-parser = yacc.yacc()
+parser = yacc.yacc('LALR')
 result = parser.parse(cadeia)
-
-print(result)
+if codigo_valido:
+    print('Codigo valido para a linguagem Mini Java!')
+else:
+    print('Codigo com erro sintatico!')
