@@ -1,8 +1,14 @@
-import ply.yacc as yacc
+#import ply.yacc as yacc
+import plyplus.grammar_parser as plyplus
 import re
 from analisador_lexico import tokens
 
 codigo_valido = True
+
+precedence=(
+    ('left', 'ID', 'INT', 'BOOLEAN'),
+)
+
 
 #Funcao da Gramatica
 def p_prog(p):
@@ -20,19 +26,19 @@ def p_prog2(p):
 #Funcao da Gramatica
 def p_main(p):
     '''
-    main : CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD
+    main : CLASS id CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD id PD CE cmd CD CD
     '''
 
 #Funcao da Gramatica
 def p_class(p):
     '''
-    class : CLASS ID class2 CE class3 class4 CD
+    class : CLASS id class2 CE class3 class4 CD
     '''
 
 #Funcao extendida de class
 def p_class2(p):
     '''
-    class2 : EXTENDS ID
+    class2 : EXTENDS id
            | empty
     '''
 
@@ -52,13 +58,13 @@ def p_class4(p):
 #Funcao da Gramatica
 def p_var(p):
     '''
-    var : type ID PONTOVIRGULA
+    var : type id PONTOVIRGULA
     '''
 
 #Funcao da Gramatica
 def p_method(p):
     '''
-    method : PUBLIC type ID PE method2 PD CE method3 method4 RETURN exp PONTOVIRGULA CD
+    method : PUBLIC type id PE method2 PD CE method3 method4 RETURN exp PONTOVIRGULA CD
     '''
 
 #Funcao extendida de method
@@ -85,23 +91,24 @@ def p_method4(p):
 #Funcao da Gramatica
 def p_params(p):
     '''
-    params : type ID params2
+    params : type id params2
     '''
 
 #Funcao extendida de params
 def p_params2(p):
     '''
-    params2 : VIRGULA type ID params2
+    params2 : VIRGULA type id params2
             | empty
     '''
 
 #Funcao da Gramatica
-#Aqui retirei o ID da geracao
+#Retirei o ID
 def p_type(p):
     '''
     type : INT COLCE COLCD
          | BOOLEAN
          | INT
+         | id
     '''
 
 #Funcao da Gramatica
@@ -112,8 +119,8 @@ def p_cmd(p):
         | IF PE exp PD cmd ELSE cmd
         | WHILE PE exp PD cmd
         | SYSTEMOUTPRINTLN PE exp PD PONTOVIRGULA
-        | ID IGUAL exp PONTOVIRGULA
-        | ID COLCE exp COLCD IGUAL exp PONTOVIRGULA
+        | id IGUAL exp PONTOVIRGULA
+        | id COLCE exp COLCD IGUAL exp PONTOVIRGULA
     '''
 
 #Funcao extendida de cmd
@@ -174,12 +181,12 @@ def p_sexp(p):
 #Funcao da Gramatica
 def p_pexp(p):
     '''
-    pexp : ID
+    pexp : id
          | THIS
-         | NEW ID PE PD
+         | NEW id PE PD
          | PE exp PD
-         | pexp PONTO ID
-         | pexp PONTO ID PE pexp2 PD
+         | pexp PONTO id
+         | pexp PONTO id PE pexp2 PD
     '''
 #Funcao extendida de pexp
 def p_pexp2(p):
@@ -200,6 +207,12 @@ def p_exps2(p):
           | empty
     '''
 
+#Funcao da Gramatica
+def p_id(p):
+    '''
+    id : ID
+    '''
+
 #Funcao para gerar o log de erro!
 def p_error(p):
     global codigo_valido
@@ -214,13 +227,16 @@ def p_empty(p):
 '''
 DEBUG
 '''
-path_programa = input("Digite o caminho do arquivo:")
+#path_programa = input("Digite o caminho do arquivo:")
+path_programa = 'Programas_MiniJava/programa5.java'
 fp = open(path_programa, 'r')
 cadeia = fp.read()
 fp.close()
 
-parser = yacc.yacc('LALR')
-result = parser.parse(cadeia)
+#parser = yacc.yacc('LALR(1)')
+parser = plyplus.yacc.yacc('')
+#result = parser.parse(cadeia)
+result = parser
 if codigo_valido:
     print('Codigo valido para a linguagem Mini Java!')
 else:

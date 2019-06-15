@@ -1,0 +1,290 @@
+start : prog;
+
+//REGRAS
+//prog: main prog2;
+prog: main class*;
+//prog2: class1 prog2
+//     | empty
+//     ;
+main: CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD;
+class: CLASS ID class2 CE class3 class4 CD;
+class2: EXTENDS ID
+      | empty
+      ;
+class3: var class3
+      | empty
+      ;
+class4: method class4
+      | empty
+      ;
+var: type ID PONTOVIRGULA;
+method: PUBLIC type ID PE method2 PD CE method3 method4 RETURN exp PONTOVIRGULA CD;
+method2: params
+       | empty
+       ;
+method3: var method3
+       | empty
+       ;
+method4: cmd method4
+       | empty
+       ;
+params: type ID params2;
+params2: VIRGULA type ID params2
+       | empty
+       ;
+type: INT COLCE COLCD
+    | BOOLEAN
+    | INT
+    | ID
+    ;
+cmd: CE cmd2 CD
+   | IF PE exp PD cmd
+   | IF PE exp PD cmd ELSE cmd
+   | WHILE PE exp PD cmd
+   | SYSTEMOUTPRINTLN PE exp PD PONTOVIRGULA
+   | ID IGUAL exp PONTOVIRGULA
+   | ID COLCE exp COLCD IGUAL exp PONTOVIRGULA
+   ;
+cmd2: cmd cmd2
+    | empty
+    ;
+exp: exp ECOMERCIAL rexp
+   | rexp
+   ;
+rexp: rexp MENOR aexp
+    | rexp COMPARACAO aexp
+    | rexp DIFERENTE aexp
+    | aexp
+    ;
+aexp: aexp MAIS mexp
+    | aexp MENOS mexp
+    | mexp
+    ;
+mexp: mexp MULTIPLICA sexp
+    | mexp DIVIDE sexp
+    | sexp
+    ;
+sexp: NEGACAO sexp
+    | MENOS sexp
+    | TRUE
+    | FALSE
+    | NUMERO
+    | NULL
+    | NEW INT COLCE exp COLCD
+    | pexp PONTO LENGTH
+    | pexp COLCE exp COLCD
+    | pexp
+    ;
+pexp: ID
+    | THIS
+    | NEW ID PE PD
+    | PE exp PD
+    | pexp PONTO ID
+    | pexp PONTO ID PE pexp2 PD
+    ;
+pexp2: exps
+     | empty
+     ;
+exps: exp exps2;
+exps2: VIRGULA exp exps2
+     | empty
+     ;
+empty: ;
+//TOKENS
+STRING: 'STRING';
+SYSTEMOUTPRINTLN: 'SYSTEMOUTPRINTLN';
+MAIN: 'MAIN';
+STATIC: 'STATIC';
+VOID: 'VOID';
+CLASS: 'CLASS';
+EXTENDS: 'EXTENDS';
+PUBLIC: 'PUBLIC';
+RETURN: 'RETURN';
+BOOLEAN: 'BOOLEAN';
+INT: 'INT';
+IF: 'IF';
+ELSE: 'ELSE';
+WHILE: 'WHILE';
+TRUE: 'TRUE';
+FALSE: 'FALSE';
+NULL: 'NULL';
+NEW: 'NEW';
+LENGTH: 'LENGTH';
+THIS: 'THIS';
+ID: 'ID';
+MAIS: 'MAIS';
+MENOS: 'MENOS';
+MULTIPLICA: 'MULTIPLICA';
+DIVIDE: 'DIVIDE';
+IGUAL: 'IGUAL';
+COMPARACAO: 'COMPARACAO';
+PE: 'PE';
+PD: 'PD';
+CE: 'CE';
+CD: 'CD';
+COLCE: 'COLCE';
+COLCD: 'COLCD';
+MENOR: 'MENOR';
+MAIOR: 'MAIOR';
+MENORIGUAL: 'MENORIGUAL';
+MAIORIGUAL: 'MAIORIGUAL';
+NEGACAO: 'NEGACAO';
+DIFERENTE: 'DIFERENTE';
+ECOMERCIAL: 'ECOMERCIAL';
+VIRGULA: 'VIRGULA';
+PONTO: 'PONTO';
+PONTOVIRGULA: 'PONTOVIRGULA';
+PONTOPONTO: 'PONTOPONTO';
+NUMERO: 'NUMERO';
+WS: '[ \t]+' (%ignore);
+
+
+
+
+
+
+
+
+
+
+
+
+start : prog;
+
+//REGRAS
+//prog: main prog2;
+prog: main class*;
+//prog2: class1 prog2
+//     | empty
+//     ;
+main: CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD;
+class: CLASS ID (EXTENDS ID)? CE var* method* CD;
+//class2: EXTENDS ID
+//      | empty
+//      ;
+//class3: var class3
+//      | empty
+//      ;
+//class4: method class4
+//      | empty
+//      ;
+var: type ID PONTOVIRGULA;
+method: PUBLIC type ID PE params* PD CE var* cmd* RETURN exp PONTOVIRGULA CD;
+//method2: params
+//       | empty
+//       ;
+//method3: var method3
+//       | empty
+//       ;
+//method4: cmd method4
+//       | empty
+//       ;
+params: type ID (VIRGULA type ID)*;
+//params2: VIRGULA type ID params2
+//       | empty
+//       ;
+type: INT COLCE COLCD
+    | BOOLEAN
+    | INT
+    | ID
+    ;
+cmd: CE cmd* CD
+   | IF PE exp PD cmd
+   | IF PE exp PD cmd ELSE cmd
+   | WHILE PE exp PD cmd
+   | SYSTEMOUTPRINTLN PE exp PD PONTOVIRGULA
+   | ID IGUAL exp PONTOVIRGULA
+   | ID COLCE exp COLCD IGUAL exp PONTOVIRGULA
+   ;
+//cmd2: cmd cmd2
+//    | empty
+//    ;
+exp: exp ECOMERCIAL rexp
+   | rexp
+   ;
+rexp: rexp MENOR aexp
+    | rexp COMPARACAO aexp
+    | rexp DIFERENTE aexp
+    | aexp
+    ;
+aexp: aexp MAIS mexp
+    | aexp MENOS mexp
+    | mexp
+    ;
+mexp: mexp MULTIPLICA sexp
+    | mexp DIVIDE sexp
+    | sexp
+    ;
+sexp: NEGACAO sexp
+    | MENOS sexp
+    | TRUE
+    | FALSE
+    | NUMERO
+    | NULL
+    | NEW INT COLCE exp COLCD
+    | pexp PONTO LENGTH
+    | pexp COLCE exp COLCD
+    | pexp
+    ;
+pexp: ID
+    | THIS
+    | NEW ID PE PD
+    | PE exp PD
+    | pexp PONTO ID
+    | pexp PONTO ID PE exps* PD
+    ;
+//pexp2: exps
+//     | empty
+//     ;
+exps: exp (VIRGULA exp)*;
+//exps2: VIRGULA exp exps2
+//     | empty
+//     ;
+empty: ;
+//TOKENS
+STRING: 'STRING';
+SYSTEMOUTPRINTLN: 'SYSTEMOUTPRINTLN';
+MAIN: 'MAIN';
+STATIC: 'STATIC';
+VOID: 'VOID';
+CLASS: 'CLASS';
+EXTENDS: 'EXTENDS';
+PUBLIC: 'PUBLIC';
+RETURN: 'RETURN';
+BOOLEAN: 'BOOLEAN';
+INT: 'INT';
+IF: 'IF';
+ELSE: 'ELSE';
+WHILE: 'WHILE';
+TRUE: 'TRUE';
+FALSE: 'FALSE';
+NULL: 'NULL';
+NEW: 'NEW';
+LENGTH: 'LENGTH';
+THIS: 'THIS';
+ID: 'ID';
+MAIS: 'MAIS';
+MENOS: 'MENOS';
+MULTIPLICA: 'MULTIPLICA';
+DIVIDE: 'DIVIDE';
+IGUAL: 'IGUAL';
+COMPARACAO: 'COMPARACAO';
+PE: 'PE';
+PD: 'PD';
+CE: 'CE';
+CD: 'CD';
+COLCE: 'COLCE';
+COLCD: 'COLCD';
+MENOR: 'MENOR';
+MAIOR: 'MAIOR';
+MENORIGUAL: 'MENORIGUAL';
+MAIORIGUAL: 'MAIORIGUAL';
+NEGACAO: 'NEGACAO';
+DIFERENTE: 'DIFERENTE';
+ECOMERCIAL: 'ECOMERCIAL';
+VIRGULA: 'VIRGULA';
+PONTO: 'PONTO';
+PONTOVIRGULA: 'PONTOVIRGULA';
+PONTOPONTO: 'PONTOPONTO';
+NUMERO: 'NUMERO';
+WS: '[ \t]+' (%ignore);

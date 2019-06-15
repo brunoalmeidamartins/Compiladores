@@ -198,14 +198,12 @@ class analisador_lexico():
                 vet_soma_cada_linha.append(aux_soma)
 
         vetor_tokens = self.retornaVetorTokens(vetor_caracter, vet_soma_cada_linha)
-
-
-
         # Imprime Resultado
-        if not vetor_tokens[0]:
+        #if not vetor_tokens[0]:
             # print(a[1])
-            for i in vetor_tokens[1]:
-                print(i)
+            #for i in vetor_tokens[1]:
+                #print(i)
+        return vetor_tokens[1]
 
 
 #MAIN()
