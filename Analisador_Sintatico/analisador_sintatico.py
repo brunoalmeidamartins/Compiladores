@@ -1,14 +1,8 @@
-#import ply.yacc as yacc
-import plyplus.grammar_parser as plyplus
+import ply.yacc as yacc
 import re
 from analisador_lexico import tokens
 
 codigo_valido = True
-
-precedence=(
-    ('left', 'ID', 'INT', 'BOOLEAN'),
-)
-
 
 #Funcao da Gramatica
 def p_prog(p):
@@ -20,95 +14,94 @@ def p_prog(p):
 def p_prog2(p):
     '''
     prog2 : class prog2
-          | empty
+    prog2 :
     '''
 
 #Funcao da Gramatica
 def p_main(p):
     '''
-    main : CLASS id CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD id PD CE cmd CD CD
+    main : CLASS ID CE PUBLIC STATIC VOID MAIN PE STRING COLCE COLCD ID PD CE cmd CD CD
     '''
 
 #Funcao da Gramatica
 def p_class(p):
     '''
-    class : CLASS id class2 CE class3 class4 CD
+    class : CLASS ID class2 CE class3 class4 CD
     '''
 
 #Funcao extendida de class
 def p_class2(p):
     '''
-    class2 : EXTENDS id
-           | empty
+    class2 : EXTENDS ID
+    class2 :
     '''
 
 #Funcao extendida de class
 def p_class3(p):
     '''
     class3 : var class3
-            | empty
+    class3 :
     '''
 #Funcao extendida de class
 def p_class4(p):
     '''
     class4 : method class4
-            | empty
+    class4 :
     '''
 
 #Funcao da Gramatica
 def p_var(p):
     '''
-    var : type id PONTOVIRGULA
+    var : type ID PONTOVIRGULA
     '''
 
 #Funcao da Gramatica
 def p_method(p):
     '''
-    method : PUBLIC type id PE method2 PD CE method3 method4 RETURN exp PONTOVIRGULA CD
+    method : PUBLIC type ID PE method2 PD CE method3 method4 RETURN exp PONTOVIRGULA CD
     '''
 
 #Funcao extendida de method
 def p_method2(p):
     '''
     method2 : params
-            | empty
+    method2 :
     '''
 
 #Funcao extendida de method
 def p_method3(p):
     '''
     method3 : var method3
-            | empty
+    method3 :
     '''
 
 #Funcao extendida de method
 def p_method4(p):
     '''
     method4 : cmd method4
-            | empty
+    method4 :
     '''
 
 #Funcao da Gramatica
 def p_params(p):
     '''
-    params : type id params2
+    params : type ID params2
     '''
 
 #Funcao extendida de params
 def p_params2(p):
     '''
-    params2 : VIRGULA type id params2
-            | empty
+    params2 : VIRGULA type ID params2
+    params2 :
     '''
 
 #Funcao da Gramatica
-#Retirei o ID
 def p_type(p):
     '''
     type : INT COLCE COLCD
          | BOOLEAN
          | INT
-         | id
+         | ID
     '''
 
 #Funcao da Gramatica
@@ -119,15 +112,15 @@ def p_cmd(p):
         | IF PE exp PD cmd ELSE cmd
         | WHILE PE exp PD cmd
         | SYSTEMOUTPRINTLN PE exp PD PONTOVIRGULA
-        | id IGUAL exp PONTOVIRGULA
-        | id COLCE exp COLCD IGUAL exp PONTOVIRGULA
+        | ID IGUAL exp PONTOVIRGULA
+        | ID COLCE exp COLCD IGUAL exp PONTOVIRGULA
     '''
 
 #Funcao extendida de cmd
 def p_cmd2(p):
     '''
     cmd2 : cmd cmd2
-         | empty
+    cmd2 :
     '''
 
 #Funcao da Gramatica
@@ -181,18 +174,18 @@ def p_sexp(p):
 #Funcao da Gramatica
 def p_pexp(p):
     '''
-    pexp : id
+    pexp : ID
          | THIS
-         | NEW id PE PD
+         | NEW ID PE PD
          | PE exp PD
-         | pexp PONTO id
-         | pexp PONTO id PE pexp2 PD
+         | pexp PONTO ID
+         | pexp PONTO ID PE pexp2 PD
     '''
 #Funcao extendida de pexp
 def p_pexp2(p):
     '''
     pexp2 : exps
-          | empty
+    pexp2 :
     '''
 
 #Funcao da Gramatica
@@ -204,13 +197,7 @@ def p_exps(p):
 def p_exps2(p):
     '''
     exps2 : VIRGULA exp exps2
-          | empty
-    '''
-
-#Funcao da Gramatica
-def p_id(p):
-    '''
-    id : ID
+    exps2 :
     '''
 
 #Funcao para gerar o log de erro!
@@ -227,16 +214,13 @@ def p_empty(p):
 '''
 DEBUG
 '''
-#path_programa = input("Digite o caminho do arquivo:")
-path_programa = 'Programas_MiniJava/programa5.java'
+path_programa = input("Digite o caminho do arquivo:")
 fp = open(path_programa, 'r')
 cadeia = fp.read()
 fp.close()
 
-#parser = yacc.yacc('LALR(1)')
-parser = plyplus.yacc.yacc('')
-#result = parser.parse(cadeia)
-result = parser
+parser = yacc.yacc('Earley')
+result = parser.parse(cadeia)
 if codigo_valido:
     print('Codigo valido para a linguagem Mini Java!')
 else:

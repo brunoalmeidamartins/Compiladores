@@ -1,10 +1,12 @@
-from lark import Lark
+import sys
+from lark import Lark, tree, Token
 import logging
 #import analisador_lexico
 logging.basicConfig(level=logging.DEBUG)
-
 import Analisador_Lexico as AL
-from analisador_lexico import tokens
+
+#Caminho Programa a ser executado
+path = '../Programas_MiniJava/programa1.java'
 
 palavras_reservadas = ['abstract', 'assert', 'boolean', 'break', 'byte', 'case', 'catch', 'char', 'class', 'const',
                            'continue', 'default', 'do', 'double', 'else', 'enum', 'extends', 'final', 'finally',
@@ -30,18 +32,6 @@ def trocaOperadoresPorPalavras(token):
         return 'IGUAL'
     elif token == '==':
         return 'COMPARACAO'
-    elif token == '(':
-        return 'PE'
-    elif token == ')':
-        return 'PD'
-    elif token == '{':
-        return 'CE'
-    elif token == '}':
-        return 'CD'
-    elif token == '[':
-        return 'COLCE'
-    elif token == ']':
-        return 'COLCD'
     elif token == '<':
         return 'MENOR'
     elif token == '>':
@@ -56,17 +46,17 @@ def trocaOperadoresPorPalavras(token):
         return 'DIFERENTE'
     elif token == '&&':
         return 'ECOMERCIAL'
+    elif token == '[':
+        return 'COLCE'
+    elif token == ']':
+        return 'COLCD'
     elif token == ',':
         return 'VIRGULA'
     elif token == '.':
         return 'PONTO'
-    elif token == ';':
-        return 'PONTOVIRGULA'
-    elif token == ':':
-        return 'PONTOPONTO'
     elif token[0] == '0' or token[0] == '1' or token[0] == '2' or token[0] == '3' or token[0] == '4' or token[0] == '5' \
         or token[0] == '6' or token[0] == '7' or token[0] == '8' or token[0] == '9':
-        return 'NUMERO'
+        return token
     elif token == 'System.out.println':
         return 'SYSTEMOUTPRINTLN'
     else:
@@ -74,6 +64,31 @@ def trocaOperadoresPorPalavras(token):
             return token
         else:
             return token
+    """
+        elif token == '(':
+            return 'PE'
+        elif token == ')':
+            return 'PD'
+        elif token == '{':
+            return 'CE'
+        elif token == '}':
+            return 'CD'
+        elif token == '[':
+            return 'COLCE'
+        elif token == ']':
+            return 'COLCD'
+        elif token == ',':
+            return 'VIRGULA'
+        elif token == '.':
+            return 'PONTO'
+        elif token == ';':
+            return 'PONTOVIRGULA'
+        elif token == ':':
+            return 'PONTOPONTO'
+
+        if token == '<':
+            return 'MENOR'
+        """
 
 def retornaTokensArquivo(caminho_arquivo):
     path_arquivo = caminho_arquivo
@@ -93,9 +108,10 @@ def retornaTokensArquivo(caminho_arquivo):
 
     return tokens
 
+def make_png(sentence, filename):
+    tree.pydot__tree_to_png(sentence, filename)
 
-path = 'Programas_MiniJava/programa1.java'
-
+#DEBUG
 
 with open(path) as f:
     texto_arq = f.readlines()
@@ -118,38 +134,53 @@ for i in texto:
 #texto = retornaTokensArquivo(path)
 
 collision_gramar = ''' 
-    start: goal
-    ?goal: mainclass ( classdeclaration )*
-    ?mainclass: class id ce public static void main pe string colce colcd id pd ce statement cd cd
-    ?classdeclaration: class id (extends id)? ce ( vardeclaration )* ( methoddeclaration )* cd
-    ?vardeclaration: type id pontovirgula
-    ?methoddeclaration: public type id pe (type id ( virgula type id )* )? pd ce ( vardeclaration )* ( statement )* return expression pontovirgula cd
-    ?type: int colce colcd
-        |	boolean
-        |	int -> int
-        |	id -> id
+    ?prog: mainclass ( classdeclaration )* 
+    ?mainclass: class id "{" public static void main "(" string colce colcd id ")" "{" cmd "}" "}" 
+    ?classdeclaration: class id (extends id)? "{" ( var )* ( method )* "}"
+    ?var: type id ";"
+    ?method: public type id "(" (type id ( virgula type id )* )? ")" "{" ( var )* ( cmd )* return exp ";" "}" 
+    ?type: int colce colcd 
+        |	boolean 
+        |	int
+        |	id 
         
-    ?statement: ce ( statement )* cd
-             |	if pe expression pd statement else statement
-             |	while pe expression pd statement
-             |	systemoutprintln pe expression pd pontovirgula
-             |	id igual expression pontovirgula
-             |	id colce expression colcd igual expression pontovirgula
+    ?cmd: "{" ( cmd )* "}"
+             | if "(" exp ")" cmd
+             |	if "(" exp ")" cmd else cmd
+             |	while "(" exp ")" cmd
+             |	systemoutprintln "(" exp ")" ";"
+             |	id igual exp ";"
+             |	id colce exp colcd igual exp ";"
              
-    ?expression: expression ( ecomercial | menor | mais | menos | multiplica ) expression
-              |	expression colce expression colcd
-              |	expression ponto length
-              |	expression ponto id pe ( expression ( virgula expression )* )? pd
-              |	numero -> numero
-              |	true
-              |	false -> false
-              |	id
-              |	this -> this
-              |	new int colce expression colcd
-              |	new id pe pd
-              |	negacao expression
-              |	pe expression pd
+    exp: exp ecomercial _rexp
+              | _rexp
               
+    _rexp: _rexp menor _aexp
+         | _rexp comparacao _aexp
+         | _rexp diferente _aexp
+         | _aexp
+    _aexp: _aexp mais _mexp 
+         | _aexp menos _mexp 
+         | _mexp
+    _mexp: _mexp multiplica _sexp 
+         | _mexp divide _sexp 
+         | _sexp
+    _sexp: negacao _sexp 
+         | menos _sexp 
+         | true
+         | false
+         | numero
+         | null
+         | new int colce exp colcd
+         | _pexp ponto length
+         | _pexp colce exp colcd
+         | _pexp
+    _pexp: id
+         | this
+         | new id "(" ")"
+         | "(" exp ")"
+         | _pexp ponto id
+         | _pexp ponto id "(" ( exp ( virgula exp )* )? ")"               
     //Tokens
     string: "STRING"
     systemoutprintln: "SYSTEMOUTPRINTLN"
@@ -177,11 +208,9 @@ collision_gramar = '''
     divide: "DIVIDE"
     igual: "IGUAL"
     comparacao: "COMPARACAO"
-    pe: "PE"
-    pd: "PD"
-    ce: "CE"
-    cd: "CD"
-    colce: "COLCE"
+    //pe: "PE"
+    //pd: "PD"
+    colce: "COLCE" 
     colcd: "COLCD"
     menor: "MENOR"
     maior: "MAIOR"
@@ -192,10 +221,10 @@ collision_gramar = '''
     ecomercial: "ECOMERCIAL"
     virgula: "VIRGULA"
     ponto: "PONTO"
-    pontovirgula: "PONTOVIRGULA"
-    pontoponto: "PONTOPONTO"
-    //numero: "\d+"
-    numero: "NUMERO"
+    //pontovirgula: "PONTOVIRGULA"
+    //pontoponto: "PONTOPONTO" 
+    numero: /[0-9]+/
+    //numero: "NUMERO"
     //ID: "[a-zA-Z_][a-zA-Z_0-9]*"
     //id: "ID"
     id: /[a-zA-Z_][a-zA-Z_0-9]*/
@@ -204,7 +233,20 @@ collision_gramar = '''
     %ignore " "
 
 '''
-#p = Lark(collision_gramar, parser='lalr')
-p = Lark(collision_gramar)
-parser = p.parse(texto)
-print(parser)
+def tok_to_int(tok):
+    "Converte o valor de 'tok'=string em numero inteiro"
+    return Token.new_borrow_pos(tok.type, int(tok), tok)
+
+'''
+lexer_callbacks: funcao para conversao de tipos. Ex: string em numero
+'''
+#print(texto)
+vet_ids = []
+p = Lark(collision_gramar, parser='lalr', start='prog', lexer_callbacks= {'numero': tok_to_int, 'numero': vet_ids.append,})
+#p = Lark(collision_gramar, parser='lalr', start='prog')
+sentence = p.parse(texto)
+tree = p.parse(texto).pretty()
+#tree = p.parse(texto)
+print(tree)
+make_png(sentence, "teste.png")
+
