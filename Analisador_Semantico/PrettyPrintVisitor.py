@@ -1,4 +1,4 @@
-import Syntaxtree
+#import Syntaxtree
 # Visitor Interface
 class statement():
     def accept(self):

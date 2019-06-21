@@ -5,6 +5,7 @@ logging.basicConfig(level=logging.DEBUG)
 import Analisador_Lexico as AL
 
 import PrettyPrintVisitor as ppv
+import Syntaxtree as syntax
 
 class AnalisadorLark():
 
@@ -241,7 +242,8 @@ class AnalisadorLark():
         tree1 = p.parse(texto).pretty()
         #tree = p.parse(texto)
         #print(tree)
-        #self.make_png(tree, "teste1.png")
+        #self.make_png(tree, "teste2.png")
+        #print(texto)
         return tree
 #######Visitor#####
 
@@ -265,7 +267,7 @@ class ImplementaVisitor(Visitor):
 
     def type(self, tree):
         assert tree.data == "type"
-        print(tree)
+        #print(tree)
 
     def statement(self, tree):
         assert tree.data == "statement"
@@ -279,11 +281,11 @@ class ImplementaVisitor(Visitor):
 
     def systemoutprintln(self, tree):
         assert tree.data == "systemoutprintln"
-        print(tree)
+        #print(tree)
 
     def numero(self, tree):
         assert tree.data == "numero"
-        print(tree.children[0])
+        #print(tree.children[0])
 
     def ecomercial(self, tree):
         assert tree.data == "ecomercial"
@@ -334,35 +336,19 @@ class ImplementaVisitor(Visitor):
     def ClassDeclList(self, tree):
         lista = []
 
-
-
-
-
-
-
     def accept(self, v):
         v.visit(self)
 
     def type_accept(self, v):
         return v.visit(self)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def minus(self, tree):
+        assert tree.data == "minus"
+        e1 = tree.children[0]
+        e2 = tree.children[2]
+        print(e2)
+class minus():
+    pass
 
 
 
@@ -381,4 +367,9 @@ tree = analisador.funcaoPrincipal('../Programas_MiniJava/programa1.java')
 #print(ImplementaTransformer().transform(tree))
 #print(tree)
 #ImplementaVisitor().visit(tree)
-ppv.PrettyPrintVisitor(tree)
+#a = ppv.PrettyPrintVisitor()
+#a.program_visit(tree)
+#a = syntax
+#b = a.program(ppv.PrettyPrintVisitor())
+#print(dir(a))
+ç
