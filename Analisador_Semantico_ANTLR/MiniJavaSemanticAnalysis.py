@@ -84,7 +84,7 @@ class My_Vistor(MiniJavaVisitor):
     '''
     def __init__(self):
         self.regions = identifier_region_stack()
-    
+
     def print_error(self, s, token):
         line = token.line   # number of the wrong line
         column = token.column   # number of wrong column

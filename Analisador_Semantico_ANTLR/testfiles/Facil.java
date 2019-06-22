@@ -25,4 +25,29 @@ class Fac {
     return t ;
     }
 }
+class Fac1 {
+
+    public int ComputeFac(int num){
+	int num_aux ;
+	int a ;
+	int b ;
+	int c ;
+	boolean d ;
+	//int a ;
+	if (num < 1){
+	    num_aux = 1 ;
+	}else{
+	    num_aux = a ;
+	}
+	return num_aux ;
+    }
+    public int Compt(){
+    int t ;
+    return t ;
+    }
+}
+
+
+
+
 

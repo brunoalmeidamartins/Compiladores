@@ -28,8 +28,9 @@ else:
 
 
 def semantic_check(parser_ret):
-	#visitor = My_Vistor()
-	#visitor.visit(parser_ret)
+	visitor = My_Vistor()
+	visitor.visit(parser_ret)
+def semantic_check2(parser_ret):
 	visitor = Meu_Visitor()
 	visitor.visit(parser_ret)
 
@@ -53,12 +54,26 @@ def process(args):
 
 	#Comentando Por mim!!
 
-	#try:
-	#	semantic_check(tree)
-	#except:
-	#	print('Error during semantic check')
+	try:
+		semantic_check(tree)
+		print("Semantic_check! Ok")
+		semantic_check2(tree)
+		print("Semantic_check2! Ok")
+	except:
+		print('Error during semantic check')
 
-	semantic_check(tree)
+	#semantic_check(tree)
+	vis = TypeChecker()
+	vis.visit(tree)#
+	#print(tabela)
+	#print(tabela_classe.imprimirTabela())
+
+	#Verificando Circularida Hierarquica
+	tabela_classe.verificaCircularidadeHierarquica()
+
+	#lista = []
+	#lista = vis.visitExpr_method_calling(tree.getChildren('expr_method_calling'))
+	#print("Lista: ",lista)
 	treelist = TreeList.toStringTreeList(tree, recog=parser)
 
 

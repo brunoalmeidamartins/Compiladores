@@ -1,8 +1,26 @@
+# -*- coding: utf-8 -*-
+
+import os, sys, re
 from antlr4 import *
-from MiniJavaVisitor import *
-from MiniJavaListener import *
+from antlr4.error import ErrorListener
+import argparse
+
+if __name__ is not None and "." in __name__:
+	from .MiniJavaVisitor import MiniJavaVisitor
+	from .MiniJavaListener import MiniJavaListener
+    #from .TabelaDeSimbolos import *
+else:
+    from MiniJavaVisitor import MiniJavaVisitor
+    from MiniJavaListener import MiniJavaListener
+    from TabelaDeSimbolos import *
+
 
 #ctx: Contexto
+
+tabela = []
+
+tabela_classe = TabelaDeClasses()
+
 
 class Regiao_Identificador(object):
     '''
@@ -10,12 +28,12 @@ class Regiao_Identificador(object):
     '''
     def __init__(self):
         self.identificadores = {} #dict
-    def adicionar(self, identificador, valor):
+    def push(self, identificador, valor):
         try:
             self.identificadores[identificador] = valor
         except:
             print("Erro ao adicionar o identificador")
-    def remover(self, identificador):
+    def pop(self, identificador):
         try:
             self.identificadores.pop(identificador)
         except:
@@ -31,7 +49,7 @@ class pilha_regiao_identificadores(object):
     Usando uma pilha para armazenar as regioes validas de um identificador
     '''
     def __init__(self):
-        self.identificadores = {} # Valores atuias dos identificadores e seus valores
+        self._identificadores = {} # Valores atuias dos identificadores e seus valores
         self._stack = [] # Os itens da pilha sao regioes com os seus identificadores
         self._history_list = [] #Historico de regioes
 
@@ -70,7 +88,8 @@ class pilha_regiao_identificadores(object):
 class Meu_Visitor(MiniJavaVisitor):
 
     def __init__(self):
-        self.regiao = pilha_regiao_identificadores()
+        self.regioes = pilha_regiao_identificadores()
+        self.funcoes = []
 
     def print_erro(self, msg, token):
         linha = token.line # Numero da linha do erro
@@ -86,33 +105,33 @@ class Meu_Visitor(MiniJavaVisitor):
         self.print_erro(msg, ctx)
 
     def checar(self, identificador):
-        return self.regiao.checar(identificador)
+        return self.regioes.checar(identificador)
 
     def visitGoal(self, ctx):
         # Comeco, aloca uma nova regiao
-        self.regiao.add_novo() #Aloca uma nova regiao
+        self.regioes.add_novo() #Aloca uma nova regiao
         res = self.visitChildren(ctx)
-        self.regiao.pop_last() # Recupera a regiao alocada
+        self.regioes.pop_last() # Recupera a regiao alocada
         return res
 
-    def visitMainClass(self, ctx):
+    def visitMainclass(self, ctx):
         '''
         Uma nova classe MAIN. Verifica se foi definida e coloca na regiao atual
         Comeca uma nova regiao
         '''
-        regiao_atual = self.regiao.get_top()
+        regiao_atual = self.regioes.get_top()
 
         nome_classe = ctx.Identifier(0).getText()
         if not self.checar(nome_classe):
             #Verifica se a MAINCLASS nao foi definida em uma regiao
-            regiao_atual.adicionar(nome_classe, 'main_class')
+            regiao_atual.push(nome_classe, 'main_class')
         else:
             self.erro_id_multi_definido("Multiplas Mainclass Declaradas: " + nome_classe, ctx.Identifier(0).getSymbol())
 
         #Inicia uma nova regiao
-        self.regiao.add_novo() #Adiciona uma nova regiao
+        self.regioes.add_novo() #Adiciona uma nova regiao
         res = self.visitChildren(ctx)
-        self.regiao.pop_last() # Recupera a regiao alocada
+        self.regioes.pop_last() # Recupera a regiao alocada
         return res
 
     def visitDec_class(self, ctx):
@@ -120,32 +139,42 @@ class Meu_Visitor(MiniJavaVisitor):
         Uma nova Class. Verifica se foi definida e coloca na regiao atual
         Comeca uma nova regiao
         '''
-        regiao_atual = self.regiao.get_top()
+        regiao_atual = self.regioes.get_top()
 
         nome_classe = ctx.Identifier(0).getText()
         if not self.checar(nome_classe):
             # Coloca na regiao atual
-            regiao_atual.adicionar(nome_classe, 'Classe Declarada')
+            regiao_atual.push(nome_classe, 'Classe Declarada')
         else:
             self.erro_id_multi_definido("Multiplas Classes Declaradas: " + nome_classe, ctx.Identifier(0).getSymbol())
 
         #comeca uma nova regiao
-        self.regiao.add_novo() # Adiciona uma nova regiao
+        self.regioes.add_novo() # Adiciona uma nova regiao
         res = self.visitChildren(ctx)
-        self.regiao.pop_last() # Recupera a regiao alocada
+        self.regioes.pop_last() # Recupera a regiao alocada
+
+        global tabela_classe
+        tabela_classe.inserirClasse(nome_classe)
+        if str(ctx.Identifier(1)) != 'None':
+            extendQuem = str(ctx.Identifier(1))
+            tabela_classe.inserirClasse(nome_classe, extendQuem)
+        else:
+            tabela_classe.inserirClasse(nome_classe)
+
+
         return res
 
     def visitDec_var(self, ctx):
         '''
         Verifica se uma nova variavel declarada foi declarada multiplas vezes
         '''
-        regiao_atual = self.regiao.get_top()
+        regiao_atual = self.regioes.get_top()
         var_name = ctx.Identifier().getText()
         var_type = ctx.mtype().getText()
 
         if not self.checar(var_name):
             # Coloca na regiao atual
-            regiao_atual.adicionar(var_name, var_type)
+            regiao_atual.push(var_name, var_type)
         else:
             self.erro_id_multi_definido("Multiplas Variaveis declaradas: " + var_name, ctx.Identifier().getSymbol())
         return self.visitChildren(ctx)
@@ -155,14 +184,20 @@ class Meu_Visitor(MiniJavaVisitor):
         Verifica se o nome do metodo foi definido
         Comeca uma nova regiao
         '''
-        regiao_atual = self.regiao.get_top()
+        regiao_atual = self.regioes.get_top()
         nome_metodo = ctx.Identifier(0).getText()
         tipo_metodo = ctx.mtype(0).getText()
         if not self.checar(nome_metodo):
-            regiao_atual.adicionar(nome_metodo, tipo_metodo)
+            regiao_atual.push(nome_metodo, tipo_metodo)
         else:
             self.erro_id_multi_definido("Multiplos metodos declarados: " + nome_metodo, ctx.Identifier(0).getSymbol())
-        nova_regiao = self.regiao.add_novo() # Nova regiao pra o metodo
+
+        global tabela_classe
+        nome_classe = str(ctx.parentCtx.Identifier(0))
+        tabela_classe.inserirMetodos(nome_classe,nome_metodo)
+
+
+        nova_regiao = self.regioes.add_novo() # Nova regiao pra o metodo
         # Nao pode obter o numero exato de parametros, verifique os 12 parametros anteriores
         try:
             for i in range(1,12):
@@ -175,14 +210,14 @@ class Meu_Visitor(MiniJavaVisitor):
                 # Ok se outra regiao tiver um parametro com o mesmo nome
 
                 if not nova_regiao.checar(nome_parametro):
-                    nova_regiao.adicionar(nome_parametro, tipo_parametro)
+                    nova_regiao.push(nome_parametro, tipo_parametro)
                 else:
                    self.erro_id_multi_definido("Multiplo parametros declarados: " + nome_parametro, parametro.getSymbol())
         except:
             pass # Para a preocupacao de estouro de parametro
 
         res = self.visitChildren(ctx)
-        self.regiao.pop_last() # Recupera a regiao alocada
+        self.regioes.pop_last() # Recupera a regiao alocada
         return res
 
     def visitExpr_id(self, ctx):
@@ -195,14 +230,14 @@ class Meu_Visitor(MiniJavaVisitor):
 
     def visitState_lrparents(self, ctx):
         # Comeca uma nova regiao
-        self.regiao.add_novo() # Aloca uma nova regiao
+        self.regioes.add_novo() # Aloca uma nova regiao
         res = self.visitChildren(ctx)
-        self.regiao.pop_last() # Recupera a regiao alocada
+        self.regioes.pop_last() # Recupera a regiao alocada
         return res
 
     def visitState_assign(self, ctx):
         # Nao eh uma nova regiao
-        regiao_atual = self.regiao.get_top()
+        regiao_atual = self.regioes.get_top()
         nome_id = ctx.Identifier().getText()
         if not self.checar(nome_id):
             self.erro_id_nao_detectado("Identificador nao definido: " + nome_id, ctx.Identifier().getSymbol())
@@ -211,7 +246,7 @@ class Meu_Visitor(MiniJavaVisitor):
 
     def visitState_array_assign(self, ctx):
         # Nao eh uma nova regiao
-        regiao_atual = self.regiao.get_top()
+        regiao_atual = self.regioes.get_top()
         nome_id = ctx.Identifier().getText()
         if not self.checar(nome_id):
             self.erro_id_nao_detectado("Identificador nao definido: " + nome_id, ctx.Identifier().getSymbol())
@@ -221,25 +256,43 @@ class Meu_Visitor(MiniJavaVisitor):
     def visitExpr_new_array(self, ctx):
         # Nao eh uma nova regiao
         # Nao pode ter sido declarado
-        regiao_atual = self.regiao.get_top()
+        regiao_atual = self.regioes.get_top()
         nome_array = ctx.Identifier().getText()
         if not self.checar(nome_array):
-            regiao_atual.adicionar(nome_array, 'Usado')
+            regiao_atual.push(nome_array, 'Usado')
         else:
             self.erro_id_multi_definido("Multiplos Arrays declarados: "+ nome_array, ctx.Identifier().getSymbol())
         res = self.visitChildren(ctx)
         return res
-
+    '''
     def visitExpr_method_calling(self, ctx):
         # Nao eh uma nova regiao
         # Deve ter sido declarado
-        regiao_atual = self.regiao.get_top()
+        regiao_atual = self.regioes.get_top()
         nome_metodo = ctx.Identifier().getText()
 
         if not self.checar(nome_metodo):
             self.erro_id_nao_detectado("Metodo nao declarado: "+ nome_metodo, ctx.Identifier().getSymbol())
         res = self.visitChildren(ctx)
         return res
+    '''
+    def visitExpr_method_calling(self, ctx):
+        #regiao_atual = self.regioes.get_top()
+        nome_metodo = ctx.Identifier().getText()
+        self.funcoes.append(nome_metodo)
+        #print(self.funcoes)
+        lista = self.funcoes
+        return self.funcoes
+
+class TypeChecker(MiniJavaVisitor):
+    def visitExpr_method_calling(self, ctx):
+        nome_metodo = ctx.Identifier().getText()
+        global tabela
+        tabela.append(nome_metodo)
+        tabela.append("Bruno")
+        return nome_metodo
+
+
 
 
 
