@@ -14,6 +14,7 @@ if __name__ is not None and "." in __name__:
 	from .MiniJavaSemanticAnalysis import *
 	from .MiniJavaASTBuilder import *
 	from .utilities import *
+	from .AnaliseSemantica import *
 else:
 	from MiniJavaParser import MiniJavaParser
 	from MiniJavaLexer import MiniJavaLexer
@@ -23,10 +24,13 @@ else:
 	from MiniJavaSemanticAnalysis import *
 	from MiniJavaASTBuilder import *
 	from utilities import *
+	from AnaliseSemantica import *
 
 
 def semantic_check(parser_ret):
-	visitor = My_Vistor()
+	#visitor = My_Vistor()
+	#visitor.visit(parser_ret)
+	visitor = Meu_Visitor()
 	visitor.visit(parser_ret)
 
 
@@ -47,11 +51,16 @@ def process(args):
 	tree = parser.goal()
 	# semantic analysis
 
-	try:
-		semantic_check(tree)
-	except:
-		print('Error during semantic check')
+	#Comentando Por mim!!
+
+	#try:
+	#	semantic_check(tree)
+	#except:
+	#	print('Error during semantic check')
+
+	semantic_check(tree)
 	treelist = TreeList.toStringTreeList(tree, recog=parser)
+
 
 	if not os.path.exists(args.output_dir):
 		os.makedirs(args.output_dir)

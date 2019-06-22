@@ -1,3 +1,5 @@
+antlr4-python3-runtime==4.7.2
+graphviz==0.10.1
 lark-parser==0.7.1
 ply==3.11
 PlyPlus==0.7.5

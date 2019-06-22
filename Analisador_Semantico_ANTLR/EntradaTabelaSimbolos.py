@@ -1,0 +1,3 @@
+class EntradaTabelaSimbolos():
+    nome = ''
+    valor = ''
