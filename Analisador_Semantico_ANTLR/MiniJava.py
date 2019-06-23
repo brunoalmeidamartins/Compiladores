@@ -55,21 +55,30 @@ def process(args):
 	#Comentando Por mim!!
 
 	try:
-		semantic_check(tree)
-		print("Semantic_check! Ok")
+		#semantic_check(tree)
+		#print("Semantic_check! Ok")
 		semantic_check2(tree)
 		print("Semantic_check2! Ok")
 	except:
-		print('Error during semantic check')
+		print('Erro durante o processo na analise Semantica!!')
 
 	#semantic_check(tree)
-	vis = TypeChecker()
-	vis.visit(tree)#
+	#vis = TypeChecker()
+	#vis.visit(tree)#
 	#print(tabela)
+	print("Tabela de Classe:\n")
 	#print(tabela_classe.imprimirTabela())
+	print("FIM Tabela de Classe!!")
 
 	#Verificando Circularida Hierarquica
-	tabela_classe.verificaCircularidadeHierarquica()
+	print("Verificando Ciclos no Grafo gerado!!\n ...")
+	#tabela_classe.verificaCircularidadeHierarquica
+	print("Tabela de Variaveis")
+	#tabela_variaveis.imprimeListaVariaveis()
+
+	print("Tabela de Chamada de Funcao!!")
+	tabela_Chamada_Funcao.imprimeListaChamadaFuncao()
+
 
 	#lista = []
 	#lista = vis.visitExpr_method_calling(tree.getChildren('expr_method_calling'))
