@@ -41,6 +41,32 @@ class TabelaDeClasses(object):
                 tc.extendeQuem = extendeQuem
                 tc.extends = True
 
+    def obterTabelaDaClasse(self, nome):
+        return self.tabelaClasses.get(nome)
+
+    def obterListaParametros(self, nomeMetodo, nomeClasse='', tipoChamador=''):
+        classeContemMetodo = ''
+        if nomeClasse == '':
+            valores = self.tabelaClasses.keys()
+            for i in valores:
+                tc = self.tabelaClasses.get(i)
+                lista = tc.lista_methodos
+                for j in lista:
+                    if j == nomeMetodo:
+                        classeContemMetodo = i
+                        break
+            tc = self.tabelaClasses.get(classeContemMetodo)
+            lista = tc.lista_methodos.get(nomeMetodo).parametros
+            return lista
+        else:
+            tc = self.tabelaClasses.get(nomeClasse)
+            lista = tc.lista_methodos.get(nomeMetodo).parametros
+            return lista
+
+
+
+        #return tc.lista_methodos.get(nomeMetodo).parametros
+
     def inserirMetodos(self, nomeClasse, nomeMetodo, tipoMetodo):
         metodo = EntradaTabelaSimbolosMethodos()
         metodo.nome = nomeMetodo
@@ -52,6 +78,7 @@ class TabelaDeClasses(object):
             self.inserirClasse(nomeClasse)
             tc = self.tabelaClasses.get(nomeClasse)
             tc.lista_methodos[nomeMetodo] = metodo
+
     def inserirParametros(self, nomeClasse, nomeMetodo, tipoParametro):
         tc = self.tabelaClasses.get(nomeClasse)
         lista = tc.lista_methodos.get(nomeMetodo).parametros
@@ -125,21 +152,33 @@ class TabelaDeVariaveis(object):
             for j in self.tabelaVariaveis[i]:
                 print("Regiao:",j.regiao," Classe:",j.classe," Metodo:",j.metodo,"Variavel:",j.nome, " Tipo:", j.tipo, " Valor: ", j.valor)
 
+    def obterListaVariaveisClasse(self, classe):
+        lista = {}
+        tipo_classe = ''
+        values = self.tabelaVariaveis.keys()
+        for i in values:
+            for j in self.tabelaVariaveis.get(i):
+                if classe == j.classe:
+                    lista[j.nome] = j.tipo
+        return lista
+
 class TabelaDeChamadaFuncao(object):
 
     def __init__(self):
         self.listaChamdaFuncao =[]
 
-    def adicionarListaChamadaFuncao(self, nome, listaParametros):
+    def adicionarListaChamadaFuncao(self, nome, listaParametros, classe, metodo):
         tcf = EntradaTabelaSimbolosChamadaFuncao()
         tcf.nome = nome
+        tcf.classe = classe
+        tcf.metodo = metodo
         for i in listaParametros:
             tcf.lista_parametros.append(i)
         self.listaChamdaFuncao.append(tcf)
 
     def imprimeListaChamadaFuncao(self):
         for i in self.listaChamdaFuncao:
-            print(i)
+            print("Nome Funcao:", i.nome, " Lista Parametros Passados:", i.lista_parametros, " Classe:", i.classe, " Metodo:", i.metodo)
 
 
 

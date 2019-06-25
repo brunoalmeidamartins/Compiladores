@@ -1,13 +1,13 @@
 grammar MiniJava;
 
-goal    : mainClass ( classDeclaration )* EOF
+goal    : main_class=mainClass ( main_class_decl=classDeclaration )* EOF
         ;
 
-mainClass   : 'class' Identifier '{' 'public' 'static' 'void' 'main' '(' 'String' '[' ']' Identifier ')' '{' statement '}' '}'
+mainClass   : 'class' Identifier '{' 'public' 'static' 'void' 'main' '(' 'String' '[' ']' Identifier ')' '{' main_class_stmt=statement '}' '}'
             #mainclass
             ;
 
-classDeclaration    : 'class' Identifier ('extends' Identifier)? '{' (varDeclaration)* (methodDeclaration)* '}'
+classDeclaration    : 'class' Identifier ('extends' Identifier)? '{' (class_Decl_var=varDeclaration)* (class_meth_decl=methodDeclaration)* '}'
                     #dec_class
                     ;
 
@@ -15,7 +15,7 @@ varDeclaration  : mtype Identifier ';'
                 #dec_var
                 ;
 
-methodDeclaration	:	'public' mtype Identifier '(' ( mtype Identifier ( ',' mtype Identifier )* )? ')' '{' ( varDeclaration )* ( statement )* 'return' expression ';' '}'
+methodDeclaration	:	'public' meth_mtype=mtype Identifier '(' ( tipoP1=mtype nomeP1=Identifier ( ',' listaTipoPs+=mtype listaNomePs+=Identifier )* )? ')' '{' ( met_var_decl=varDeclaration )* ( meth_stmt_decl=statement )* 'return' exp_retorno=expression ';' '}'
 					#dec_method
 					;
 
@@ -35,37 +35,37 @@ mtype   : 'int' '[' ']'
         | Identifier
         ;
 
-statement   : '{' (statement)* '}'
+statement   : '{' (stmt=statement)* '}'
                 #state_lrparents
-            | 'if' '(' expression ')' statement 'else' statement
+            | 'if' '(' expIf=expression ')' statementIF1=statement 'else' statementIF2=statement
                 #state_if
-            | 'while' '(' expression ')' statement
+            | 'while' '(' expWhile=expression ')' statementWhile=statement
                 #state_while
-            | 'System.out.println' '(' expression ')' ';'
+            | 'System.out.println' '(' expPrint=expression ')' ';'
                 #state_print
-            | Identifier '=' expression ';'
+            | Identifier '=' expIdt=expression ';'
                 #state_assign
-            | Identifier '[' expression ']' '=' expression ';'
+            | Identifier '[' expArrayAssign1=expression ']' '=' expArrayAssign2=expression ';'
                 #state_array_assign
             ;
 
 expression  : //expression ('&&' | '<' | '+' | '-' | '*') expression
                 //#expr_op
-            expression '&&' expression
+            exp1=expression '&&' exp2=expression
                 #expr_op_and
-            | expression '<' expression
+            | exp3=expression '<' exp4=expression
                 #expr_op_less
-            | expression '+' expression
+            | exp5=expression '+' exp6=expression
                 #expr_op_plus
-            | expression '-' expression
+            | exp7=expression '-' exp8=expression
                 #expr_op_minus
-            | expression '*' expression
+            | exp9=expression '*' exp10=expression
                 #expr_op_multi
-            | expression '[' expression ']'
+            | expArray1=expression '[' expArray2=expression ']'
                 #expr_array
-            | expression '.' 'length'
+            | expLegth=expression '.' 'length'
                 #expr_length
-            | expression '.' Identifier '(' (expression (',' expression)* )? ')'
+            | exp_chamador=expression '.' Identifier '(' (listaExpCamadaFuncao1=expression (',' listaExpCamadaFuncao2+=expression)* )? ')'
                 #expr_method_calling
             | Integer
                 #expr_int
@@ -75,13 +75,13 @@ expression  : //expression ('&&' | '<' | '+' | '-' | '*') expression
                 #expr_id
             | 'this'
                 #expr_this
-            | 'new' 'int' '[' expression ']'
+            | 'new' 'int' '[' exp12=expression ']'
                 #expr_int_array
             | 'new' Identifier '(' ')'
                 #expr_new_array
-            | '!' expression
+            | '!' exp_not=expression
                 #expr_not
-            | '(' expression ')'
+            | '(' exp_lr=expression ')'
                 #expr_lrparents
             | expression ('&&' | '<' | '+' | '-' | '*')
                 {self.notifyErrorListeners('Erro: Faltando o RHS do operador')}
@@ -95,12 +95,12 @@ expression  : //expression ('&&' | '<' | '+' | '-' | '*') expression
             | '(' '(' expression ')'
                 {self.notifyErrorListeners("Erro: Muitos '('s")}
                 #err_many_lparents
-            | '(' expression
-                {self.notifyErrorListeners('Erro: Falta parentese a direita')}
-                #err_rparent_closing
-            | expression ')'
-                {self.notifyErrorListeners('Erro: Falta parentese a esquerda')}
-                #err_lparent_closing
+            //| '(' expression
+            //    {self.notifyErrorListeners('Erro: Falta parentese a direita')}
+            //    #err_rparent_closing
+            //| expression ')'
+            //    {self.notifyErrorListeners('Erro: Falta parentese a esquerda')}
+            //    #err_lparent_closing
             ;
 
 Boolean : 'true'

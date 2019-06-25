@@ -12,6 +12,7 @@ class EntradaTabelaSimbolosClasses(object):
         self.extends = False
         self.extendeQuem = ''
 
+
 class EntradaTabelaSimbolosMethodos(object):
 
     def __init__(self):
@@ -34,3 +35,5 @@ class EntradaTabelaSimbolosChamadaFuncao(object):
     def __init__(self):
         self.nome = ''
         self.lista_parametros = []
+        self.classe = ''
+        self.metodo = ''

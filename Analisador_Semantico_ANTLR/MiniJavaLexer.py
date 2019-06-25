@@ -227,7 +227,7 @@ class MiniJavaLexer(Lexer):
 
     def Identifier_action(self, localctx:RuleContext , actionIndex:int):
         if actionIndex == 0:
-            self.notifyErrorListeners('Error: identifier starting with digit')
+            self.notifyErrorListeners('Erro: Identificador começando com digito')
      
 
 

@@ -31,6 +31,8 @@ classe_atual = ''
 
 methodo_atual = ''
 
+matrix_parametros = []
+
 
 class Regiao_Identificador(object):
     '''
@@ -102,7 +104,9 @@ class pilha_regiao_identificadores(object):
         self._history_list.append('POP')
         return ultimo
 
-# Implementacao do nosso visitor
+# Implementacao do Visitor
+# Usado para preencher as tabelas de simbolos e tambem analisar alguns erros iniciais
+# Exemplo: Verificar se uma variavel foi declarada antes do uso!!
 class Meu_Visitor(MiniJavaVisitor):
 
     def __init__(self):
@@ -331,24 +335,332 @@ class Meu_Visitor(MiniJavaVisitor):
         self.funcoes.append(nome_metodo)
         #print(self.funcoes)
         lista = self.funcoes
-        print("Nome do metodo:",nome_metodo)
-        lista2 = ctx.children #Retorna uma lista
-        #print(ctx.getChild(4))
-        lista3 = ctx.expression()
-        for i in lista3:
-            print(i.getText())
-        #print(len(lista2))
-        print("FIM")
+
+        #Adicionando na lista de chamadas de funcoes
+        global tabela_Chamada_Funcao
+        resultado_lista_parametros = []
+        parametro1 = ctx.listaExpCamadaFuncao1
+        try:
+            resultado_lista_parametros.append(parametro1.getText())
+        except:
+            pass # Nao tem parametros
+
+        listaParametros = ctx.listaExpCamadaFuncao2
+        try:
+            for i in listaParametros:
+                resultado_lista_parametros.append(i.getText())
+        except:
+            pass # Nao tem parametros
+
+        if classe_atual == '':
+            tabela_Chamada_Funcao.adicionarListaChamadaFuncao(nome_metodo, resultado_lista_parametros, 'Principal', 'Main')
+        else:
+            tabela_Chamada_Funcao.adicionarListaChamadaFuncao(nome_metodo, resultado_lista_parametros, classe_atual, methodo_atual)
 
         return self.funcoes
 
+# Segundo Visitor TyperCheker
 class TypeChecker(MiniJavaVisitor):
+
+    def __init__(self):
+        matrix_metodo_parametros = []
+        pass
+
+    def print_erro(self, msg, token):
+        linha = token.line # Numero da linha do erro
+        coluna = token.column # Numero da coluna do erro
+        print('Linha '+ str(linha) + ':' + str(coluna) + '\t' + 'Erro: ' + msg )
+
+    def erro_generico_detectado(self, msg, ctx):
+        #Identificador nao definido
+        self.print_erro(msg, ctx)
+
+
+
+
+    def visitGoal(self, ctx):
+        res = self.visitChildren(ctx)
+        return res
+
+    def visitMainclass(self, ctx):
+        name_classe = ctx.Identifier(0).getText()
+        global classe_atual
+        classe_atual = 'Principal'
+        global methodo_atual
+        methodo_atual = "Main"
+        res = self.visitChildren(ctx)
+        return res
+
+    def visitDec_class(self, ctx):
+        name_classe = ctx.Identifier(0).getText()
+        global classe_atual
+        classe_atual = name_classe
+        res = self.visitChildren(ctx)
+        return res
+
+    def visitDec_var(self, ctx):
+        var_name = ctx.Identifier().getText()
+        var_type = ctx.mtype().getText()
+        return self.visitChildren(ctx)
+
+    def visitDec_method(self, ctx):
+        global methodo_atual
+        global matrix_parametros
+        matrix_parametros = []
+        nome_metodo = ctx.Identifier(0).getText()
+        methodo_atual = nome_metodo
+        try:
+            #Possui um parametro, pelo menos
+            matrix_parametros.append([ctx.tipoP1.getText(), ctx.nomeP1.text])
+        except:
+            pass
+        listaTipos = ctx.listaTipoPs
+        listaNomes = ctx.listaNomePs
+        try:
+            for i in range(0, len(listaNomes)):
+                matrix_parametros.append(listaTipos[i].getText(), listaNomes[i].getText())
+        except:
+            pass
+        #for i in listaParametros:
+        #    resultado_lista_parametros.append(i.getText())
+
+        res = self.visitChildren(ctx)
+        return res
+
+    def visitExpr_op_and(self, ctx):
+        #print(ctx.exp1.getText(), "&&", ctx.exp2.getText())
+        ctx.exp1.accept(self)
+        ctx.exp2.accept(self)
+
+    def visitExpr_op_less(self, ctx):
+        #print(ctx.exp3.getText(), "<", ctx.exp4.getText())
+        ctx.exp3.accept(self)
+        ctx.exp4.accept(self)
+
+    def visitExpr_op_plus(self, ctx):
+        #print(ctx.exp5.getText(), "+", ctx.exp6.getText())
+        ctx.exp5.accept(self)
+        ctx.exp6.accept(self)
+
+    def visitExpr_op_minus(self, ctx):
+        #print(ctx.exp7.getText(), "-", ctx.exp8.getText())
+        ctx.exp7.accept(self)
+        ctx.exp8.accept(self)
+
+    def visitExpr_op_multi(self, ctx):
+        #print(ctx.exp9.getText(), "*", ctx.exp10.getText())
+        ctx.exp9.accept(self)
+        ctx.exp10.accept(self)
+
+
+    #Verifica a chamada de metodo!!
+    #Verifica a conformidade e a quantidade
     def visitExpr_method_calling(self, ctx):
-        nome_metodo = ctx.Identifier().getText()
-        global tabela
-        tabela.append(nome_metodo)
-        tabela.append("Bruno")
-        return nome_metodo
+        print("To aqui!!")
+        global classe_atual
+        global tabela_classe
+        global tabela_variaveis
+        global matrix_parametros
+        name_metodo = ctx.Identifier().getText()
+        resultado_lista_parametros = []
+        parametro1 = ctx.listaExpCamadaFuncao1
+        try:
+            resultado_lista_parametros.append(parametro1.getText())
+        except:
+            pass  # Nao tem parametros
+
+        listaParametros = ctx.listaExpCamadaFuncao2
+        try:
+            for i in listaParametros:
+                resultado_lista_parametros.append(i.getText())
+        except:
+            pass  # Nao tem parametros
+
+        tabela_etbs = tabela_classe.obterTabelaDaClasse(classe_atual)
+        #Primeiro teste
+        #tipo_chamador = ctx.exp_chamador.getText()
+        tipo_chamador = ctx.exp_chamador.children
+        #print(tipo_chamador[0].getText())
+        type_call = tipo_chamador[0].getText()
+        if type_call == 'new':
+            classe_new = tipo_chamador[1].getText()
+            #Pegar o tipo de retorno do metodo
+            #dicionario = tabela_variaveis.obterListaVariaveisClasse(classe_new)
+            listas_parametros = tabela_classe.obterListaParametros(name_metodo, classe_new)
+        elif type_call == 'this':
+            #dicionario = tabela_variaveis.obterListaVariaveisClasse(classe_atual)
+            listas_parametros = tabela_classe.obterListaParametros(name_metodo, classe_atual)
+        else:
+            #Tipo Variavel para saber qual a classe do metodo
+            dicionario = tabela_variaveis.obterListaVariaveisClasse(classe_atual)
+            try:
+                #Se ele nao tiver na lista de variaveis da classe, entao veio como parametro
+                listas_parametros = tabela_classe.obterListaParametros(name_metodo, dicionario[type_call])
+            except:
+                #Procura na lista de parametros da classe atual
+                nome_classe = ''
+                for vetor in matrix_parametros:
+                    for i in range(0, len(vetor)):
+                        if type_call == vetor[1]:
+                            nome_classe = vetor[0]
+                listas_parametros = tabela_classe.obterListaParametros(name_metodo, nome_classe)
+
+        #Verifica a quantidade de parametros passados
+        if len(resultado_lista_parametros) == len(listas_parametros):
+            pass
+        else:
+            print("Erro!! Nao possuem a mesma quantidade de parametros!!!")
+            self.erro_generico_detectado("Chamada de Metodo: " + name_metodo, ctx.Identifier().getSymbol())
+            sys.exit()
+        #Verifica a ordem de parametros passados
+        for i in range(0, len(resultado_lista_parametros)):
+            tipo = ''
+            #print(resultado_lista_parametros[i])
+            try:
+                #Tenta converter a string em numero
+                int(resultado_lista_parametros[i])
+                tipo = 'int'
+            except:
+                if resultado_lista_parametros[i] == 'false' or resultado_lista_parametros[i] == 'true':
+                    tipo = 'boolean'
+
+
+
+############Novo###################
+###################################
+##################################
+class ClassInfo(object):
+    def __init__(self):
+        self.name = ''
+        self.extendName = ''
+
+        self.fields = {}
+        self.methods = {}
+
+    def print(self):
+        print("Classe: ", self.name)
+        print(" extends", self.extendName)
+        print(" FIELDS:")
+        valores = self.fields.keys()
+        for i in valores:
+            print(" ",i, '->', self.fields.get(i).toString())
+        print(" Metodos:")
+        valores = self.methods.keys()
+        for i in valores:
+            print(" ", i, '->', self.methods.get(i).toString())
+
+class FieldInfo(object):
+    def __init__(self, name, type):
+        self.typeName = name
+        self.type = type
+
+    def toString(self):
+        if self.typeName != None:
+            return self.typeName
+        else:
+            return self.type.toString()
+
+class MethodoInfo(object):
+    def __init__(self):
+        self. name
+        self.returnType
+        self.parameters = []
+
+    def toString(self):
+        ret = self.returnType + " " + self.name + "("
+        for i in self.parameters:
+            ret+= i.toString() + ", "
+        tamanho = len(self.parameters)
+        if tamanho != 0:
+            ret = ret[0, len(ret) -2]
+        return ret + ")"
+
+class VariableType():
+
+    def toString(self, nome):
+        if nome == 'INT':
+            return 'INT'
+        elif nome == 'BOOLEAN':
+            return 'BOOLEAN'
+        elif nome == 'INT_ARRAY':
+            return 'INT_ARRAY'
+        elif nome == 'USER_DEFINED':
+            return 'USER_DEFINED'
+        else:
+            return 'UNKKNOW'
+
+class Scope(object):
+
+    def __init__(self, parent):
+        self.parent = parent
+        if parent != None:
+            self.currentClasseName = parent.currentClasseName
+        else:
+            self.currentClasseName = None
+        self.entries = {}
+
+    def insert(self, toInsert):
+        self.entries[toInsert.name] = toInsert
+
+    def lookup(self, name):
+        if name is self.entries:
+            ret = self.entries.get(name).type
+        else:
+            ret = None
+
+        if ret == None:
+            return ret
+        else:
+            if self.parent == None:
+                return None
+            else:
+                return self.parent.lookup(name)
+
+    def clear(self):
+        return self.entries.clear()
+
+    def print(self, ident):
+        if self.parent != None:
+            self.parent.print(ident)
+        valores = self.entries.keys()
+        for i in valores:
+            print(self.entries.get(i).name +" -> " + self.entries.get(i).type)
+
+class VariableEntry(object):
+    def __init__(self):
+        self.name
+        self.type
+
+    def VariableEntry(self, type, name):
+        self.name = name
+        self.type = type
+
+    def toString(self):
+        return self.type.toString() + ": " + self.name
+
+
+
+
+
+class FirstVistor(ParseTreeVisitor):
+    def __init__(self):
+        self.classes = {}
+        self.lineNumber = 1
+        self.columnNumber = 1
+
+    def visitGoal(self, ctx, classInfo):
+        print(classInfo)
+        #ctx.children[0].accept(self)
+        ctx.mainClass().accept(self)
+
+        for i in range(1, len(ctx.children)):
+            newClass = ClassInfo
+            ctx.children[i].accept(self)
+        return None
+
+    def visitMainclass(self, ctx, classInfo):
+        print("TOOOOOOO AQUI")
+        #print(ctx.children())
 
 
 

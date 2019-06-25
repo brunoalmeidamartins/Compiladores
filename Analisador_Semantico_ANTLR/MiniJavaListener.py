@@ -125,15 +125,6 @@ class MiniJavaListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MiniJavaParser#err_lparent_closing.
-    def enterErr_lparent_closing(self, ctx:MiniJavaParser.Err_lparent_closingContext):
-        pass
-
-    # Exit a parse tree produced by MiniJavaParser#err_lparent_closing.
-    def exitErr_lparent_closing(self, ctx:MiniJavaParser.Err_lparent_closingContext):
-        pass
-
-
     # Enter a parse tree produced by MiniJavaParser#expr_this.
     def enterExpr_this(self, ctx:MiniJavaParser.Expr_thisContext):
         pass
@@ -176,15 +167,6 @@ class MiniJavaListener(ParseTreeListener):
 
     # Exit a parse tree produced by MiniJavaParser#expr_length.
     def exitExpr_length(self, ctx:MiniJavaParser.Expr_lengthContext):
-        pass
-
-
-    # Enter a parse tree produced by MiniJavaParser#err_rparent_closing.
-    def enterErr_rparent_closing(self, ctx:MiniJavaParser.Err_rparent_closingContext):
-        pass
-
-    # Exit a parse tree produced by MiniJavaParser#err_rparent_closing.
-    def exitErr_rparent_closing(self, ctx:MiniJavaParser.Err_rparent_closingContext):
         pass
 
 

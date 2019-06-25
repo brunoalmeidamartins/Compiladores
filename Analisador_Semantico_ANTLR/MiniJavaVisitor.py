@@ -74,11 +74,6 @@ class MiniJavaVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by MiniJavaParser#err_lparent_closing.
-    def visitErr_lparent_closing(self, ctx:MiniJavaParser.Err_lparent_closingContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by MiniJavaParser#expr_this.
     def visitExpr_this(self, ctx:MiniJavaParser.Expr_thisContext):
         return self.visitChildren(ctx)
@@ -101,11 +96,6 @@ class MiniJavaVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by MiniJavaParser#expr_length.
     def visitExpr_length(self, ctx:MiniJavaParser.Expr_lengthContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MiniJavaParser#err_rparent_closing.
-    def visitErr_rparent_closing(self, ctx:MiniJavaParser.Err_rparent_closingContext):
         return self.visitChildren(ctx)
 
 

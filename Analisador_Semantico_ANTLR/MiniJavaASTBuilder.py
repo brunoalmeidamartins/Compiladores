@@ -213,8 +213,14 @@ class AST_Builder(MiniJavaVisitor):
 
 	# Visita uma árvore de analise produzida por MiniJavaParser
 	# #err_lparent_closing.
-	def visitErr_lparent_closing(self, ctx: MiniJavaParser.Err_lparent_closingContext):
-		return self.visitChildren(ctx)
+
+
+
+	####def visitErr_lparent_closing(self, ctx: MiniJavaParser.Err_lparent_closingContext):
+	####	return self.visitChildren(ctx)
+
+
+
 
 	# Visita uma árvore de analise produzida por MiniJavaParser
 	# #expr_this.
@@ -262,8 +268,10 @@ class AST_Builder(MiniJavaVisitor):
 
 	# Visita uma árvore de analise produzida por MiniJavaParser
 	# #err_rparent_closing.
-	def visitErr_rparent_closing(self, ctx: MiniJavaParser.Err_rparent_closingContext):
-		return self.visitChildren(ctx)
+
+
+	####def visitErr_rparent_closing(self, ctx: MiniJavaParser.Err_rparent_closingContext):
+	####	return self.visitChildren(ctx)
 
 	# Visita uma árvore de analise produzida por MiniJavaParser
 	# #expr_lrparents.
