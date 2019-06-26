@@ -15,8 +15,6 @@ if __name__ is not None and "." in __name__:
 	from .MiniJavaASTBuilder import *
 	from .utilities import *
 	from .AnaliseSemantica import *
-
-	from .teste import *
 else:
 	from MiniJavaParser import MiniJavaParser
 	from MiniJavaLexer import MiniJavaLexer
@@ -28,15 +26,12 @@ else:
 	from utilities import *
 	from AnaliseSemantica import *
 
-	from teste import *
-
 
 def semantic_check(parser_ret):
-	visitor = My_Vistor()
-	visitor.visit(parser_ret)
-def semantic_check2(parser_ret):
-	visitor = Meu_Visitor()
-	visitor.visit(parser_ret)
+	visitor4 = Visitor1()
+	visitor4.visit(parser_ret)
+	visitor5 = Visitor2(visitor4.retornaClassePronta())
+	visitor5.visit(parser_ret)
 
 
 def draw(treelist, name):
@@ -56,64 +51,13 @@ def process(args):
 	tree = parser.goal()
 	# semantic analysis
 
-	#Comentando Por mim!!
-	'''
 	try:
-		#semantic_check(tree)
-		#print("Semantic_check! Ok")
-		semantic_check2(tree)
-		print("Semantic_check2! Ok")
+		semantic_check(tree)
+		print("Semantic_check! Ok")
 	except:
 		print('Erro durante o processo na analise Semantica!!')
-	'''
 
-	#semantic_check(tree)
-	#vis = TypeChecker()
-	#vis.visit(tree)#
-	#print(tabela)
-
-	#print("Tabela de Classe:\n")
-	#print(tabela_classe.imprimirTabela())
-	#print("FIM Tabela de Classe!!")
-
-	#Verificando Circularida Hierarquica
-	#print("Verificando Ciclos no Grafo gerado!!\n ...")
-	#tabela_classe.verificaCircularidadeHierarquica
-	#print("Tabela de Variaveis")
-	#tabela_variaveis.imprimeListaVariaveis()
-
-	#print("Tabela de Chamada de Funcao!!")
-	#tabela_Chamada_Funcao.imprimeListaChamadaFuncao()
-
-
-
-	#Segundo Visitor
-	#TypeCheker
-	#print("Visitor TypeChecker!!")
-	#visitor2 = TypeChecker()
-	#visitor2.visit(tree)
-
-	'''
-	#OutroVisitor
-	visitor3 = FirstVistor()
-	visitor3.visitGoal(tree, "Aqui!!")
-	'''
-
-	#VisitorTeste
-	visitor4 = Visitor1()
-	visitor4.visit(tree)
-
-	visitor5 = Visitor2(visitor4.retornaClassePronta())
-	visitor5.visit(tree)
-
-
-
-	'''
-	#lista = []
-	#lista = vis.visitExpr_method_calling(tree.getChildren('expr_method_calling'))
-	#print("Lista: ",lista)
 	treelist = TreeList.toStringTreeList(tree, recog=parser)
-
 
 	if not os.path.exists(args.output_dir):
 		os.makedirs(args.output_dir)
@@ -131,7 +75,6 @@ def process(args):
 		res = visitor.tree_list
 		draw(res, ast_image)
 		# print('* AST image saved at %s.' % ast_image)
-	'''
 
 	return tree
 

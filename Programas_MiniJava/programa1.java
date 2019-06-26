@@ -4,11 +4,12 @@ class Factorial {
     }
 }
 
-class Fac {
+class Fac extend Fac1{
     public int ComputeFac(int num) {
         int num_aux;
         int b;
-        if (num < 1)
+        int c;
+        if (num< 1)
             c = num;
 
         else
@@ -19,3 +20,17 @@ class Fac {
 }
 
 
+class Fac1 extends Fac{
+    public int ComputeFac(int num) {
+        int num_aux;
+        int b;
+        int c;
+        if (num< 1)
+            c = num;
+
+        else
+            num_aux = num * (this.ComputeFac(num-1));
+        return num_aux;
+    }
+
+}

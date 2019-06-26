@@ -114,6 +114,7 @@ class TabelaDeClasses(object):
         for i in valores:
             if self.tabelaClasses[i].extends:
                 lista_nos.append(self.tabelaClasses[i].nome)
+                print(self.tabelaClasses[i].nome, self.tabelaClasses[i].extendeQuem)
                 grafo.conectar(self.tabelaClasses[i].nome, self.tabelaClasses[i].extendeQuem)
 
         for no in lista_nos:

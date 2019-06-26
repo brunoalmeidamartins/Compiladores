@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import os, sys, re
 from antlr4 import *
 from antlr4.error import ErrorListener
@@ -8,527 +6,15 @@ import argparse
 if __name__ is not None and "." in __name__:
 	from .MiniJavaVisitor import MiniJavaVisitor
 	from .MiniJavaListener import MiniJavaListener
-    #from .TabelaDeSimbolos import *
 else:
     from MiniJavaVisitor import MiniJavaVisitor
     from MiniJavaListener import MiniJavaListener
-    from TabelaDeSimbolos import *
 
-
-#ctx: Contexto
-
-tabela = []
-
-tabela_classe = TabelaDeClasses()
-
-tabela_variaveis = TabelaDeVariaveis()
-
-tabela_Chamada_Funcao = TabelaDeChamadaFuncao()
-
-numero_regiao = 0
-
+#Variaveis Globais
 classe_atual = ''
+regiao = 0
 
-methodo_atual = ''
 
-matrix_parametros = []
-
-
-class Regiao_Identificador(object):
-    '''
-    Usa um dicionario para guardar o identificadores e seus valores em uma regiao
-    '''
-    def __init__(self):
-        self.num_regiao = numero_regiao
-        self.identificadores = {} #dict
-    def push(self, identificador, valor, regiao):
-        try:
-            self.identificadores[identificador] = valor
-            self.num_regiao = regiao
-        except:
-            print("Erro ao adicionar o identificador")
-    def pop(self, identificador):
-        try:
-            self.identificadores.pop(identificador)
-        except:
-            print("Erro ao remover identificador")
-    def checar(self, identificador):
-        try:
-            res = self.identificadores[identificador] # true ou false
-        except:
-            res = False
-        return res
-    def pegarNumeroRegiao(self):
-        return self.num_regiao
-class pilha_regiao_identificadores(object):
-    ''' 
-    Usando uma pilha para armazenar as regioes validas de um identificador
-    '''
-    def __init__(self):
-        self.num_regiao = 0
-        self._identificadores = {} # Valores atuias dos identificadores e seus valores
-        self._stack = [] # Os itens da pilha sao regioes com os seus identificadores
-        self._history_list = [] #Historico de regioes
-
-    def imprime_pilha(self):
-        for regiao in self._stack:
-            print([valor for valor in regiao.identificadores ])
-
-    def checar(self, identificador):
-        res = None
-        for regiao in self._stack:
-            try:
-                res = regiao.identificadores[identificador]
-            except:
-                continue
-        if res == None:
-            return False
-        else:
-            return res
-
-    def add_novo(self):
-        #Adiciona uma nova regiao vazia, nao um novo identificador
-        global numero_regiao
-        r = Regiao_Identificador()
-        self._stack.append(r)
-        self._history_list.append(r)
-        self.num_regiao = numero_regiao
-        numero_regiao += 1
-        return r
-
-    def get_top(self):
-        return self._stack[-1] #Retorna a pilha original para ser modificada
-
-    def pop_last(self):
-        ultimo = self._stack.pop()
-        self._history_list.append('POP')
-        return ultimo
-
-# Implementacao do Visitor
-# Usado para preencher as tabelas de simbolos e tambem analisar alguns erros iniciais
-# Exemplo: Verificar se uma variavel foi declarada antes do uso!!
-class Meu_Visitor(MiniJavaVisitor):
-
-    def __init__(self):
-        self.regioes = pilha_regiao_identificadores()
-        self.funcoes = []
-
-    def print_erro(self, msg, token):
-        linha = token.line # Numero da linha do erro
-        coluna = token.column # Numero da coluna do erro
-        print('Linha '+ str(linha) + ':' + str(coluna) + '\t' + 'Erro: ' + msg )
-
-    def erro_id_nao_detectado(self, msg, ctx):
-        #Identificador nao definido
-        self.print_erro(msg, ctx)
-
-    def erro_id_multi_definido(self, msg, ctx):
-        # Identificador Multi definifo
-        self.print_erro(msg, ctx)
-
-    def checar(self, identificador):
-        return self.regioes.checar(identificador)
-
-    def visitGoal(self, ctx):
-        # Comeco, aloca uma nova regiao
-        self.regioes.add_novo() #Aloca uma nova regiao
-        res = self.visitChildren(ctx)
-        self.regioes.pop_last() # Recupera a regiao alocada
-        return res
-
-    def visitMainclass(self, ctx):
-        '''
-        Uma nova classe MAIN. Verifica se foi definida e coloca na regiao atual
-        Comeca uma nova regiao
-        '''
-        regiao_atual = self.regioes.get_top()
-
-        nome_classe = ctx.Identifier(0).getText()
-        if not self.checar(nome_classe):
-            #Verifica se a MAINCLASS nao foi definida em uma regiao
-            global numero_regiao
-            regiao_atual.push(nome_classe, 'main_class', numero_regiao)
-        else:
-            self.erro_id_multi_definido("Multiplas Mainclass Declaradas: " + nome_classe, ctx.Identifier(0).getSymbol())
-
-        #Inicia uma nova regiao
-        self.regioes.add_novo() #Adiciona uma nova regiao
-        res = self.visitChildren(ctx)
-        self.regioes.pop_last() # Recupera a regiao alocada
-        return res
-
-    def visitDec_class(self, ctx):
-        '''
-        Uma nova Class. Verifica se foi definida e coloca na regiao atual
-        Comeca uma nova regiao
-        '''
-        global numero_regiao
-        global classe_atual
-        global methodo_atual
-        methodo_atual = ''
-
-        regiao_atual = self.regioes.get_top()
-        nome_classe = ctx.Identifier(0).getText()
-        classe_atual = nome_classe
-        if not self.checar(nome_classe):
-            # Coloca na regiao atual
-            regiao_atual.push(nome_classe, 'Classe Declarada', numero_regiao)
-        else:
-            self.erro_id_multi_definido("Multiplas Classes Declaradas: " + nome_classe, ctx.Identifier(0).getSymbol())
-
-        #comeca uma nova regiao
-        self.regioes.add_novo() # Adiciona uma nova regiao
-        res = self.visitChildren(ctx)
-        self.regioes.pop_last() # Recupera a regiao alocada
-
-        global tabela_classe
-        tabela_classe.inserirClasse(nome_classe)
-        if str(ctx.Identifier(1)) != 'None':
-            extendQuem = str(ctx.Identifier(1))
-            tabela_classe.inserirClasse(nome_classe, extendQuem)
-        else:
-            tabela_classe.inserirClasse(nome_classe)
-
-
-        return res
-
-    def visitDec_var(self, ctx):
-        '''
-        Verifica se uma nova variavel declarada foi declarada multiplas vezes
-        '''
-        regiao_atual = self.regioes.get_top()
-        var_name = ctx.Identifier().getText()
-        var_type = ctx.mtype().getText()
-        global tabela_variaveis
-        global numero_regiao
-        global classe_atual
-        global methodo_atual
-        #print(regiao_atual.pegarNumeroRegiao())
-        #print(regiao_atual.pegaNumeroRegiao())
-        tabela_variaveis.adicionar(var_name, var_type, '0', numero_regiao, classe_atual, methodo_atual)
-
-        if not self.checar(var_name):
-            # Coloca na regiao atual
-            #global numero_regiao
-            regiao_atual.push(var_name, var_type, numero_regiao)
-        else:
-            self.erro_id_multi_definido("Multiplas Variaveis declaradas: " + var_name, ctx.Identifier().getSymbol())
-        return self.visitChildren(ctx)
-
-    def visitDec_method(self, ctx):
-        '''
-        Verifica se o nome do metodo foi definido
-        Comeca uma nova regiao
-        '''
-        global numero_regiao
-        global methodo_atual
-
-        regiao_atual = self.regioes.get_top()
-        nome_metodo = ctx.Identifier(0).getText()
-        tipo_metodo = ctx.mtype(0).getText()
-        methodo_atual = nome_metodo
-        if not self.checar(nome_metodo):
-            regiao_atual.push(nome_metodo, tipo_metodo, numero_regiao)
-        else:
-            self.erro_id_multi_definido("Multiplos metodos declarados: " + nome_metodo, ctx.Identifier(0).getSymbol())
-
-        global tabela_classe
-        nome_classe = str(ctx.parentCtx.Identifier(0))
-        tabela_classe.inserirMetodos(nome_classe,nome_metodo, tipo_metodo)
-
-
-        nova_regiao = self.regioes.add_novo() # Nova regiao pra o metodo
-        # Nao pode obter o numero exato de parametros, verifique os 20 parametros anteriores
-        try:
-            for i in range(1,20):
-                # mtype(0) eh o nome do metodo
-                parametro = ctx.Identifier(i)
-                nome_parametro = ctx.Identifier(i).getText()
-                tipo_parametro = ctx.mtype(i).getText()
-                #Adiciona os parametros na tabela_classe
-                tabela_classe.inserirParametros(nome_classe, nome_metodo, tipo_parametro)
-
-                #Verfica se tem dois parametros iguais
-                # Ok se outra regiao tiver um parametro com o mesmo nome
-
-                if not nova_regiao.checar(nome_parametro):
-                    nova_regiao.push(nome_parametro, tipo_parametro, numero_regiao)
-                else:
-                   self.erro_id_multi_definido("Multiplo parametros declarados: " + nome_parametro, parametro.getSymbol())
-        except:
-            pass # Para a preocupacao de estouro de parametro
-
-        res = self.visitChildren(ctx)
-        self.regioes.pop_last() # Recupera a regiao alocada
-        return res
-
-    def visitExpr_id(self, ctx):
-        nome_id = ctx.Identifier().getText()
-        token = ctx.Identifier().getSymbol()
-        if not self.checar(nome_id):
-            # O identificador nao foi definido
-            self.erro_id_nao_detectado("Identificador nao definido: " + nome_id, token)
-        return self.visitChildren(ctx) # ? return self.check(nome_id)
-
-    def visitState_lrparents(self, ctx):
-        # Comeca uma nova regiao
-        self.regioes.add_novo() # Aloca uma nova regiao
-        res = self.visitChildren(ctx)
-        self.regioes.pop_last() # Recupera a regiao alocada
-        return res
-
-    def visitState_assign(self, ctx):
-        # Nao eh uma nova regiao
-        regiao_atual = self.regioes.get_top()
-        nome_id = ctx.Identifier().getText()
-        if not self.checar(nome_id):
-            self.erro_id_nao_detectado("Identificador nao definido: " + nome_id, ctx.Identifier().getSymbol())
-        res = self.visitChildren(ctx)
-        return res
-
-    def visitState_array_assign(self, ctx):
-        # Nao eh uma nova regiao
-        regiao_atual = self.regioes.get_top()
-        nome_id = ctx.Identifier().getText()
-        if not self.checar(nome_id):
-            self.erro_id_nao_detectado("Identificador nao definido: " + nome_id, ctx.Identifier().getSymbol())
-        res = self.visitChildren(ctx)
-        return res
-
-
-
-
-
-
-    def visitExpr_new_array(self, ctx):
-        # Nao eh uma nova regiao
-        # Nao pode ter sido declarado
-        regiao_atual = self.regioes.get_top()
-        nome_array = ctx.Identifier().getText()
-
-        #print("Nome array:",nome_array)
-        #if not self.checar(nome_array):
-        #    regiao_atual.push(nome_array, 'Usado')
-        #else:
-        #    self.erro_id_multi_definido("Multiplos Arrays declarados: "+ nome_array, ctx.Identifier().getSymbol())
-        #res = self.visitChildren(ctx)
-        #return res
-
-
-
-
-    '''
-    def visitExpr_method_calling(self, ctx):
-        # Nao eh uma nova regiao
-        # Deve ter sido declarado
-        regiao_atual = self.regioes.get_top()
-        nome_metodo = ctx.Identifier().getText()
-
-        if not self.checar(nome_metodo):
-            self.erro_id_nao_detectado("Metodo nao declarado: "+ nome_metodo, ctx.Identifier().getSymbol())
-        res = self.visitChildren(ctx)
-        return res
-    '''
-    def visitExpr_method_calling(self, ctx):
-        #regiao_atual = self.regioes.get_top()
-        nome_metodo = ctx.Identifier().getText()
-        self.funcoes.append(nome_metodo)
-        #print(self.funcoes)
-        lista = self.funcoes
-
-        #Adicionando na lista de chamadas de funcoes
-        global tabela_Chamada_Funcao
-        resultado_lista_parametros = []
-        parametro1 = ctx.listaExpCamadaFuncao1
-        try:
-            resultado_lista_parametros.append(parametro1.getText())
-        except:
-            pass # Nao tem parametros
-
-        listaParametros = ctx.listaExpCamadaFuncao2
-        try:
-            for i in listaParametros:
-                resultado_lista_parametros.append(i.getText())
-        except:
-            pass # Nao tem parametros
-
-        if classe_atual == '':
-            tabela_Chamada_Funcao.adicionarListaChamadaFuncao(nome_metodo, resultado_lista_parametros, 'Principal', 'Main')
-        else:
-            tabela_Chamada_Funcao.adicionarListaChamadaFuncao(nome_metodo, resultado_lista_parametros, classe_atual, methodo_atual)
-
-        return self.funcoes
-
-# Segundo Visitor TyperCheker
-class TypeChecker(MiniJavaVisitor):
-
-    def __init__(self):
-        matrix_metodo_parametros = []
-        pass
-
-    def print_erro(self, msg, token):
-        linha = token.line # Numero da linha do erro
-        coluna = token.column # Numero da coluna do erro
-        print('Linha '+ str(linha) + ':' + str(coluna) + '\t' + 'Erro: ' + msg )
-
-    def erro_generico_detectado(self, msg, ctx):
-        #Identificador nao definido
-        self.print_erro(msg, ctx)
-
-
-
-
-    def visitGoal(self, ctx):
-        res = self.visitChildren(ctx)
-        return res
-
-    def visitMainclass(self, ctx):
-        name_classe = ctx.Identifier(0).getText()
-        global classe_atual
-        classe_atual = 'Principal'
-        global methodo_atual
-        methodo_atual = "Main"
-        res = self.visitChildren(ctx)
-        return res
-
-    def visitDec_class(self, ctx):
-        name_classe = ctx.Identifier(0).getText()
-        global classe_atual
-        classe_atual = name_classe
-        res = self.visitChildren(ctx)
-        return res
-
-    def visitDec_var(self, ctx):
-        var_name = ctx.Identifier().getText()
-        var_type = ctx.mtype().getText()
-        return self.visitChildren(ctx)
-
-    def visitDec_method(self, ctx):
-        global methodo_atual
-        global matrix_parametros
-        matrix_parametros = []
-        nome_metodo = ctx.Identifier(0).getText()
-        methodo_atual = nome_metodo
-        try:
-            #Possui um parametro, pelo menos
-            matrix_parametros.append([ctx.tipoP1.getText(), ctx.nomeP1.text])
-        except:
-            pass
-        listaTipos = ctx.listaTipoPs
-        listaNomes = ctx.listaNomePs
-        try:
-            for i in range(0, len(listaNomes)):
-                matrix_parametros.append(listaTipos[i].getText(), listaNomes[i].getText())
-        except:
-            pass
-        #for i in listaParametros:
-        #    resultado_lista_parametros.append(i.getText())
-
-        res = self.visitChildren(ctx)
-        return res
-
-    def visitExpr_op_and(self, ctx):
-        #print(ctx.exp1.getText(), "&&", ctx.exp2.getText())
-        ctx.exp1.accept(self)
-        ctx.exp2.accept(self)
-
-    def visitExpr_op_less(self, ctx):
-        #print(ctx.exp3.getText(), "<", ctx.exp4.getText())
-        ctx.exp3.accept(self)
-        ctx.exp4.accept(self)
-
-    def visitExpr_op_plus(self, ctx):
-        #print(ctx.exp5.getText(), "+", ctx.exp6.getText())
-        ctx.exp5.accept(self)
-        ctx.exp6.accept(self)
-
-    def visitExpr_op_minus(self, ctx):
-        #print(ctx.exp7.getText(), "-", ctx.exp8.getText())
-        ctx.exp7.accept(self)
-        ctx.exp8.accept(self)
-
-    def visitExpr_op_multi(self, ctx):
-        #print(ctx.exp9.getText(), "*", ctx.exp10.getText())
-        ctx.exp9.accept(self)
-        ctx.exp10.accept(self)
-
-
-    #Verifica a chamada de metodo!!
-    #Verifica a conformidade e a quantidade
-    def visitExpr_method_calling(self, ctx):
-        print("To aqui!!")
-        global classe_atual
-        global tabela_classe
-        global tabela_variaveis
-        global matrix_parametros
-        name_metodo = ctx.Identifier().getText()
-        resultado_lista_parametros = []
-        parametro1 = ctx.listaExpCamadaFuncao1
-        try:
-            resultado_lista_parametros.append(parametro1.getText())
-        except:
-            pass  # Nao tem parametros
-
-        listaParametros = ctx.listaExpCamadaFuncao2
-        try:
-            for i in listaParametros:
-                resultado_lista_parametros.append(i.getText())
-        except:
-            pass  # Nao tem parametros
-
-        tabela_etbs = tabela_classe.obterTabelaDaClasse(classe_atual)
-        #Primeiro teste
-        #tipo_chamador = ctx.exp_chamador.getText()
-        tipo_chamador = ctx.exp_chamador.children
-        #print(tipo_chamador[0].getText())
-        type_call = tipo_chamador[0].getText()
-        if type_call == 'new':
-            classe_new = tipo_chamador[1].getText()
-            #Pegar o tipo de retorno do metodo
-            #dicionario = tabela_variaveis.obterListaVariaveisClasse(classe_new)
-            listas_parametros = tabela_classe.obterListaParametros(name_metodo, classe_new)
-        elif type_call == 'this':
-            #dicionario = tabela_variaveis.obterListaVariaveisClasse(classe_atual)
-            listas_parametros = tabela_classe.obterListaParametros(name_metodo, classe_atual)
-        else:
-            #Tipo Variavel para saber qual a classe do metodo
-            dicionario = tabela_variaveis.obterListaVariaveisClasse(classe_atual)
-            try:
-                #Se ele nao tiver na lista de variaveis da classe, entao veio como parametro
-                listas_parametros = tabela_classe.obterListaParametros(name_metodo, dicionario[type_call])
-            except:
-                #Procura na lista de parametros da classe atual
-                nome_classe = ''
-                for vetor in matrix_parametros:
-                    for i in range(0, len(vetor)):
-                        if type_call == vetor[1]:
-                            nome_classe = vetor[0]
-                listas_parametros = tabela_classe.obterListaParametros(name_metodo, nome_classe)
-
-        #Verifica a quantidade de parametros passados
-        if len(resultado_lista_parametros) == len(listas_parametros):
-            pass
-        else:
-            print("Erro!! Nao possuem a mesma quantidade de parametros!!!")
-            self.erro_generico_detectado("Chamada de Metodo: " + name_metodo, ctx.Identifier().getSymbol())
-            sys.exit()
-        #Verifica a ordem de parametros passados
-        for i in range(0, len(resultado_lista_parametros)):
-            tipo = ''
-            #print(resultado_lista_parametros[i])
-            try:
-                #Tenta converter a string em numero
-                int(resultado_lista_parametros[i])
-                tipo = 'int'
-            except:
-                if resultado_lista_parametros[i] == 'false' or resultado_lista_parametros[i] == 'true':
-                    tipo = 'boolean'
-
-
-
-############Novo###################
-###################################
-##################################
 class ClassInfo(object):
     def __init__(self):
         self.name = ''
@@ -550,7 +36,7 @@ class ClassInfo(object):
             print(" ", i, '->', self.methods.get(i).toString())
 
 class FieldInfo(object):
-    def __init__(self, name, type):
+    def __init__(self, name=None, type=None):
         self.typeName = name
         self.type = type
 
@@ -558,12 +44,13 @@ class FieldInfo(object):
         if self.typeName != None:
             return self.typeName
         else:
-            return self.type.toString()
+            #return self.type.toString()
+            return self.type
 
 class MethodoInfo(object):
     def __init__(self):
-        self. name
-        self.returnType
+        self.name = None
+        self.returnType = None
         self.parameters = []
 
     def toString(self):
@@ -577,44 +64,44 @@ class MethodoInfo(object):
 
 class VariableType():
 
-    def toString(self, nome):
+    def toString(self, name):
+        nome = name.upper()
+        res = ''
         if nome == 'INT':
-            return 'INT'
+            res = 'INT'
         elif nome == 'BOOLEAN':
-            return 'BOOLEAN'
+            res = 'BOOLEAN'
         elif nome == 'INT_ARRAY':
-            return 'INT_ARRAY'
+            res = 'INT_ARRAY'
         elif nome == 'USER_DEFINED':
-            return 'USER_DEFINED'
+            res = 'USER_DEFINED'
         else:
-            return 'UNKKNOW'
+            res = 'UNKKNOW'
+        return res
 
 class Scope(object):
 
     def __init__(self, parent):
         self.parent = parent
+        self.currentClassName = None
         if parent != None:
-            self.currentClasseName = parent.currentClasseName
-        else:
-            self.currentClasseName = None
+            self.currentClassName = parent.currentClassName
         self.entries = {}
 
     def insert(self, toInsert):
         self.entries[toInsert.name] = toInsert
 
+
     def lookup(self, name):
-        if name is self.entries:
+        ret = ''
+        if name in self.entries:
             ret = self.entries.get(name).type
         else:
-            ret = None
-
-        if ret == None:
-            return ret
-        else:
             if self.parent == None:
-                return None
+                ret = None
             else:
-                return self.parent.lookup(name)
+                ret = self.parent.lookup(name)
+        return ret
 
     def clear(self):
         return self.entries.clear()
@@ -627,44 +114,753 @@ class Scope(object):
             print(self.entries.get(i).name +" -> " + self.entries.get(i).type)
 
 class VariableEntry(object):
-    def __init__(self):
-        self.name
-        self.type
-
-    def VariableEntry(self, type, name):
+    def __init__(self, type, name):
         self.name = name
         self.type = type
+
+    #def VariableEntry(self, type, name):
+        #self.name = name
+        #self.type = type
+    def obtemNomeTipo(self):
+        return self.type + ":"+self.name
 
     def toString(self):
         return self.type.toString() + ": " + self.name
 
+"""
+Primeira Passagem do Visitor
+Verificacao de erros:
+*- Estende classe nao declarada anteriormente
+*- Exclusivadade da variavel global da classe
+*- Exclusividade do metodo
+*- Exclusividade da classe
+"""
 
+class Visitor1(MiniJavaVisitor):
 
-
-
-class FirstVistor(ParseTreeVisitor):
     def __init__(self):
         self.classes = {}
-        self.lineNumber = 1
-        self.columnNumber = 1
 
-    def visitGoal(self, ctx, classInfo):
-        print(classInfo)
-        #ctx.children[0].accept(self)
+    def retornaClassePronta(self):
+        return self.classes
+
+
+    def print_erro(self, msg, token):
+        linha = token.line  # Numero da linha do erro
+        coluna = token.column  # Numero da coluna do erro
+        print('Linha ' + str(linha) + ':' + str(coluna) + '\t' + 'Erro: ' + msg)
+
+    def erro_generico_detectado(self, msg, ctx):
+        # Identificador nao definido
+        self.print_erro(msg, ctx)
+
+    # Visit a parse tree produced by MiniJavaParser#goal.
+    def visitGoal(self, ctx):
         ctx.mainClass().accept(self)
-
-        for i in range(1, len(ctx.children)):
-            newClass = ClassInfo
-            ctx.children[i].accept(self)
+        for i in ctx.classDeclaration():
+            i.accept(self)
         return None
 
-    def visitMainclass(self, ctx, classInfo):
-        print("TOOOOOOO AQUI")
-        #print(ctx.children())
+
+    # Visit a parse tree produced by MiniJavaParser#mainclass.
+    def visitMainclass(self, ctx):
+        global classe_atual
+        global regiao
+        name = ctx.Identifier(0).getText()
+        classe_atual = name
+        main = ClassInfo()
+        main.name = name
+        main.extendName = None
+
+        regiao += 1
+        self.classes[name] = main
+        return None
+
+
+    # Visit a parse tree produced by MiniJavaParser#dec_class.
+    def visitDec_class(self, ctx):
+        global classe_atual
+        global regiao
+        className = ctx.Identifier(0).getText()
+        classe_atual = className
+        classInfo = ClassInfo()
+        classInfo.name = className
+        classInfo.extendName = None
+        try:
+            classInfo.extendName = ctx.Identifier(1).getText()
+        except:
+            pass
+        #Checa classe Inexistente
+        if className in self.classes:
+            self.erro_generico_detectado("Classe " + className +' ja foi declarada anteriormente!',
+                                         ctx.Identifier(0).getSymbol())
+            sys.exit()
+        #Verificar se a classe a qual herda foi declarada
+        if classInfo.extendName != None and classInfo.extendName not in self.classes:
+            self.erro_generico_detectado("Classe " + classInfo.extendName + ' nao foi declarada anteriormente!',
+                                         ctx.Identifier(1).getSymbol())
+            sys.exit()
+
+        self.classes[className] = classInfo
+        regiao += 1
+
+        for i in ctx.varDeclaration():
+            i.accept(self)
+
+        for i in ctx.methodDeclaration():
+            i.accept(self)
+
+        return None
+
+
+    # Visit a parse tree produced by MiniJavaParser#dec_var.
+    def visitDec_var(self, ctx):
+        #Pega o tipo do campo
+        typeName = ctx.mtype().getText()
+        type = FieldInfo()
+        if typeName == 'INT':
+            type.typeName = None
+            type.type = VariableType().toString(typeName)
+        elif typeName == 'INT[]':
+            type.typeName = None
+            type.type = VariableType().toString(typeName)
+        elif typeName == 'BOOLEAN':
+            type.typeName = None
+            type.type = VariableType().toString(typeName)
+        else:
+            type.typeName = typeName
+            type.type = VariableType().toString('USER_DEFINED')
+
+        # Checar a exclusividade da variavel
+        classInfo = self.classes.get(classe_atual)
+
+        name = ctx.Identifier().getText()
+        if name in classInfo.fields:
+            self.erro_generico_detectado("Dec_Var: Variavel " + name + ' ja foi declarada anteriormente!',
+                                         ctx.Identifier().getSymbol())
+            sys.exit()
+        classInfo.fields[name] = type
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MiniJavaParser#dec_method.
+    def visitDec_method(self, ctx):
+        global classe_atual
+        typeName = ctx.mtype(0).getText()
+        type = FieldInfo()
+        if typeName == 'INT':
+            type.typeName = None
+            type.type = VariableType().toString(typeName)
+        elif typeName == 'INT[]':
+            type.typeName = None
+            type.type = VariableType().toString(typeName)
+        elif typeName == 'BOOLEAN':
+            type.typeName = None
+            type.type = VariableType().toString(typeName)
+        else:
+            type.typeName = typeName
+            type.type = VariableType().toString('USER_DEFINED')
+
+        newMethod = MethodoInfo()
+        newMethod.returnType = type
+
+        #Nome do metodo
+        newMethod.name = ctx.Identifier(0).getText()
+
+        #Exclusividade do metodo
+        classInfo = self.classes.get(classe_atual)
+        if newMethod.name in classInfo.methods:
+            self.erro_generico_detectado("Dec_Method: Metodo " + newMethod.name + ' ja foi declarada anteriormente!',
+                                         ctx.Identifier(0).getSymbol())
+            sys.exit()
+
+        #Obter parametros
+        lista_parametros = []
+        for i in range(1, len(ctx.mtype())):
+            lista_parametros.append(ctx.mtype(i).accept(self))
+        if len(lista_parametros) != 0:
+            for i in lista_parametros:
+                if i.upper() == 'INT':
+                    parType = FieldInfo(None, 'INT')
+                elif i.upper() == 'BOOLEAN':
+                    parType = FieldInfo(None, 'BOOLEAN')
+                elif i.upper() == 'INT_ARRAY':
+                    parType = FieldInfo(None, 'INT_ARRAY')
+                else:
+                    parType = FieldInfo(i.upper(), 'USER_DEFINED')
+                newMethod.parameters.append(parType)
+
+        #Verifica se metodo substitui o metodo da superclasse
+        if classInfo.extendName == '':
+            currentClassName = None
+        else:
+            currentClassName = classInfo.extendName
+        while(currentClassName != None):
+            currentClass = self.classes.get(currentClassName)
+            if newMethod.name in currentClass.methods:
+                superMethod = currentClass.methods.get(newMethod.name)
+                correctOverride = True
+                if newMethod.returnType.type != superMethod.returnType.type or \
+                        len(newMethod.parameters) != len(superMethod.parameters):
+                    correctOverride = False
+
+                if correctOverride:
+                    for i in range(0, len(newMethod.parameters)):
+                        if newMethod.parameters[i].type != superMethod.parameters[i].type:
+                            correctOverride = False
+                if not correctOverride:
+                    self.erro_generico_detectado("Override de funcao diferente da super classe",
+                                                 ctx.Identifier(0).getSymbol())
+                    sys.exit()
+
+            currentClassName = currentClass.extendName
+        classInfo.methods[newMethod.name] = newMethod
+        return None
+
+
+    # Visit a parse tree produced by MiniJavaParser#mtype.
+    def visitMtype(self, ctx):
+        type = ctx.getText().upper()
+        return type
+
+    # Visit a parse tree produced by MiniJavaParser#expr_id.
+    def visitExpr_id(self, ctx):
+        id = ctx.getText()
+        return id
+
+    # Visit a parse tree produced by MiniJavaParser#err_miss_RHS.
+    def visitErr_miss_RHS(self, ctx):
+        return self.visitChildren(ctx)
+
+    # Visit a parse tree produced by MiniJavaParser#err_many_lparents.
+    def visitErr_many_lparents(self, ctx):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MiniJavaParser#err_many_rparents.
+    def visitErr_many_rparents(self, ctx):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MiniJavaParser#expr_array.
+    def visitExpr_array(self, ctx):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MiniJavaParser#err_miss_LHS.
+    def visitErr_miss_LHS(self, ctx):
+        return self.visitChildren(ctx)
+
+
+class Visitor2(MiniJavaVisitor):
+
+    def __init__(self, classes):
+        self.classes = classes
+        self.tempParameters = []
+        self.scopoGlobal = None
+        self.scopoLocal = None
+
+    def print_erro(self, msg, token):
+        linha = token.line  # Numero da linha do erro
+        coluna = token.column  # Numero da coluna do erro
+        print('Linha ' + str(linha) + ':' + str(coluna) + '\t' + 'Erro: ' + msg)
+
+    def erro_generico_detectado(self, msg, ctx):
+        # Identificador nao definido
+        self.print_erro(msg, ctx)
+
+    #Checa se a class2 eh subclass da class1
+    def isCompatible(self, class1, class2):
+        if class1.upper() == 'INT[]':
+            class1 = 'INT_ARRAY'
+        if class2.upper() == 'INT[]':
+            class2 = 'INT_ARRAY'
+        if class1 == class2:
+            return True
+        alternativa1 = False
+        alternativa2 = False
+        valores_classes = self.classes.keys()
+        for i in valores_classes:
+            if class1 == i.upper():
+                alternativa1 = True
+            if class2 == i.upper():
+                alternativa2 = True
+        if not (alternativa1 and alternativa2):
+            return False
+
+        nomeClasse = ''
+        for i in valores_classes:
+            if class2 == i.upper():
+                nomeClasse = i
+                break
+        class2 = self.classes.get(nomeClasse).extendName
+
+        while class2 != None:
+            if class1.upper() == class2.upper():
+                return True
+            for i in valores_classes:
+                if class2 == i.upper():
+                    nomeClasse = i
+                    break
+            class2 = self.classes.get(nomeClasse).extendName
+        return False
+
+    def lookupField(self, scope, fieldName):
+        #Checa o escopo
+        ret = scope.lookup(fieldName)
+        if ret != None:
+            return ret
+
+        #Checa as super classses
+        className1 = scope.currentClassName
+        className = self.classes.get(className1).extendName
+        while className != None:
+            superClass = self.classes.get(className)
+            if fieldName in superClass.fields:
+                return superClass.fields.get(fieldName).toString()
+
+            className = self.classes.get(className).extendName
+
+        return None
+
+    def lookupMethod(self, className, methodName):
+        classInfo = self.classes.get(className)
+
+        #Checa a classe
+        if methodName in classInfo.methods:
+            return classInfo.methods.get(methodName)
+
+        #Checa super classes
+        extendName = classInfo.extendName
+        while extendName != None:
+            classInfo = self.classes.get(extendName)
+            if methodName in classInfo.methods:
+                return classInfo.methods.get(methodName)
+            extendName = classInfo.extendName
+        return None
+
+    # Visit a parse tree produced by MiniJavaParser#goal.
+    def visitGoal(self, ctx):
+        ctx.main_class.accept(self)
+        for i in ctx.classDeclaration():
+            i.accept(self)
+        self.classes.clear()
+        #return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MiniJavaParser#mainclass.
+    def visitMainclass(self, ctx):
+        global classe_atual
+        global regiao
+        classe_atual = ctx.Identifier(0).getText()
+        self.scopoGlobal = Scope(None)
+        self.scopoGlobal.currentClasseName = ctx.Identifier(0).getText()
+        ctx.main_class_stmt.accept(self) #Visita os filhos
+
+        self.scopoGlobal.clear()
+        return None
+
+    # Visit a parse tree produced by MiniJavaParser#dec_class.
+    def visitDec_class(self, ctx):
+        global classe_atual
+        global regiao
+        classe_atual = ctx.Identifier(0).getText()
+        self.scopoGlobal = Scope(None)
+        self.scopoGlobal.currentClassName = ctx.Identifier(0).getText()
+
+        self.scopoLocal = self.scopoGlobal #Primeira Passada
+        # Variaveis
+        for i in ctx.varDeclaration():
+            i.accept(self)
+
+        regiao = 1
+
+        # Checa os metodos
+        for i in ctx.methodDeclaration():
+            i.accept(self)
+        self.scopoGlobal.clear()
+        regiao = 0
+        return None
+
+
+    # Visit a parse tree produced by MiniJavaParser#dec_var.
+    def visitDec_var(self, ctx):
+        type = ctx.mtype().accept(self)
+        if type != 'INT' and type != 'INT[]' and type != 'BOOLEAN' and (not type in self.classes):
+            self.erro_generico_detectado("Dec_Var: Classe nao encontrada "+ type, \
+                                         ctx.Identifier().getSymbol())
+            sys.exit()
+
+        #Variavel desconhecida
+        varName = ctx.Identifier().getText()
+        scope = self.scopoGlobal
+        scope1 = self.scopoLocal
+
+        if regiao == 0:
+            if varName in scope.entries:
+                self.erro_generico_detectado("Dec-Var: Variavel " + varName +' ja declarada' , \
+                                             ctx.Identifier().getSymbol())
+                sys.exit()
+            scope.insert(VariableEntry(type,varName))
+        else:
+            if regiao != 0:
+                if varName in scope.entries or varName in scope1.entries:
+                    self.erro_generico_detectado("Dec-Var: Variavel " + varName +' ja declarada' , \
+                                                 ctx.Identifier().getSymbol())
+                    sys.exit()
+                scope1.insert(VariableEntry(type,varName))
+        return None
 
 
 
+    # Visit a parse tree produced by MiniJavaParser#dec_method.
+    def visitDec_method(self, ctx):
+        self.scopoLocal = Scope(self.scopoGlobal)
+        method = self.scopoLocal
+        retType_bkcp = ctx.mtype(0).getText()
+        retType = ctx.mtype(0).getText()
+        retType = retType.upper()
+        if retType == 'INT[]':
+            retType = 'INT_ARRAY'
+        if retType != 'INT' and retType != 'INT_ARRAY' and retType != 'BOOLEAN' and (not retType_bkcp in self.classes):
+            lista = ctx.children
+            self.erro_generico_detectado("DecMethod: Classe "+retType+" nao encontrada ", \
+                                         lista[0].getSymbol())
+            sys.exit()
+        #Pega e checa parametros
+        scope = self.scopoLocal
+        for i in range(1, len(ctx.mtype())):
+            type = ctx.mtype(i).accept(self)
+            name = ctx.Identifier(i).getText()
+            scope.insert(VariableEntry(type, name))
+
+
+        # Checa declaracao de variaveis
+        for i in ctx.varDeclaration():
+            i.accept(self)
+
+        #Checa os comandos
+        for i in ctx.statement():
+            i.accept(self)
+
+        # Checa retorno do tipo
+        if not self.isCompatible(retType, ctx.exp_retorno.accept(self).upper()):
+            self.erro_generico_detectado("Dec_Method: Metodo deve retornar o tipo "+retType, \
+                                         ctx.Identifier(0).getSymbol())
+            sys.exit()
+        method.clear()
+        return None
+
+
+    # Visit a parse tree produced by MiniJavaParser#mtype.
+    def visitMtype(self, ctx):
+        type_back = ctx.getText()
+        type = ctx.getText().upper()
+        if type != 'INT' and type != 'INT[]' and type != 'BOOLEAN' and (not type_back in self.classes):
+            lista = ctx.children
+            self.erro_generico_detectado("MType1:Classe nao encontrada " + type, \
+                                         lista[0].getSymbol())
+            sys.exit()
+
+        if type == 'INT' or type == 'INT[]' or  type == 'BOOLEAN':
+            return type
+        else:
+            return type_back
+
+
+    # Visit a parse tree produced by MiniJavaParser#state_lrparents.
+    def visitState_lrparents(self, ctx):
+        for i in ctx.statement():
+            i.accept(self)
+        return None
+
+
+    # Visit a parse tree produced by MiniJavaParser#state_if.
+    def visitState_if(self, ctx):
+        # Checa a condicao do tipo
+        res = ctx.expression().accept(self).upper()
+        if res != 'BOOLEAN':
+            lista = ctx.children
+            self.erro_generico_detectado("State_IF: Funcao do IF deve ser do tipo BOOLEAN", \
+                                         lista[0].getSymbol())
+            sys.exit()
+        for i in ctx.statement():
+            i.accept(self)
+        return None
+
+
+    # Visit a parse tree produced by MiniJavaParser#state_while.
+    def visitState_while(self, ctx):
+        # Checa a condicao do tipo
+        res = ctx.expression().accept(self).upper()
+        if res != 'BOOLEAN':
+            lista = ctx.children
+            self.erro_generico_detectado("State_while: Funcao do While deve ser do tipo BOOLEAN", \
+                                         lista[0].getSymbol())
+            sys.exit()
+        ctx.statement().accept(self)
+        return None
+
+
+    # Visit a parse tree produced by MiniJavaParser#state_print.
+    def visitState_print(self, ctx):
+        argType = ctx.expression().accept(self)
+        argType = argType.upper()
+        if argType != 'INT' and argType != 'BOOLEAN':
+            lista = ctx.children
+            self.erro_generico_detectado("State_print: Funcao print so aceita INT ou BOOLEAN", \
+                                        lista[0].getSymbol())
+            sys.exit()
+        ctx.expression().accept(self)
+        return None
+
+
+    # Visit a parse tree produced by MiniJavaParser#state_assign.
+    def visitState_assign(self, ctx):
+        # Lado esquerdo: tipo
+        scope = self.scopoLocal
+        varName = ctx.Identifier().getText()
+        ltype = self.lookupField(scope, varName)
+        if ltype == None:
+            self.erro_generico_detectado("State_Assign: Variavel " + varName + ' nao foi declarada antes do uso!', \
+                                         ctx.Identifier().getSymbol())
+            sys.exit()
+        # Lado direito: tipo
+        rtype = ctx.expression().accept(self)
+
+        #Checa os tipos
+        if not self.isCompatible(ltype.upper(), rtype.upper()):
+            self.erro_generico_detectado("State_Assign: Variavel " + varName + ' tipos incompativeis!', \
+                                         ctx.Identifier().getSymbol())
+            sys.exit()
+
+
+        return None
+
+
+    # Visit a parse tree produced by MiniJavaParser#state_array_assign.
+    def visitState_array_assign(self, ctx):
+        # Checa tipo do indice
+        res = ctx.expression(0).accept(self)
+        if res != 'INT':
+            self.erro_generico_detectado("State_Array_Assign: O indice deve sempre ser do tipo INT", \
+                                         ctx.Identifier().getSymbol())
+            sys.exit()
+
+        #Checa o tipo do array
+        arrayID = ctx.Identifier().getText()
+        scopo = self.scopoLocal
+        if self.lookupField(scopo, arrayID) == None:
+            self.erro_generico_detectado("State_Array_Assign: Variavel "+arrayID+" nao foi declarada", \
+                                         ctx.Identifier().getSymbol())
+            sys.exit()
+
+        tipo = self.lookupField(scopo, arrayID)
+        if tipo.upper() == 'INT[]':
+            tipo = 'INT_ARRAY'
+
+        if tipo != 'INT_ARRAY':
+            self.erro_generico_detectado("State_Array_Assign: Array com id " + arrayID + " diferente de INT_ARRAY", \
+                                         ctx.Identifier().getSymbol())
+            sys.exit()
+
+        #Checa tipo da expressao esquerda
+        rest1 = ctx.expression(1).accept(self)
+        if rest1 != 'INT':
+            self.erro_generico_detectado("State_ArraYy_Assign: Arrays pode somente valores do tipo INT", \
+                                         ctx.Identifier().getSymbol())
+            sys.exit()
+
+        return None
+
+
+    # Visit a parse tree produced by MiniJavaParser#expr_op_and.
+    def visitExpr_op_and(self, ctx):
+        ltype = ctx.expression(0).accept(self).upper()
+        rtype = ctx.expression(1).accept(self).upper()
+        if ltype != 'BOOLEAN' or rtype != 'BOOLEAN':
+            lista = ctx.children
+            self.erro_generico_detectado("Expr_op_and: Ambos os lados da expressao && devem ser do tipo BOOLEAN", \
+                                         lista[1].getSymbol())
+            sys.exit()
+        return "BOOLEAN"
+
+    # Visit a parse tree produced by MiniJavaParser#expr_op_less.
+    def visitExpr_op_less(self, ctx):
+        ltype = ctx.expression(0).accept(self).upper()
+        rtype = ctx.expression(1).accept(self).upper()
+        if ltype != 'INT' or rtype != 'INT':
+            lista = ctx.children
+
+            self.erro_generico_detectado("Ambos os lados da expressao < devem ser do tipo INT", \
+                                         lista[1].getSymbol())
+            sys.exit()
+        return "BOOLEAN"
+
+    # Visit a parse tree produced by MiniJavaParser#expr_op_plus.
+    def visitExpr_op_plus(self, ctx):
+        ltype = ctx.expression(0).accept(self).upper()
+        rtype = ctx.expression(1).accept(self).upper()
+        if ltype != 'INT' or rtype != 'INT':
+            lista = ctx.children
+            self.erro_generico_detectado("Ambos os lados da expressao + devem ser do tipo INT", \
+                                         lista[1].getSymbol())
+            sys.exit()
+        return "INT"
+
+    # Visit a parse tree produced by MiniJavaParser#expr_op_minus.
+    def visitExpr_op_minus(self, ctx):
+        ltype = ctx.expression(0).accept(self).upper()
+        rtype = ctx.expression(1).accept(self).upper()
+        if ltype != 'INT' or rtype != 'INT':
+            lista = ctx.children
+            self.erro_generico_detectado("Ambos os lados da expressao - devem ser do tipo INT", \
+                                         lista[1].getSymbol())
+            sys.exit()
+        return "INT"
+
+    # Visit a parse tree produced by MiniJavaParser#expr_op_multi.
+    def visitExpr_op_multi(self, ctx):
+        ltype = ctx.expression(0).accept(self).upper()
+        rtype = ctx.expression(1).accept(self).upper()
+        if ltype != 'INT' or rtype != 'INT':
+            lista = ctx.children
+            self.erro_generico_detectado("Ambos os lados da expressao * devem ser do tipo INT", \
+                                         lista[1].getSymbol())
+            sys.exit()
+        return "INT"
+
+    # Visit a parse tree produced by MiniJavaParser#expr_array.
+    def visitExpr_array(self, ctx):
+        arrayType = ctx.expression(0).accept(self)
+        if arrayType.upper() == 'INT[]':
+            arrayType = 'INT_ARRAY'
+
+        if arrayType != 'INT_ARRAY':
+            lista = ctx.children
+            self.erro_generico_detectado("Expr_array: Matrizes so podem conter valores do tipo INT", \
+                                         lista[1].getSymbol())
+            sys.exit()
+        indexType = ctx.expression(1).accept(self)
+        if indexType != 'INT':
+            lista = ctx.children
+            self.erro_generico_detectado("Expr_array: Indice do array so pode ser do tipo INT", \
+                                         lista[1].getSymbol())
+            sys.exit()
+
+        return "INT"
+
+    # Visit a parse tree produced by MiniJavaParser#expr_length.
+    def visitExpr_length(self, ctx):
+        arrayType = ctx.expression().accept(self).upper()
+        if arrayType == 'INT[]':
+            arrayType = 'INT_ARRAY'
+        if arrayType != 'INT_ARRAY':
+            lista = ctx.children
+            self.erro_generico_detectado("Expressao nao eh do tipo INT_ARRAY", \
+                                         lista[1].getSymbol())
+            sys.exit()
+        return "INT"
+
+
+    # Visit a parse tree produced by MiniJavaParser#expr_method_calling.
+    def visitExpr_method_calling(self, ctx):
+        #Checar a clasee
+        global classe_atual
+        scope = self.scopoLocal
+        className = ctx.expression(0).accept(self)
+        if not className in self.classes:
+            className = self.lookupField(scope, className)
+        if className == None or (not className in self.classes):
+            self.erro_generico_detectado("Expr_method_calling: Chamada para uma classe inexistente!!", \
+                                         ctx.Identifier().getSymbol())
+            sys.exit()
+
+        #Checa o metodo
+        method = ctx.Identifier().getText()
+        methodInfo = self.lookupMethod(className, method)
+        if methodInfo == None:
+            self.erro_generico_detectado("Expr_method_calling: Class "+className+" nao possui o metodo da chamada", \
+                                         ctx.Identifier().getSymbol())
+
+        #Checa os parametros
+        for i in range(1, len(ctx.expression())):
+            self.tempParameters.append(ctx.expression(i).accept(self))
+
+        # Verificacao cruzada
+        parameterAgree = True
+        if len(methodInfo.parameters) != len(self.tempParameters):
+            parameterAgree = False
+
+
+        for i in range(0, len(self.tempParameters)):
+            if not self.isCompatible(methodInfo.parameters[i].toString(), self.tempParameters[i].upper()):
+                parameterAgree = False
+
+        if not parameterAgree:
+            self.erro_generico_detectado(
+                "Expr_method_calling: Metodo " + className + "." + method + ' esta com chamada de argumentos erradas', \
+                ctx.Identifier().getSymbol())
+            sys.exit()
+
+        self.tempParameters.clear()
+
+        return methodInfo.returnType.toString()
+
+
+    # Visit a parse tree produced by MiniJavaParser#expr_bool.
+    def visitExpr_bool(self, ctx):
+        return "BOOLEAN"
+
+    # Visit a parse tree produced by MiniJavaParser#expr_int.
+    def visitExpr_int(self, ctx):
+        return "INT"
+
+
+    # Visit a parse tree produced by MiniJavaParser#expr_int_array.
+    def visitExpr_int_array(self, ctx):
+        indexType = ctx.expression().accept(self)
+        if indexType != 'INT':
+            self.erro_generico_detectado("Expr_int_array: O tamanho do Array deve ser expressao do tipo INT", ctx.Identifier().getSymbol())
+            sys.exit()
+        return "INT_ARRAY"
+
+
+    # Visit a parse tree produced by MiniJavaParser#expr_new_array.
+    def visitExpr_new_array(self, ctx):
+        className = ctx.Identifier().getText()
+        if not className in self.classes:
+            self.erro_generico_detectado("Expr_new_array: Tentando instanciar um objeto de classe inexistente",
+                                         ctx.Identifier().getSymbol())
+            sys.exit()
+        return className
 
 
 
+    # Visit a parse tree produced by MiniJavaParser#expr_not.
+    def visitExpr_not(self, ctx):
+        return ctx.expression().accept(self)
+
+
+    # Visit a parse tree produced by MiniJavaParser#expr_id.
+    def visitExpr_id(self, ctx):
+        var = ctx.Identifier().getText()
+        scope = self.scopoLocal
+        type = self.lookupField(scope, var)
+
+        if type == None:
+            self.erro_generico_detectado("Expressao Identificador : Variavel "+ var + " nao declarada!",
+                                         ctx.Identifier().getSymbol())
+            sys.exit()
+        var = type
+        return var
+
+    # Visit a parse tree produced by MiniJavaParser#expr_this.
+    def visitExpr_this(self, ctx):
+        scopo = self.scopoLocal
+        return scopo.currentClassName
+
+    # Visit a parse tree produced by MiniJavaParser#expr_this.
+    def visitExpr_lrparents(self, ctx):
+        return ctx.expression().accept(self)
 
