@@ -355,6 +355,28 @@ class Visitor1(MiniJavaVisitor):
         id = ctx.getText()
         return id
 
+    # Visit a parse tree produced by MiniJavaParser#err_miss_RHS.
+    def visitErr_miss_RHS(self, ctx):
+        return self.visitChildren(ctx)
+
+    # Visit a parse tree produced by MiniJavaParser#err_many_lparents.
+    def visitErr_many_lparents(self, ctx):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MiniJavaParser#err_many_rparents.
+    def visitErr_many_rparents(self, ctx):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MiniJavaParser#expr_array.
+    def visitExpr_array(self, ctx):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by MiniJavaParser#err_miss_LHS.
+    def visitErr_miss_LHS(self, ctx):
+        return self.visitChildren(ctx)
 
 
 class Visitor2(MiniJavaVisitor):
@@ -449,7 +471,7 @@ class Visitor2(MiniJavaVisitor):
         ctx.main_class.accept(self)
         for i in ctx.classDeclaration():
             i.accept(self)
-        #self.classes.clear()
+        self.classes.clear()
         #return self.visitChildren(ctx)
 
 
@@ -869,283 +891,13 @@ class Visitor2(MiniJavaVisitor):
     def visitExpr_lrparents(self, ctx):
         return ctx.expression().accept(self)
 
-
-class ClassInfo2(object):
-
-    def __init__(self):
-        self.name = ''
-        self.extendName = ''
-        self.fields = {}
-        self.methods = {}
-        self.parent = None
-
-    def getMethods(self):
-        ret = []
-        overridden = []
-        if self.parent != None:
-            parentMethods = self.parent.getMethods()
-            #Override parent methods
-            for parentMethod in parentMethods:
-                simple = parentMethod.substring(len(self.parent.name)+1, len(parentMethod))
-                if simple in self.methods:
-                    parentMethods.set(parentMethods.indeOf(parentMethod), parentMethod.replaceFirst(self.parent.name, self.name))
-                    overridden.append(simple)
-            for i in parentMethods:
-                ret.append(i)
-        valores = self.methods.keys()
-        for entry in valores:
-            a = self.methods.get(entry)
-            method = a.keys()
-            if not method in overridden:
-                ret.append(self.name+"_"+method)
-
-        return ret
-
-    def getFielNumber(self):
-        fieldNo = 0
-        if self.parent != None:
-            fieldNo =self.parent.getFieldNumber()
-        fieldNo += len(self.fields)
-        return fieldNo
-
-    def getFieldPosition(self, fieldname):
-        ret = -1
-        if fieldname in self.fields:
-            #Pega o index
-            index = -1
-            valores = self.fields.keys()
-            for entry in valores:
-                if entry == fieldname:
-                    break
-                index+=1
-
-            if self.parent != None:
-                ret = index + self.parent.getFieldNumber()
-            else:
-                ret = index
-        else:
-            ret = self.parent.getFieldPosition(fieldname)
-
-        return ret
-    def initParent(self, classes):
-        if self.extendName != None:
-            self.parent = classes.get(self.extendName)
-
-    def print(self):
-        print("Classe: ", self.name)
-        print(" extends", self.extendName)
-        print(" FIELDS:")
-        valores = self.fields.keys()
-        for i in valores:
-            print(" ",i, '->', self.fields.get(i).toString())
-        print(" Metodos:")
-        valores = self.methods.keys()
-        for i in valores:
-            print(" ", i, '->', self.methods.get(i).toString())
-
 class Visitor3(MiniJavaVisitor):
-
-    def __init__(self):
-        self.classes = {}
-
-    def retornaClassePronta(self):
-        return self.classes
-
-
-    def print_erro(self, msg, token):
-        linha = token.line  # Numero da linha do erro
-        coluna = token.column  # Numero da coluna do erro
-        print('Linha ' + str(linha) + ':' + str(coluna) + '\t' + 'Erro: ' + msg)
-
-    def erro_generico_detectado(self, msg, ctx):
-        # Identificador nao definido
-        self.print_erro(msg, ctx)
-
-    # Visit a parse tree produced by MiniJavaParser#goal.
-    def visitGoal(self, ctx):
-        ctx.mainClass().accept(self)
-        for i in ctx.classDeclaration():
-            i.accept(self)
-        return None
-
-
-    # Visit a parse tree produced by MiniJavaParser#mainclass.
-    def visitMainclass(self, ctx):
-        global classe_atual
-        global regiao
-        name = ctx.Identifier(0).getText()
-        classe_atual = name
-        main = ClassInfo2()
-        main.name = name
-        main.extendName = None
-
-        regiao += 1
-        self.classes[name] = main
-        return None
-
-
-    # Visit a parse tree produced by MiniJavaParser#dec_class.
-    def visitDec_class(self, ctx):
-        global classe_atual
-        global regiao
-        className = ctx.Identifier(0).getText()
-        classe_atual = className
-        classInfo = ClassInfo2()
-        classInfo.name = className
-        classInfo.extendName = None
-        try:
-            classInfo.extendName = ctx.Identifier(1).getText()
-        except:
-            pass
-        #Checa classe Inexistente
-        if className in self.classes:
-            self.erro_generico_detectado("Classe " + className +' ja foi declarada anteriormente!',
-                                         ctx.Identifier(0).getSymbol())
-            sys.exit()
-        #Verificar se a classe a qual herda foi declarada
-        if classInfo.extendName != None and classInfo.extendName not in self.classes:
-            self.erro_generico_detectado("Classe " + classInfo.extendName + ' nao foi declarada anteriormente!',
-                                         ctx.Identifier(1).getSymbol())
-            sys.exit()
-
-        self.classes[className] = classInfo
-        regiao += 1
-
-        for i in ctx.varDeclaration():
-            i.accept(self)
-
-        for i in ctx.methodDeclaration():
-            i.accept(self)
-
-        return None
-
-
-    # Visit a parse tree produced by MiniJavaParser#dec_var.
-    def visitDec_var(self, ctx):
-        #Pega o tipo do campo
-        typeName = ctx.mtype().getText()
-        type = FieldInfo()
-        if typeName == 'INT':
-            type.typeName = None
-            type.type = VariableType().toString(typeName)
-        elif typeName == 'INT[]':
-            type.typeName = None
-            type.type = VariableType().toString(typeName)
-        elif typeName == 'BOOLEAN':
-            type.typeName = None
-            type.type = VariableType().toString(typeName)
-        else:
-            type.typeName = typeName
-            type.type = VariableType().toString('USER_DEFINED')
-
-        # Checar a exclusividade da variavel
-        classInfo = self.classes.get(classe_atual)
-
-        name = ctx.Identifier().getText()
-        if name in classInfo.fields:
-            self.erro_generico_detectado("Dec_Var: Variavel " + name + ' ja foi declarada anteriormente!',
-                                         ctx.Identifier().getSymbol())
-            sys.exit()
-        classInfo.fields[name] = type
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by MiniJavaParser#dec_method.
-    def visitDec_method(self, ctx):
-        global classe_atual
-        typeName = ctx.mtype(0).getText()
-        type = FieldInfo()
-        if typeName == 'INT':
-            type.typeName = None
-            type.type = VariableType().toString(typeName)
-        elif typeName == 'INT[]':
-            type.typeName = None
-            type.type = VariableType().toString(typeName)
-        elif typeName == 'BOOLEAN':
-            type.typeName = None
-            type.type = VariableType().toString(typeName)
-        else:
-            type.typeName = typeName
-            type.type = VariableType().toString('USER_DEFINED')
-
-        newMethod = MethodoInfo()
-        newMethod.returnType = type
-
-        #Nome do metodo
-        newMethod.name = ctx.Identifier(0).getText()
-
-        #Exclusividade do metodo
-        classInfo = self.classes.get(classe_atual)
-        if newMethod.name in classInfo.methods:
-            self.erro_generico_detectado("Dec_Method: Metodo " + newMethod.name + ' ja foi declarada anteriormente!',
-                                         ctx.Identifier(0).getSymbol())
-            sys.exit()
-
-        #Obter parametros
-        lista_parametros = []
-        for i in range(1, len(ctx.mtype())):
-            lista_parametros.append(ctx.mtype(i).accept(self))
-        if len(lista_parametros) != 0:
-            for i in lista_parametros:
-                if i.upper() == 'INT':
-                    parType = FieldInfo(None, 'INT')
-                elif i.upper() == 'BOOLEAN':
-                    parType = FieldInfo(None, 'BOOLEAN')
-                elif i.upper() == 'INT_ARRAY':
-                    parType = FieldInfo(None, 'INT_ARRAY')
-                else:
-                    parType = FieldInfo(i.upper(), 'USER_DEFINED')
-                newMethod.parameters.append(parType)
-
-        #Verifica se metodo substitui o metodo da superclasse
-        if classInfo.extendName == '':
-            currentClassName = None
-        else:
-            currentClassName = classInfo.extendName
-        while(currentClassName != None):
-            currentClass = self.classes.get(currentClassName)
-            if newMethod.name in currentClass.methods:
-                superMethod = currentClass.methods.get(newMethod.name)
-                correctOverride = True
-                if newMethod.returnType.type != superMethod.returnType.type or \
-                        len(newMethod.parameters) != len(superMethod.parameters):
-                    correctOverride = False
-
-                if correctOverride:
-                    for i in range(0, len(newMethod.parameters)):
-                        if newMethod.parameters[i].type != superMethod.parameters[i].type:
-                            correctOverride = False
-                if not correctOverride:
-                    self.erro_generico_detectado("Override de funcao diferente da super classe",
-                                                 ctx.Identifier(0).getSymbol())
-                    sys.exit()
-
-            currentClassName = currentClass.extendName
-        classInfo.methods[newMethod.name] = newMethod
-        return None
-
-
-    # Visit a parse tree produced by MiniJavaParser#mtype.
-    def visitMtype(self, ctx):
-        type = ctx.getText().upper()
-        return type
-
-    # Visit a parse tree produced by MiniJavaParser#expr_id.
-    def visitExpr_id(self, ctx):
-        id = ctx.getText()
-        return id
-
-
-
-class Visitor4(MiniJavaVisitor):
 
     # Construtor
     def __init__(self, classes):
         self.classes = classes
-        valores = self.classes.keys()
-        for i in valores:
-            #self.classes[i].initParent(classes)
-            print(dir(self.classes[i]))
+        for i in self.classes:
+            i.initParent(classes)
         self.tempParameters = []
         self.argumentRegisters = []
 
@@ -1724,11 +1476,8 @@ class Visitor4(MiniJavaVisitor):
     # Visit a parse tree produced by MiniJavaParser#expr_new_array.
     def visitExpr_new_array(self, ctx):
         self.justID = True
-        retf1 = ctx.Identifier().getText()
-        print(self.classes)
-        print(retf1)
-        sys.exit()
-        className = retf1
+        retf1 = ctx.Identifier().accept(self)
+        className = retf1.type
         self.justID = False
 
         clazz = self.classes.get(className)

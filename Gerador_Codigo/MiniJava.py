@@ -61,10 +61,15 @@ def process(args):
 	'''
 	visitor4 = Visitor1()
 	visitor4.visit(tree)
+
 	visitor5 = Visitor2(visitor4.retornaClassePronta())
 	visitor5.visit(tree)
-	visitor6 = Visitor3(visitor4.retornaClassePronta())
+
+	visitor6 = Visitor3()
 	visitor6.visit(tree)
+
+	visitor7 = Visitor4(visitor6.retornaClassePronta())
+	visitor7.visit(tree)
 
 	''''
 	treelist = TreeList.toStringTreeList(tree, recog=parser)
