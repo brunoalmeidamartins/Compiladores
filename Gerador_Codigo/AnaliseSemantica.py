@@ -54,12 +54,12 @@ class MethodoInfo(object):
         self.parameters = []
 
     def toString(self):
-        ret = self.returnType + " " + self.name + "("
+        ret = str(self.returnType) + " " + self.name + "("
         for i in self.parameters:
             ret+= i.toString() + ", "
         tamanho = len(self.parameters)
         if tamanho != 0:
-            ret = ret[0, len(ret) -2]
+            ret = ret[0:len(ret)-2]
         return ret + ")"
 
 class VariableType():
@@ -142,7 +142,7 @@ class Generator(object):
     def next(self):
         num = 0
         if len(self.toReuse) == 0:
-            self.cont += 1
+            self.count += 1
         else:
             self.toReuse.remove()
         #return self.prefix + int(self.toString(num))
@@ -893,15 +893,13 @@ class ClassInfo2(object):
             for i in parentMethods:
                 ret.append(i)
         valores = self.methods.keys()
-        for entry in valores:
-            a = self.methods.get(entry)
-            method = a.keys()
+        for method in valores:
             if not method in overridden:
                 ret.append(self.name+"_"+method)
 
         return ret
 
-    def getFielNumber(self):
+    def getFieldNumber(self):
         fieldNo = 0
         if self.parent != None:
             fieldNo =self.parent.getFieldNumber()
@@ -1135,6 +1133,69 @@ class Visitor3(MiniJavaVisitor):
         id = ctx.getText()
         return id
 
+class Scope2(object):
+    def __init__(self, parent):
+        self.parent = parent
+        self.currentClassName = None
+        if parent != None:
+            self.currentClassName = parent.currentClassName
+        self.entries = {}
+
+    def insert(self, toInsert):
+        self.entries[toInsert.name] = toInsert
+
+    def lookupRegister(self, name):
+        ret = 0
+        if name in self.entries:
+            ret = self.entries.get(name).register
+        else:
+            ret = -1
+        if ret != -1:
+            return ret
+        else:
+            if self.parent == None:
+                return -1
+            else:
+                return self.parent.lookupRegister(name)
+
+
+    def lookup(self, name):
+        ret = ''
+        if name in self.entries:
+            ret = self.entries.get(name).type
+        else:
+            if self.parent == None:
+                ret = None
+            else:
+                ret = self.parent.lookup(name)
+        return ret
+
+    def getRegister(self, name):
+        ret = 0
+        if name in self.entries:
+            ret = self.entries.get(name).register
+        else:
+            ret = None
+        return ret
+
+    def clear(self):
+        return self.entries.clear()
+
+    def print(self, ident):
+        if self.parent != None:
+            self.parent.print(ident)
+        valores = self.entries.keys()
+        for i in valores:
+            print(self.entries.get(i).name +" -> " + self.entries.get(i).type)
+
+    def toString(self):
+        ret = ""
+        if self.parent != None:
+            ret += self.parent.toString()
+        valores = self.entries.keys()
+        for i in valores:
+            ret += self.entries.get(i).name + " -> " + self.entries.get(i).type + '\n'
+        return ret
 
 
 class Visitor4(MiniJavaVisitor):
@@ -1144,14 +1205,13 @@ class Visitor4(MiniJavaVisitor):
         self.classes = classes
         valores = self.classes.keys()
         for i in valores:
-            #self.classes[i].initParent(classes)
-            print(dir(self.classes[i]))
+            self.classes[i].initParent(classes)
         self.tempParameters = []
         self.argumentRegisters = []
 
         self.finalSpigletCode = ''
         self.labels = Generator("L")
-        self.registers = Generator("TEMP")
+        self.registers = Generator("TEMP ")
 
         self.adressRegister = None
         self.argumentCounter = None
@@ -1186,6 +1246,7 @@ class Visitor4(MiniJavaVisitor):
 
     def lookupMethod(self, className, methodName):
         classInfo = self.classes.get(className)
+
 
         #Checa a classe
         if methodName in classInfo.methods:
@@ -1228,7 +1289,6 @@ class Visitor4(MiniJavaVisitor):
         ctx.mainClass().accept(self)
         for i in ctx.classDeclaration():
             i.accept(self)
-            print(dir(i))
         #self.classes.clear()
         return None
 
@@ -1239,7 +1299,7 @@ class Visitor4(MiniJavaVisitor):
         global regiao
         self.emit("MAIN")
         classe_atual = ctx.Identifier(0).getText()
-        self.scopoGlobal = Scope(None)
+        self.scopoGlobal = Scope2(None)
         self.justID = True
         ret = ctx.Identifier(0).getText()
         self.scopoGlobal.currentClasseName = ret
@@ -1261,13 +1321,13 @@ class Visitor4(MiniJavaVisitor):
         #global regiao
 
         classe_atual = ctx.Identifier(0).getText()
-        self.scopoGlobal = Scope(None)
+        self.scopoGlobal = Scope2(None)
         self.justID = True
-        ret = ctx.Identifier(0).accept(self)
+        ret = ctx.Identifier(0).getText()
         self.justID = False
 
         #Obtem nome da classse
-        self.scopoGlobal.currentClassName = ret.type
+        self.scopoGlobal.currentClassName = ret
 
         self.scopoLocal = self.scopoGlobal #Primeira Passada
 
@@ -1287,49 +1347,51 @@ class Visitor4(MiniJavaVisitor):
     def visitDec_var(self, ctx):
         self.justID = True
         retf0 = ctx.mtype().accept(self)
-        retf1 = ctx.Identifier().accept()
-        varName = retf1.type
+        retf1 = ctx.Identifier().getText()
+        varName = retf1
         self.justID = False
 
         if not self.excludeFields:
             #Adiciona a entrada ao escopo
             newRegister = self.registers.next()
             toInsert = VariableEntry(retf0, varName)
-            toInsert.register = int(newRegister.substring(5, len(newRegister)))
+            #toInsert.register = int(newRegister[5:len(newRegister)])
+            toInsert.register = int(newRegister[5:len(newRegister)])
             scope1 = self.scopoLocal
             scope1.insert(toInsert)
         return None
 
     # Visit a parse tree produced by MiniJavaParser#dec_method.
     def visitDec_method(self, ctx):
-        self.scopoLocal = Scope(self.scopoGlobal)
+        self.scopoLocal = Scope2(self.scopoGlobal)
         method = self.scopoLocal
 
         self.justID = True
-        functionLabel = self.scopoGlobal.currentClassName + "_" + ctx.Identifier(0).accept(self).type
+        functionLabel = self.scopoGlobal.currentClassName + "_" + ctx.Identifier(0).getText()
         self.justID = False
 
         #Obtem parametros
         self.argumentCounter = 1
         scope = self.scopoLocal
-        for i in range(1, len(ctx.mrtype())):
+        for i in range(1, len(ctx.mtype())):
             self.justID = True
             retf0 = ctx.mtype(i).accept(self)
             type = retf0.type
 
-            retf1 = ctx.Identifier(i).accept(self)
-            name = retf1.type
+            retf1 = ctx.Identifier(i).getText()
+            name = retf1
             self.justID = False
 
             toInsert = VariableEntry(type, name)
             self.argumentCounter = self.argumentCounter + 1
             toInsert.register = self.argumentCounter
+            print("asdsdsadasd", toInsert)
             scope.insert(toInsert)
         self.registers.reset(self.argumentCounter)
 
         argumentNo = self.argumentCounter
         self.argumentCounter = -1
-        self.emit("\n"+functionLabel+" ["+argumentNo+"]")
+        self.emit("\n"+functionLabel+" ["+str(argumentNo)+"]")
         self.emit("BEGIN")
 
         #Checa declaracao de variaveis
@@ -1345,7 +1407,6 @@ class Visitor4(MiniJavaVisitor):
         self.emit("RETURN")
         self.emit("\t\t"+retf10.register)
         self.emit("END")
-
         method.clear()
         return None
 
@@ -1371,8 +1432,8 @@ class Visitor4(MiniJavaVisitor):
 
     # Visit a parse tree produced by MiniJavaParser#state_assign.
     def visitState_assign(self, ctx):
-        retf0 = ctx.Identifier().accept(self)
-        register = retf0.register
+        retf0 = ctx.Identifier().getText()
+        register = retf0
         adress = self.adressRegister
 
         retf2 = ctx.expression().accept(self)
@@ -1504,18 +1565,21 @@ class Visitor4(MiniJavaVisitor):
         retf0 = ctx.expression(0).accept(self)
         retf2 = ctx.expression(1).accept(self)
 
+
         register1 = retf0.register
         register2 = retf2.register
 
+
+
         newRegister = self.registers.next()
         self.emit("\t\tMOVE " + newRegister + " MINUS " + register1 + " " + register2)
-
         return ReturnItem("INT", newRegister)
 
     # Visit a parse tree produced by MiniJavaParser#expr_op_multi.
     def visitExpr_op_multi(self, ctx):
         retf0 = ctx.expression(0).accept(self)
         retf2 = ctx.expression(1).accept(self)
+
 
         register1 = retf0.register
         register2 = retf2.register
@@ -1579,8 +1643,8 @@ class Visitor4(MiniJavaVisitor):
 
         #Pega Metodo
         self.justID = True
-        retf2 = ctx.Identifier().accept(self)
-        method = retf2.type
+        retf2 = ctx.Identifier().getText()
+        method = retf2
         methodInfo = self.lookupMethod(className, method)
         self.justID = False
 
@@ -1593,7 +1657,7 @@ class Visitor4(MiniJavaVisitor):
                 if meth[i] == '_':
                     break
             j +=1
-            simple = meth.substring(i, len(meth))
+            simple = meth[i: len(meth)]
             if simple == method:
                 break
             offset +=4
@@ -1603,7 +1667,7 @@ class Visitor4(MiniJavaVisitor):
         self.emit("\t\tHLOAD "+ vTable + " "+ object+ " 0")
         #Pega label Metodo
         methodLabel = self.registers.next()
-        self.emit("\t\tHLOAD "+methodLabel + " "+vTable+ " "+offset)
+        self.emit("\t\tHLOAD "+methodLabel + " "+vTable+ " "+str(offset))
 
         callStatement = "CALL "+methodLabel+"("+object+" "
         #Pega os argumentos
@@ -1617,12 +1681,11 @@ class Visitor4(MiniJavaVisitor):
         self.tempParameters.clear()
         self.argumentRegisters.clear()
 
-        callStatement = callStatement.substring(0, len(callStatement)-1)
+        callStatement = callStatement[0:len(callStatement)-1]
         callStatement += ")"
 
         returnReg = self.registers.next()
         self.emit("\t\tMOVE "+returnReg+" "+callStatement)
-
         return ReturnItem(methodInfo.returnType.toString(), returnReg)
 
     # Visit a parse tree produced by MiniJavaParser#expr_int.
@@ -1635,9 +1698,9 @@ class Visitor4(MiniJavaVisitor):
     def visitExpr_bool(self, ctx):
         newRegister = self.registers.next()
         if ctx.getText().upper() == 'TRUE':
-            self.emit("\t\tMOVE "+newRegister+" "+1) #Verdadeiro
+            self.emit("\t\tMOVE "+newRegister+" "+ str(1)) #Verdadeiro
         else:
-            self.emit("\t\tMOVE " + newRegister + " " + 0) #Falso
+            self.emit("\t\tMOVE " + newRegister + " " + str(0)) #Falso
 
         return ReturnItem("BOOLEAN", newRegister)
 
@@ -1647,11 +1710,11 @@ class Visitor4(MiniJavaVisitor):
         if self.justID:
             return ReturnItem(identifier, None)
 
-        #Pega o registro holding Variavel
+        #Obtem a variavel de registro
         scope = self.scopoLocal
         registerNo = scope.lookupRegister(identifier)
         register = None
-        if registerNo == (-1):
+        if registerNo == -1:
             #Pega registro para class objeto(this)
             classname = scope.currentClassName
             clazz = self.classes.get(classname)
@@ -1659,14 +1722,14 @@ class Visitor4(MiniJavaVisitor):
             if fieldPos != -1:
                 address = self.registers.next()
                 register = self.registers.next()
-                self.emit("\t\tMOVE "+address+" PLUS TEMP 0"+ (fieldPos*4))
+                self.emit("\t\tMOVE "+address+" PLUS TEMP 0"+ str(fieldPos*4))
                 self.adressRegister = address
                 self.emit("\t\tHLOAD "+register+" "+address+" 0")
             else:
                 print("O que?", 0, 0)
                 sys.exit()
         else:
-            register = "TEMP "+registerNo
+            register = "TEMP "+str(registerNo)
             self.adressRegister = None
         return ReturnItem(identifier, register)
 
@@ -1725,9 +1788,6 @@ class Visitor4(MiniJavaVisitor):
     def visitExpr_new_array(self, ctx):
         self.justID = True
         retf1 = ctx.Identifier().getText()
-        print(self.classes)
-        print(retf1)
-        sys.exit()
         className = retf1
         self.justID = False
 
@@ -1736,7 +1796,7 @@ class Visitor4(MiniJavaVisitor):
         #Aloca os objetos
         size = clazz.getFieldNumber()
         objectReg = self.registers.next()
-        self.emit("\t\tMOVE " + objectReg + " HALLOCATE " + ((size + 1) * 4))
+        self.emit("\t\tMOVE " + objectReg + " HALLOCATE " + str(((size + 1) * 4)))
         vTablePtrReg = self.registers.next()
         self.emit("\t\tMOVE " + vTablePtrReg + " " + className + "_vTable")
         vTableReg = self.registers.next()
@@ -1746,22 +1806,22 @@ class Visitor4(MiniJavaVisitor):
         self.emit("\t\tMOVE " + zero + " 0")
         offset = 4
         for i in range(0, size):
-            self.emit("\t\tHSTORE " + objectReg + " " + offset + " " + zero)
+            self.emit("\t\tHSTORE " + objectReg + " " + str(offset) + " " + zero)
             offset += 4
 
         #Constrou vTable
         methods = clazz.getMethods()
         #Pega tamanho de vTable
-        vTableSize = methods.size()*4 # 4 bytes por endereco
+        vTableSize = len(methods)*4 # 4 bytes por endereco
         methodCodeRegister = self.registers.next()
         #Aloca vTabel
-        self.emit("\t\tMOVE " + methodCodeRegister + " HALLOCATE " + vTableSize)
+        self.emit("\t\tMOVE " + methodCodeRegister + " HALLOCATE " + str(vTableSize))
         self.emit("\t\tHSTORE " + objectReg + " 0 " + methodCodeRegister)
         #Store codigo do metodo em vTable
         methodReg = self.registers.next()
         for method in methods:
             self.emit("\t\tMOVE " + methodReg + " " + method)
-            self.emit("\t\tHSTORE " + methodCodeRegister + " " + offset + " " + methodReg)
+            self.emit("\t\tHSTORE " + methodCodeRegister + " " + str(offset) + " " + methodReg)
             offset += 4
 
 
@@ -1777,5 +1837,5 @@ class Visitor4(MiniJavaVisitor):
 
     # Visit a parse tree produced by MiniJavaParser#expr_lrparents.
     def visitExpr_lrparents(self, ctx):
-        ctx.expression().accept(self)
-        return None
+        #ctx.expression().accept(self)
+        return ctx.expression().accept(self)

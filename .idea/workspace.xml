@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a182984-1eed-43b6-993f-0df7a71ea756" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Gerador_Codigo/bckp_AnaliseSemantica.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gerador_Codigo/AnaliseSemantica.py" beforeDir="false" afterPath="$PROJECT_DIR$/Gerador_Codigo/AnaliseSemantica.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gerador_Codigo/MiniJava.py" beforeDir="false" afterPath="$PROJECT_DIR$/Gerador_Codigo/MiniJava.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,11 +16,20 @@
       <content type="file-editors">
         <state>
           <leaf>
-            <file pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/Analisador_Semantico_ANTLR/MiniJava.g4">
+            <file pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/Programas_MiniJava/programa1.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="-420">
-                    <caret line="47" column="66" selection-start-line="47" selection-start-column="66" selection-end-line="47" selection-end-column="66" />
+                  <state relative-caret-position="90">
+                    <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/Programas_MiniJava/programa5.java">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="495">
+                    <caret line="33" column="25" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
                   </state>
                 </provider>
               </entry>
@@ -37,22 +44,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Gerador_Codigo/MiniJavaVisitor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
+            <state relative-caret-position="2520">
               <caret line="168" column="38" selection-start-line="11" selection-start-column="4" selection-end-line="168" selection-end-column="38" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Gerador_Codigo/AnaliseSemantica.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
-              <caret line="945" column="32" selection-start-line="945" selection-start-column="32" selection-end-line="945" selection-end-column="32" />
+            <state relative-caret-position="300">
+              <caret line="1387" column="41" selection-start-line="1387" selection-start-column="41" selection-end-line="1387" selection-end-column="41" />
               <folding>
-                <element signature="e#11912#31169#0" />
-                <element signature="e#31204#33490#0" />
-                <element signature="e#32788#39725#0" />
-                <element signature="e#31209#52721#0" />
+                <element signature="e#4195#11132#0" />
+                <element signature="e#11174#30432#0" />
+                <element signature="e#30466#32748#0" />
+                <element signature="e#32788#39727#0" />
               </folding>
             </state>
           </provider>
@@ -61,7 +68,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Gerador_Codigo/bckp_AnaliseSemantica.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
+            <state relative-caret-position="12060">
               <caret line="1530" selection-start-line="1530" selection-end-line="1530" />
               <folding>
                 <element signature="e#4195#11871#0" />
@@ -71,11 +78,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Gerador_Codigo/MiniJava.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="71" column="23" selection-start-line="71" selection-start-column="23" selection-end-line="71" selection-end-column="23" />
+            <state relative-caret-position="225">
+              <caret line="72" selection-start-line="72" selection-end-line="72" />
             </state>
           </provider>
         </entry>
@@ -91,11 +98,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Err_l</find>
-      <find>Init</find>
-      <find>other</find>
-      <find>this.</find>
-      <find>ctx):</find>
       <find>int</find>
       <find>return self</find>
       <find>return self.visitChildren(ctx)</find>
@@ -103,7 +105,6 @@
       <find>expr_not</find>
       <find>Aquii</find>
       <find>state_arra</find>
-      <find>Scope(</find>
       <find>name+regiao</find>
       <find>className+regiao</find>
       <find>classe_atual+regiao</find>
@@ -118,9 +119,15 @@
       <find>ext</find>
       <find>exte</find>
       <find>isCom</find>
-      <find>print(</find>
       <find>self.classes.cl</find>
       <find>ClassInfo</find>
+      <find>sys</find>
+      <find>scope</find>
+      <find>Scope(</find>
+      <find>TEMP</find>
+      <find>print(</find>
+      <find>lookupMethod</find>
+      <find>ReturnItem</find>
     </findStrings>
     <replaceStrings>
       <replace>&quot;&amp;&amp;&quot;</replace>
@@ -210,8 +217,8 @@
         <option value="$PROJECT_DIR$/Analisador_Semantico_ANTLR/MiniJava.py" />
         <option value="$PROJECT_DIR$/Programas_MiniJava/programa1.java" />
         <option value="$PROJECT_DIR$/Gerador_Codigo/bckp_AnaliseSemantica.py" />
-        <option value="$PROJECT_DIR$/Gerador_Codigo/AnaliseSemantica.py" />
         <option value="$PROJECT_DIR$/Gerador_Codigo/MiniJava.py" />
+        <option value="$PROJECT_DIR$/Gerador_Codigo/AnaliseSemantica.py" />
       </list>
     </option>
   </component>
@@ -229,7 +236,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -240,12 +246,13 @@
             <path>
               <item name="Compiladores" type="b2602c69:ProjectViewProjectNode" />
               <item name="Compiladores" type="462c0819:PsiDirectoryNode" />
-              <item name="Gerador_Codigo" type="462c0819:PsiDirectoryNode" />
+              <item name="Programas_MiniJava" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -385,7 +392,7 @@
     <frame x="47" y="25" width="1319" height="743" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27237654" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15895061" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -660,13 +667,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Programas_MiniJava/programa5.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2688">
-          <caret line="33" column="25" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Analisador_Semantico_ANTLR/MiniJavaSemanticAnalysis.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
@@ -751,9 +751,16 @@
     <entry file="file://$PROJECT_DIR$/Gerador_Codigo/MiniJava.g4">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/Gerador_Codigo/MiniJavaVisitor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2520">
+          <caret line="168" column="38" selection-start-line="11" selection-start-column="4" selection-end-line="168" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Gerador_Codigo/bckp_AnaliseSemantica.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
+        <state relative-caret-position="12060">
           <caret line="1530" selection-start-line="1530" selection-end-line="1530" />
           <folding>
             <element signature="e#4195#11871#0" />
@@ -762,23 +769,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Analisador_Semantico_ANTLR/MiniJava.g4">
+    <entry file="file://$PROJECT_DIR$/Gerador_Codigo/MiniJava.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-420">
-          <caret line="47" column="66" selection-start-line="47" selection-start-column="66" selection-end-line="47" selection-end-column="66" />
+        <state relative-caret-position="225">
+          <caret line="72" selection-start-line="72" selection-end-line="72" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Gerador_Codigo/AnaliseSemantica.py">
+    <entry file="file://$PROJECT_DIR$/Analisador_Semantico_ANTLR/MiniJava.g4">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="945" column="32" selection-start-line="945" selection-start-column="32" selection-end-line="945" selection-end-column="32" />
-          <folding>
-            <element signature="e#11912#31169#0" />
-            <element signature="e#31204#33490#0" />
-            <element signature="e#32788#39725#0" />
-            <element signature="e#31209#52721#0" />
-          </folding>
+        <state relative-caret-position="705">
+          <caret line="47" column="66" selection-start-line="47" selection-start-column="66" selection-end-line="47" selection-end-column="66" />
         </state>
       </provider>
     </entry>
@@ -789,17 +790,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Gerador_Codigo/MiniJavaVisitor.py">
+    <entry file="file://$PROJECT_DIR$/Programas_MiniJava/programa5.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="168" column="38" selection-start-line="11" selection-start-column="4" selection-end-line="168" selection-end-column="38" />
+        <state relative-caret-position="495">
+          <caret line="33" column="25" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Gerador_Codigo/MiniJava.py">
+    <entry file="file://$PROJECT_DIR$/Gerador_Codigo/AnaliseSemantica.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="71" column="23" selection-start-line="71" selection-start-column="23" selection-end-line="71" selection-end-column="23" />
+        <state relative-caret-position="300">
+          <caret line="1387" column="41" selection-start-line="1387" selection-start-column="41" selection-end-line="1387" selection-end-column="41" />
+          <folding>
+            <element signature="e#4195#11132#0" />
+            <element signature="e#11174#30432#0" />
+            <element signature="e#30466#32748#0" />
+            <element signature="e#32788#39727#0" />
+          </folding>
         </state>
       </provider>
     </entry>
