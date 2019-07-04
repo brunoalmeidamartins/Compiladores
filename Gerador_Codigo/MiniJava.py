@@ -68,8 +68,16 @@ def process(args):
 	visitor6 = Visitor3()
 	visitor6.visit(tree)
 
+	#print(visitor6.retornaClassePronta())
 	visitor7 = Visitor4(visitor6.retornaClassePronta())
 	visitor7.visit(tree)
+	string = visitor7.devolveCodigoIntermediario()
+	arq = open("SPG/teste.txt", 'w')
+	arq.writelines(string)
+	arq.close()
+
+	#print(string)
+
 
 	''''
 	treelist = TreeList.toStringTreeList(tree, recog=parser)
