@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3a182984-1eed-43b6-993f-0df7a71ea756" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gerador_Codigo/02_PIGLET/piglet.jar" beforeDir="false" afterPath="$PROJECT_DIR$/Gerador_Codigo/02_PIGLET/piglet.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gerador_Codigo/03_SPIGLET/BubbleSort.spg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gerador_Codigo/03_SPIGLET/Factorial.asm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gerador_Codigo/03_SPIGLET/Factorial.kg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gerador_Codigo/03_SPIGLET/Factorial.spg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gerador_Codigo/03_SPIGLET/LinearSearch.spg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gerador_Codigo/03_SPIGLET/arquivo_spiglet.spg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gerador_Codigo/03_SPIGLET/arquivo_spiglet_grupo.spg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gerador_Codigo/03_SPIGLET/teste.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gerador_Codigo/04_KANGA/arquivo_kanga.ka" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gerador_Codigo/05_MIPS/arquivo_mips.asm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gerador_Codigo/AnaliseSemantica.py" beforeDir="false" afterPath="$PROJECT_DIR$/Gerador_Codigo/AnaliseSemantica.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gerador_Codigo/MiniJava.py" beforeDir="false" afterPath="$PROJECT_DIR$/Gerador_Codigo/MiniJava.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,14 +21,26 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Gerador_Codigo/MiniJava.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
+            <state relative-caret-position="-470">
               <caret line="66" column="27" selection-start-line="66" selection-start-column="27" selection-end-line="66" selection-end-column="27" />
               <folding>
                 <element signature="e#25#43#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="90">
+                <caret line="6" column="65" lean-forward="true" selection-start-line="6" selection-start-column="65" selection-end-line="6" selection-end-column="65" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -141,7 +140,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Analisador_Sintatico/MiniJava.g" />
         <option value="$PROJECT_DIR$/Analisador_Sintatico/analisador_plyplus.py" />
         <option value="$PROJECT_DIR$/Analisador_Sintatico/analisador_Lark.py" />
         <option value="$PROJECT_DIR$/Analisador_Sintatico/analisador_sintatico.py" />
@@ -192,6 +190,7 @@
         <option value="$PROJECT_DIR$/Gerador_Codigo/SPG/teste.txt" />
         <option value="$PROJECT_DIR$/Gerador_Codigo/AnaliseSemantica.py" />
         <option value="$PROJECT_DIR$/Gerador_Codigo/MiniJava.py" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -216,46 +215,6 @@
             <path>
               <item name="Compiladores" type="b2602c69:ProjectViewProjectNode" />
               <item name="Compiladores" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Compiladores" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Compiladores" type="462c0819:PsiDirectoryNode" />
-              <item name="Gerador_Codigo" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Compiladores" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Compiladores" type="462c0819:PsiDirectoryNode" />
-              <item name="Gerador_Codigo" type="462c0819:PsiDirectoryNode" />
-              <item name="01_MINIJAVA" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Compiladores" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Compiladores" type="462c0819:PsiDirectoryNode" />
-              <item name="Gerador_Codigo" type="462c0819:PsiDirectoryNode" />
-              <item name="02_PIGLET" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Compiladores" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Compiladores" type="462c0819:PsiDirectoryNode" />
-              <item name="Gerador_Codigo" type="462c0819:PsiDirectoryNode" />
-              <item name="03_SPIGLET" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Compiladores" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Compiladores" type="462c0819:PsiDirectoryNode" />
-              <item name="Gerador_Codigo" type="462c0819:PsiDirectoryNode" />
-              <item name="04_KANGA" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Compiladores" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Compiladores" type="462c0819:PsiDirectoryNode" />
-              <item name="Gerador_Codigo" type="462c0819:PsiDirectoryNode" />
-              <item name="05_MIPS" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Compiladores" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Compiladores" type="462c0819:PsiDirectoryNode" />
-              <item name="Programas_MiniJava" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -492,11 +451,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Analisador_Semantico_ANTLR/MiniJavaLexer.tokens">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-873" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Analisador_Semantico_ANTLR/MiniJavaLexer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2475" />
@@ -783,11 +737,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Gerador_Codigo/MiniJava.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
+        <state relative-caret-position="-470">
           <caret line="66" column="27" selection-start-line="66" selection-start-column="27" selection-end-line="66" selection-end-column="27" />
           <folding>
             <element signature="e#25#43#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="90">
+            <caret line="6" column="65" lean-forward="true" selection-start-line="6" selection-start-column="65" selection-end-line="6" selection-end-column="65" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
