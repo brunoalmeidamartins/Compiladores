@@ -2,5 +2,8 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Gerador_Codigo/SPG/Outros/minijava-compiler" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Gerador_Codigo/SPG/minijava-compiler" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Gerador_Codigo/SPG2/mini-java" vcs="Git" />
   </component>
 </project>

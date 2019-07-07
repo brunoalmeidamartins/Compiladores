@@ -1276,7 +1276,7 @@ class Visitor4(MiniJavaVisitor):
             vTableSize = len(methods) * 4 #4bytes por endereco
             methodCodeRegister = self.registers.next()
             #Aloca vTable
-            self.emit("\t\tMove "+ methodCodeRegister + " HALLOCATE "+ str(vTableSize))
+            self.emit("\t\tMOVE "+ methodCodeRegister + " HALLOCATE "+ str(vTableSize))
             self.emit("\t\tHSTORE "+labelRegister+" 0 "+methodCodeRegister)
             # Store method code in vTable
             offset = 0
@@ -1447,7 +1447,7 @@ class Visitor4(MiniJavaVisitor):
         expr = retf2.register
 
         if adress == None:
-            self.emit("\t\tMove "+register+" "+expr)
+            self.emit("\t\tMOVE "+register+" "+expr)
         else:
             self.emit("\t\tHSTORE "+adress+" 0 "+expr)
         return ReturnItem(None, None)

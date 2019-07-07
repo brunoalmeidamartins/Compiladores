@@ -4,6 +4,7 @@ import os, sys, re
 from antlr4 import *
 from antlr4.error import ErrorListener
 import argparse
+import os
 
 if __name__ is not None and "." in __name__:
 	from .MiniJavaParser import MiniJavaParser
@@ -72,9 +73,25 @@ def process(args):
 	visitor7 = Visitor4(visitor6.retornaClassePronta())
 	visitor7.visit(tree)
 	string = visitor7.devolveCodigoIntermediario()
-	arq = open("SPG/teste.txt", 'w')
+
+	arq = open("SPG/arquivo_spiglet.spg", 'w')
 	arq.writelines(string)
 	arq.close()
+	#resultado = os.popen('java -jar SPG/spiglet.jar SPG/arquivo_spiglet.spg').read()
+	#resultado = os.popen('java -jar SPG/spiglet.jar SPG/Factorial.spg').read()
+	#resultado = os.popen('java -jar SPG/spiglet.jar SPG/BubbleSort.spg').read()
+	resultado = os.popen('java -jar SPG/spiglet.jar SPG/LinearSearch.spg').read()
+
+	arq = open("KANGA/arquivo_kanga.ka", 'w')
+	arq.writelines(resultado)
+	arq.close()
+	resultado = os.popen('java -jar KANGA/kanga.jar KANGA/arquivo_kanga.ka').read()
+
+	arq = open("MIPS/arquivo_mips.asm", 'w')
+	arq.writelines(resultado)
+	arq.close()
+
+
 
 	#print(string)
 
