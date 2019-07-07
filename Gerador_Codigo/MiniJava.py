@@ -74,14 +74,20 @@ def process(args):
 	visitor7.visit(tree)
 	string = visitor7.devolveCodigoIntermediario()
 
-	arq = open("SPG/arquivo_spiglet.spg", 'w')
+	arq = open("03_SPIGLET/arquivo_spiglet_grupo.spg", 'w')
 	arq.writelines(string)
 	arq.close()
+
+	resultado = os.popen('java -jar 01_MINIJAVA/minijava.jar '+args.input_file).read()
+	print(resultado)
 	#resultado = os.popen('java -jar SPG/spiglet.jar SPG/arquivo_spiglet.spg').read()
 	#resultado = os.popen('java -jar SPG/spiglet.jar SPG/Factorial.spg').read()
 	#resultado = os.popen('java -jar SPG/spiglet.jar SPG/BubbleSort.spg').read()
-	resultado = os.popen('java -jar SPG/spiglet.jar SPG/LinearSearch.spg').read()
+	#resultado = os.popen('java -jar SPG/spiglet.jar SPG/LinearSearch.spg').read()
+	#resultado = os.popen('java -jar SPG/spiglet.jar SPG/teste.txt').read()
+	#resultado = os.popen('java -jar SPG/spiglet.jar /home/bruno/Compiladores/Programas_MiniJava/programa3.spg').read()
 
+	'''
 	arq = open("KANGA/arquivo_kanga.ka", 'w')
 	arq.writelines(resultado)
 	arq.close()
@@ -90,6 +96,7 @@ def process(args):
 	arq = open("MIPS/arquivo_mips.asm", 'w')
 	arq.writelines(resultado)
 	arq.close()
+	'''
 
 
 

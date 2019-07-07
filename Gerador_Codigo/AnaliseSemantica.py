@@ -1301,6 +1301,7 @@ class Visitor4(MiniJavaVisitor):
         global regiao
         #self.construcGlobalVTables()
         self.emit("MAIN")
+        #self.construcGlobalVTables()
         classe_atual = ctx.Identifier(0).getText()
         self.scopoGlobal = Scope2(None)
         self.scopoGlobal.currentClassName = classe_atual
