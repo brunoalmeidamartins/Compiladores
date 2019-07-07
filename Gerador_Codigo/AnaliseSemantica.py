@@ -1299,9 +1299,7 @@ class Visitor4(MiniJavaVisitor):
     def visitMainclass(self, ctx):
         global classe_atual
         global regiao
-        #self.construcGlobalVTables()
         self.emit("MAIN")
-        #self.construcGlobalVTables()
         classe_atual = ctx.Identifier(0).getText()
         self.scopoGlobal = Scope2(None)
         self.scopoGlobal.currentClassName = classe_atual
@@ -1324,14 +1322,10 @@ class Visitor4(MiniJavaVisitor):
     # Visit a parse tree produced by MiniJavaParser#dec_class.
     def visitDec_class(self, ctx):
         global classe_atual
-        #global regiao
-
-
         classe_atual = ctx.Identifier(0).getText()
         self.scopoGlobal = Scope2(None)
         self.scopoGlobal.currentClassName = classe_atual
         self.justID = True
-        #ret = ctx.Identifier(0).getText()
         ret = self.visitIdentifier(ctx.Identifier(0).getText())
         self.justID = False
 
@@ -1355,7 +1349,6 @@ class Visitor4(MiniJavaVisitor):
         self.justID = True
         retf0 = ctx.mtype().accept(self)
         type = retf0
-        #retf1 = ctx.Identifier().getText()
         retf1 = self.visitIdentifier(ctx.Identifier().getText())
         varName = retf1.type
         self.justID = False
@@ -1364,7 +1357,6 @@ class Visitor4(MiniJavaVisitor):
             #Adiciona a entrada ao escopo
             newRegister = self.registers.next()
             toInsert = VariableEntry(type, varName)
-            #toInsert.register = int(newRegister[5:len(newRegister)])
             toInsert.register = int(newRegister[5:len(newRegister)])
             scope1 = self.scopoLocal
             scope1.insert(toInsert)
@@ -1382,7 +1374,6 @@ class Visitor4(MiniJavaVisitor):
         #Obtem parametros
         self.argumentCounter = 1
         scope = self.scopoLocal
-        #print("Primeiro: ", ctx.mtype(0).getText(), ctx.Identifier(0).getText())
         for i in range(1, len(ctx.mtype())):
             self.justID = True
             retf0 = ctx.mtype(i).accept(self)
